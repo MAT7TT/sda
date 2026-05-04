@@ -1,11 +1,10 @@
 package uk.ac.mmu.assignment26.infrastructure.factories;
 
-
 import org.springframework.stereotype.Component;
 import uk.ac.mmu.assignment26.domain.Board;
-import uk.ac.mmu.assignment26.domain.path.PathStrategy;
 import uk.ac.mmu.assignment26.domain.Player;
 import uk.ac.mmu.assignment26.domain.path.LeftStartSnakePathStrategy;
+import uk.ac.mmu.assignment26.domain.path.PathStrategy;
 import uk.ac.mmu.assignment26.domain.path.ReversePathDecorator;
 import uk.ac.mmu.assignment26.domain.path.RightStartSnakePathStrategy;
 
@@ -18,7 +17,14 @@ public class PlayerFactory {
     }
 
     public Player createBlue(Board board) {
-        PathStrategy strategy = new ReversePathDecorator(new RightStartSnakePathStrategy());
+        PathStrategy strategy;
+
+        if (isSmallBoard(board)) {
+            strategy = new ReversePathDecorator(new LeftStartSnakePathStrategy());
+        } else {
+            strategy = new ReversePathDecorator(new RightStartSnakePathStrategy());
+        }
+
         return new Player("Blue", board, strategy);
     }
 
@@ -30,5 +36,9 @@ public class PlayerFactory {
     public Player createGreen(Board board) {
         PathStrategy strategy = new RightStartSnakePathStrategy();
         return new Player("Green", board, strategy);
+    }
+
+    private boolean isSmallBoard(Board board) {
+        return board.getRows() == 5 && board.getColumns() == 5;
     }
 }

@@ -24,20 +24,26 @@ public class PlayGameUseCase {
         Game game = gameFactory.createGame(configuration);
         GameResult result = game.play();
 
-        return saveGame(configuration, result);
+        return saveGame(configuration, result.diceRolls());
     }
 
     public int play(GameConfiguration configuration, List<Integer> fixedDiceRolls) {
         Game game = gameFactory.createGame(configuration, fixedDiceRolls);
         GameResult result = game.play();
 
-        return saveGame(configuration, result);
+        int unusedDiceRolls = fixedDiceRolls.size() - result.diceRolls().size();
+
+        for (int i = 0; i < unusedDiceRolls; i++) {
+            game.playTurn();
+        }
+
+        return saveGame(configuration, fixedDiceRolls);
     }
 
-    private int saveGame(GameConfiguration configuration, GameResult result) {
+    private int saveGame(GameConfiguration configuration, List<Integer> diceRolls) {
         SavedGame savedGame = new SavedGame(
                 configuration,
-                result.diceRolls()
+                diceRolls
         );
 
         return savedGameRepository.save(savedGame);

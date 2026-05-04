@@ -12,32 +12,40 @@ import uk.ac.mmu.assignment26.domain.rules.result.HitResult;
 import uk.ac.mmu.assignment26.domain.rules.result.MoveResult;
 import uk.ac.mmu.assignment26.domain.rules.result.TeleportResult;
 import uk.ac.mmu.assignment26.domain.rules.result.TurnResult;
+import uk.ac.mmu.assignment26.infrastructure.output.GameOutputWriter;
 
 @Component
 public class ConsoleGameEventObserver {
+    private final GameOutputWriter outputWriter;
+
+    public ConsoleGameEventObserver(GameOutputWriter outputWriter) {
+        this.outputWriter = outputWriter;
+    }
 
     @EventListener
     public void onGameStarted(GameStartedEvent event) {
-        System.out.println("Game");
-        System.out.println("Board: rows=" + event.rows() + " columns=" + event.columns());
+        outputWriter.writeLine("Game");
+        outputWriter.writeLine("Board: rows=" + event.rows() + " columns=" + event.columns());
 
         for (Player player : event.players()) {
-            System.out.println(player.getName() + " " + player.getPathDescription());
+            outputWriter.writeLine(player.getName() + " " + player.getPathDescription());
         }
     }
 
     @EventListener
     public void onGameStateChanged(GameStateChangedEvent event) {
-        System.out.println("Game State: " + event.from() + " -> " + event.to());
+        outputWriter.writeLine("Game State: " + event.from() + " → " + event.to());
     }
 
     @EventListener
     public void onTurnCompleted(TurnCompletedEvent event) {
         TurnResult result = event.result();
 
-        System.out.println(result.playerName()
+        outputWriter.writeLine(result.playerName()
                 + " turn " + result.turnCount()
                 + " rolls " + result.roll());
+
+        printOvershootBeforeMoveIfNeeded(result);
 
         printMove(
                 result.playerName(),
@@ -46,16 +54,14 @@ public class ConsoleGameEventObserver {
                 result.endPosition()
         );
 
-        printOvershootIfNeeded(result);
-
         printTeleportIfNeeded(result);
 
         printHitIfNeeded(result);
     }
 
-    private void printOvershootIfNeeded(TurnResult result) {
+    private void printOvershootBeforeMoveIfNeeded(TurnResult result) {
         if (result.moveResult().overshotEnd()) {
-            System.out.println(result.playerName() + " overshoots end.");
+            outputWriter.writeLine(result.playerName() + " overshoots end.");
         }
     }
 
@@ -66,7 +72,7 @@ public class ConsoleGameEventObserver {
             return;
         }
 
-        System.out.println(result.playerName() + " is teleported.");
+        outputWriter.writeLine(result.playerName() + " is teleported.");
 
         printMove(
                 result.playerName(),
@@ -84,10 +90,10 @@ public class ConsoleGameEventObserver {
             return;
         }
 
-        System.out.println(result.playerName()
+        outputWriter.writeLine(result.playerName()
                 + " hit "
                 + hitResult.hitPlayerName()
-                + " at position Position "
+                + " at Position "
                 + hitResult.hitPosition());
 
         if (hitResult.playerMovedBack()) {
@@ -123,7 +129,14 @@ public class ConsoleGameEventObserver {
             int homePosition,
             int endPosition
     ) {
-        System.out.println(playerName
+        if (from == to) {
+            outputWriter.writeLine(playerName
+                    + " remains at "
+                    + describePosition(from, homePosition, endPosition));
+            return;
+        }
+
+        outputWriter.writeLine(playerName
                 + " moves from "
                 + describePosition(from, homePosition, endPosition)
                 + " to "
@@ -144,14 +157,14 @@ public class ConsoleGameEventObserver {
 
     @EventListener
     public void onGameWon(GameWonEvent event) {
-        System.out.println(event.playerName()
+        outputWriter.writeLine(event.playerName()
                 + " wins in " + event.playerTurns() + " turns.");
 
-        System.out.println("Total turns: " + event.totalTurns() + ".");
+        outputWriter.writeLine("Total turns: " + event.totalTurns() + ".");
     }
 
     @EventListener
     public void onGameOverAttempted(GameOverAttemptedEvent event) {
-        System.out.println("Game Over.");
+        outputWriter.writeLine("Game Over.");
     }
 }
