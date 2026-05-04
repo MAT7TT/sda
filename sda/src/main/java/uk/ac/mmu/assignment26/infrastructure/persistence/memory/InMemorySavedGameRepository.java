@@ -1,4 +1,4 @@
-package uk.ac.mmu.assignment26.infrastructure.persistence;
+package uk.ac.mmu.assignment26.infrastructure.persistence.memory;
 
 import org.springframework.stereotype.Component;
 import uk.ac.mmu.assignment26.usecase.SavedGame;

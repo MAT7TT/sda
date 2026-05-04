@@ -14,14 +14,14 @@ import uk.ac.mmu.assignment26.usecase.ports.SavedGameRepository;
 import java.util.Optional;
 
 @Component
-public class GameRunner implements CommandLineRunner, Ordered {
+public class ConsoleGameRunner implements CommandLineRunner, Ordered {
     private final PlayGameUseCase playGameUseCase;
     private final ReplayGameUseCase replayGameUseCase;
     private final SavedGameRepository savedGameRepository;
     private final GameScenarioProvider scenarioProvider;
     private final ConsoleScenarioPrinter scenarioPrinter;
 
-    public GameRunner(
+    public ConsoleGameRunner(
             PlayGameUseCase playGameUseCase,
             ReplayGameUseCase replayGameUseCase,
             SavedGameRepository savedGameRepository,

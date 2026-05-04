@@ -1,6 +1,4 @@
-package uk.ac.mmu.assignment26.infrastructure.dice;
-
-import uk.ac.mmu.assignment26.domain.dice.DiceShaker;
+package uk.ac.mmu.assignment26.domain.dice;
 
 import java.util.ArrayList;
 import java.util.List;

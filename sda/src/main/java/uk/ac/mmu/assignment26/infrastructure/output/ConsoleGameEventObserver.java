@@ -1,4 +1,4 @@
-package uk.ac.mmu.assignment26.infrastructure.observers;
+package uk.ac.mmu.assignment26.infrastructure.output;
 
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
@@ -12,7 +12,6 @@ import uk.ac.mmu.assignment26.domain.rules.result.HitResult;
 import uk.ac.mmu.assignment26.domain.rules.result.MoveResult;
 import uk.ac.mmu.assignment26.domain.rules.result.TeleportResult;
 import uk.ac.mmu.assignment26.domain.rules.result.TurnResult;
-import uk.ac.mmu.assignment26.infrastructure.output.GameOutputWriter;
 
 @Component
 public class ConsoleGameEventObserver {
