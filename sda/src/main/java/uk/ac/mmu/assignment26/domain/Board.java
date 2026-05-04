@@ -23,13 +23,13 @@ public class Board {
         fillBoard();
     }
 
-    public void addWormhole(int firstPosition, int secondPosition, List<Player> players) {
-        validateWormhole(firstPosition, secondPosition, players);
+    public void addWormhole(int firstPosition, int secondPosition, List<Integer> blockedPositions) {
+        validateWormhole(firstPosition, secondPosition, blockedPositions);
         wormholes.put(firstPosition, secondPosition);
         wormholes.put(secondPosition, firstPosition);
     }
 
-    private void validateWormhole(int firstPosition, int secondPosition, List<Player> players) {
+    private void validateWormhole(int firstPosition, int secondPosition, List<Integer> blockedPositions) {
         if (firstPosition == secondPosition) {
             throw new IllegalArgumentException("Wormhole endpoints must be different.");
         }
@@ -42,16 +42,10 @@ public class Board {
             throw new IllegalArgumentException("A wormhole endpoint is already in use.");
         }
 
-        for (Player player : players) {
-            int home = player.getHomePosition();
-            int end = player.getEndPosition();
-
-            if (firstPosition == home || firstPosition == end
-                    || secondPosition == home || secondPosition == end) {
-                throw new IllegalArgumentException(
-                        "Wormholes cannot be placed on a player's home or end position."
-                );
-            }
+        if (blockedPositions.contains(firstPosition) || blockedPositions.contains(secondPosition)) {
+            throw new IllegalArgumentException(
+                    "Wormholes cannot be placed on a player's home or end position."
+            );
         }
     }
 
@@ -89,16 +83,6 @@ public class Board {
                 }
             }
         }
-    }
-
-    public int[][] getPositions() {
-        int[][] copy = new int[rows][columns];
-
-        for (int i = 0; i < rows; i++) {
-            System.arraycopy(positions[i], 0, copy[i], 0, columns);
-        }
-
-        return copy;
     }
 
     public int getRows() {

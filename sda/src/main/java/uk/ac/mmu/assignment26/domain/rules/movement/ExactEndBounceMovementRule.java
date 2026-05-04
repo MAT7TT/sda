@@ -1,12 +1,9 @@
-package uk.ac.mmu.assignment26.infrastructure.rules.movement;
+package uk.ac.mmu.assignment26.domain.rules.movement;
 
-
-import org.springframework.stereotype.Component;
 import uk.ac.mmu.assignment26.domain.Player;
 import uk.ac.mmu.assignment26.domain.config.EndRuleType;
-import uk.ac.mmu.assignment26.domain.rules.MovementRule;
+import uk.ac.mmu.assignment26.domain.rules.result.MoveResult;
 
-@Component
 public class ExactEndBounceMovementRule implements MovementRule {
 
     @Override
@@ -15,10 +12,14 @@ public class ExactEndBounceMovementRule implements MovementRule {
     }
 
     @Override
-    public void move(Player player, int roll) {
+    public MoveResult move(Player player, int roll) {
+        int from = player.getCurrentPosition();
+
         int currentIndex = player.getPathIndex();
         int endIndex = player.getPathLength() - 1;
         int targetIndex = currentIndex + roll;
+
+        boolean overshotEnd = targetIndex > endIndex;
 
         if (targetIndex <= endIndex) {
             player.setPathIndex(targetIndex);
@@ -27,5 +28,9 @@ public class ExactEndBounceMovementRule implements MovementRule {
             int bouncedIndex = endIndex - overshoot;
             player.setPathIndex(bouncedIndex);
         }
+
+        int to = player.getCurrentPosition();
+
+        return new MoveResult(from, to, overshotEnd);
     }
 }

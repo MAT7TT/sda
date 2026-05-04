@@ -1,4 +1,4 @@
-package uk.ac.mmu.assignment26.ports;
+package uk.ac.mmu.assignment26.usecase.ports;
 
 import uk.ac.mmu.assignment26.domain.Game;
 import uk.ac.mmu.assignment26.domain.config.GameConfiguration;

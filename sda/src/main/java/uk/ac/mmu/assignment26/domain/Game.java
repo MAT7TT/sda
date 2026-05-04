@@ -3,10 +3,14 @@ package uk.ac.mmu.assignment26.domain;
 import uk.ac.mmu.assignment26.domain.dice.DiceShaker;
 import uk.ac.mmu.assignment26.domain.events.GameStartedEvent;
 import uk.ac.mmu.assignment26.domain.events.GameWonEvent;
-import uk.ac.mmu.assignment26.domain.events.MoveEvent;
-import uk.ac.mmu.assignment26.domain.rules.HitRule;
-import uk.ac.mmu.assignment26.domain.rules.MovementRule;
-import uk.ac.mmu.assignment26.domain.rules.TeleportRule;
+import uk.ac.mmu.assignment26.domain.events.TurnCompletedEvent;
+import uk.ac.mmu.assignment26.domain.rules.hit.HitRule;
+import uk.ac.mmu.assignment26.domain.rules.movement.MovementRule;
+import uk.ac.mmu.assignment26.domain.rules.teleport.TeleportRule;
+import uk.ac.mmu.assignment26.domain.rules.result.HitResult;
+import uk.ac.mmu.assignment26.domain.rules.result.MoveResult;
+import uk.ac.mmu.assignment26.domain.rules.result.TeleportResult;
+import uk.ac.mmu.assignment26.domain.rules.result.TurnResult;
 import uk.ac.mmu.assignment26.domain.state.GameState;
 import uk.ac.mmu.assignment26.domain.state.ReadyState;
 
@@ -80,26 +84,15 @@ public class Game {
     }
 
     public GameResult play() {
-        publishEvent(new GameStartedEvent(
-                board.getRows(),
-                board.getColumns(),
-                List.copyOf(players)
-        ));
-
+        publishEvent(new GameStartedEvent(board.getRows(), board.getColumns(), List.copyOf(players)));
         start();
 
         while (winner == null) {
             playTurn();
         }
-
         finish();
 
-        return new GameResult(
-                winner.getName(),
-                winner.getTurnCount(),
-                totalTurns,
-                List.copyOf(diceRolls)
-        );
+        return new GameResult(winner.getName(), winner.getTurnCount(), totalTurns, List.copyOf(diceRolls));
     }
 
     public void start() {
@@ -121,28 +114,9 @@ public class Game {
 
         Player currentPlayer = players.get(currentPlayerIndex);
 
-        int startTurnPathIndex = currentPlayer.getPathIndex();
-        int from = currentPlayer.getCurrentPosition();
+        TurnResult turnResult = takeTurn(currentPlayer);
 
-        int roll = diceShaker.shake();
-        diceRolls.add(roll);
-
-        movementRule.move(currentPlayer, roll);
-        teleportRule.apply(board, currentPlayer);
-        hitRule.apply(currentPlayer, startTurnPathIndex, players);
-
-        currentPlayer.incrementTurnCount();
-        totalTurns++;
-
-        int to = currentPlayer.getCurrentPosition();
-
-        publishEvent(new MoveEvent(
-                currentPlayer.getName(),
-                roll,
-                from,
-                to,
-                currentPlayer.getTurnCount()
-        ));
+        publishEvent(new TurnCompletedEvent(turnResult));
 
         if (currentPlayer.isAtEnd()) {
             winner = currentPlayer;
@@ -156,6 +130,35 @@ public class Game {
             return;
         }
 
+        moveToNextPlayer();
+    }
+
+    private TurnResult takeTurn(Player currentPlayer) {
+        int startTurnPathIndex = currentPlayer.getPathIndex();
+
+        int roll = diceShaker.shake();
+        diceRolls.add(roll);
+
+        currentPlayer.incrementTurnCount();
+        totalTurns++;
+
+        MoveResult moveResult = movementRule.move(currentPlayer, roll);
+        TeleportResult teleportResult = teleportRule.apply(board, currentPlayer);
+        HitResult hitResult = hitRule.apply(currentPlayer, startTurnPathIndex, players);
+
+        return new TurnResult(
+                currentPlayer.getName(),
+                roll,
+                currentPlayer.getTurnCount(),
+                currentPlayer.getHomePosition(),
+                currentPlayer.getEndPosition(),
+                moveResult,
+                teleportResult,
+                hitResult
+        );
+    }
+
+    private void moveToNextPlayer() {
         currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
     }
 
@@ -169,33 +172,5 @@ public class Game {
 
     public void publishEvent(Object event) {
         eventPublisher.publish(event);
-    }
-
-    public Board getBoard() {
-        return board;
-    }
-
-    public List<Player> getPlayers() {
-        return List.copyOf(players);
-    }
-
-    public int getTotalTurns() {
-        return totalTurns;
-    }
-
-    public List<Integer> getDiceRolls() {
-        return List.copyOf(diceRolls);
-    }
-
-    public String getStateName() {
-        return state.getName();
-    }
-
-    public Player getWinner() {
-        return winner;
-    }
-
-    public boolean hasWinner() {
-        return winner != null;
     }
 }

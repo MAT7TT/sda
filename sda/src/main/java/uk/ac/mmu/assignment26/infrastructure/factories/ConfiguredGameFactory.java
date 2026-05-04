@@ -10,7 +10,7 @@ import uk.ac.mmu.assignment26.domain.config.GameConfiguration;
 import uk.ac.mmu.assignment26.domain.config.Wormhole;
 import uk.ac.mmu.assignment26.infrastructure.registry.DiceShakerFactoryRegistry;
 import uk.ac.mmu.assignment26.infrastructure.registry.RuleRegistry;
-import uk.ac.mmu.assignment26.ports.GameFactory;
+import uk.ac.mmu.assignment26.usecase.ports.GameFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,7 +84,7 @@ public class ConfiguredGameFactory implements GameFactory {
         players.add(playerFactory.createRed(board));
         players.add(playerFactory.createBlue(board));
 
-        if (configuration.players() == 4) {
+        if (configuration.numberOfPlayers() == 4) {
             players.add(playerFactory.createYellow(board));
             players.add(playerFactory.createGreen(board));
         }
@@ -92,17 +92,26 @@ public class ConfiguredGameFactory implements GameFactory {
         return players;
     }
 
-    private void addWormholes(
-            Board board,
-            GameConfiguration configuration,
-            List<Player> players
-    ) {
+    private void addWormholes(Board board, GameConfiguration configuration, List<Player> players) {
+        List<Integer> blockedPositions = getBlockedWormholePositions(players);
+
         for (Wormhole wormhole : configuration.wormholes()) {
             board.addWormhole(
                     wormhole.firstPosition(),
                     wormhole.secondPosition(),
-                    players
+                    blockedPositions
             );
         }
+    }
+
+    private List<Integer> getBlockedWormholePositions(List<Player> players) {
+        List<Integer> blockedPositions = new ArrayList<>();
+
+        for (Player player : players) {
+            blockedPositions.add(player.getHomePosition());
+            blockedPositions.add(player.getEndPosition());
+        }
+
+        return blockedPositions;
     }
 }

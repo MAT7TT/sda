@@ -3,11 +3,11 @@ package uk.ac.mmu.assignment26.infrastructure.factories;
 
 import org.springframework.stereotype.Component;
 import uk.ac.mmu.assignment26.domain.Board;
-import uk.ac.mmu.assignment26.domain.PathStrategy;
+import uk.ac.mmu.assignment26.domain.path.PathStrategy;
 import uk.ac.mmu.assignment26.domain.Player;
-import uk.ac.mmu.assignment26.infrastructure.path.LeftStartSnakePathStrategy;
-import uk.ac.mmu.assignment26.infrastructure.path.ReversePathDecorator;
-import uk.ac.mmu.assignment26.infrastructure.path.RightStartSnakePathStrategy;
+import uk.ac.mmu.assignment26.domain.path.LeftStartSnakePathStrategy;
+import uk.ac.mmu.assignment26.domain.path.ReversePathDecorator;
+import uk.ac.mmu.assignment26.domain.path.RightStartSnakePathStrategy;
 
 @Component
 public class PlayerFactory {

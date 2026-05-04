@@ -3,45 +3,57 @@ package uk.ac.mmu.assignment26.infrastructure.driving;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.Ordered;
 import org.springframework.stereotype.Component;
-import uk.ac.mmu.assignment26.domain.config.DiceType;
-import uk.ac.mmu.assignment26.domain.config.EndRuleType;
-import uk.ac.mmu.assignment26.domain.config.GameConfiguration;
-import uk.ac.mmu.assignment26.domain.config.HitRuleType;
-import uk.ac.mmu.assignment26.domain.config.TeleportRuleType;
+import uk.ac.mmu.assignment26.infrastructure.scenarios.GameScenario;
+import uk.ac.mmu.assignment26.infrastructure.scenarios.GameScenarioProvider;
 import uk.ac.mmu.assignment26.usecase.PlayGameUseCase;
-
-import java.util.List;
+import uk.ac.mmu.assignment26.usecase.ReplayGameUseCase;
 
 @Component
 public class GameRunner implements CommandLineRunner, Ordered {
     private final PlayGameUseCase playGameUseCase;
+    private final ReplayGameUseCase replayGameUseCase;
+    private final GameScenarioProvider scenarioProvider;
 
-    public GameRunner(PlayGameUseCase playGameUseCase) {
+    public GameRunner(
+            PlayGameUseCase playGameUseCase,
+            ReplayGameUseCase replayGameUseCase,
+            GameScenarioProvider scenarioProvider
+    ) {
         this.playGameUseCase = playGameUseCase;
+        this.replayGameUseCase = replayGameUseCase;
+        this.scenarioProvider = scenarioProvider;
     }
 
     @Override
     public void run(String... args) {
-        System.out.println("==================================================");
-        System.out.println("Basic game: Red wins in 2 turns");
-        System.out.println("==================================================");
+        for (GameScenario scenario : scenarioProvider.getScenarios()) {
+            runScenario(scenario);
+        }
 
-        GameConfiguration configuration = new GameConfiguration(
-                5,
-                5,
-                2,
-                DiceType.DOUBLE,
-                EndRuleType.STANDARD,
-                HitRuleType.IGNORE_HITS,
-                TeleportRuleType.IGNORE_WORMHOLES,
-                List.of()
-        );
+        replaySavedGame(1);
+    }
 
-        List<Integer> fixedDiceRolls = List.of(12, 10, 12);
+    private void runScenario(GameScenario scenario) {
+        System.out.println(scenario.title());
 
-        int gameId = playGameUseCase.play(configuration, fixedDiceRolls);
+        int gameId;
+
+        if (scenario.usesFixedDice()) {
+            gameId = playGameUseCase.play(
+                    scenario.configuration(),
+                    scenario.fixedDiceRolls()
+            );
+        } else {
+            gameId = playGameUseCase.play(scenario.configuration());
+        }
 
         System.out.println("Game Id: " + gameId + " saved.");
+        System.out.println();
+    }
+
+    private void replaySavedGame(int gameId) {
+        System.out.println("Replay Game Id: " + gameId);
+        replayGameUseCase.replay(gameId);
         System.out.println();
     }
 

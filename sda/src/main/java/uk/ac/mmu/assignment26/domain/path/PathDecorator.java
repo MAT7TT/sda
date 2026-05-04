@@ -1,9 +1,8 @@
-package uk.ac.mmu.assignment26.infrastructure.path;
+package uk.ac.mmu.assignment26.domain.path;
 
 
 
 import uk.ac.mmu.assignment26.domain.Board;
-import uk.ac.mmu.assignment26.domain.PathStrategy;
 
 import java.util.List;
 

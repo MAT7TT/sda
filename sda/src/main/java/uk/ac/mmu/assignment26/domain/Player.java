@@ -1,5 +1,7 @@
 package uk.ac.mmu.assignment26.domain;
 
+import uk.ac.mmu.assignment26.domain.path.PathStrategy;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,20 +60,6 @@ public class Player {
 
     public int getTurnCount() {
         return turnCount;
-    }
-
-    public List<Integer> getPath() {
-        return List.copyOf(path);
-    }
-
-    public String describePosition() {
-        if (pathIndex == 0) {
-            return "Home (Position " + getCurrentPosition() + ")";
-        }
-        else if (isAtEnd()) {
-            return "End (Position " + getCurrentPosition() + ")";
-        }
-        return "Position " + getCurrentPosition();
     }
 
     public String getPathDescription() {

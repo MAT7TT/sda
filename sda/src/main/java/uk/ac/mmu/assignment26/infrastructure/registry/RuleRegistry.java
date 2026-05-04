@@ -4,9 +4,9 @@ import org.springframework.stereotype.Component;
 import uk.ac.mmu.assignment26.domain.config.EndRuleType;
 import uk.ac.mmu.assignment26.domain.config.HitRuleType;
 import uk.ac.mmu.assignment26.domain.config.TeleportRuleType;
-import uk.ac.mmu.assignment26.domain.rules.HitRule;
-import uk.ac.mmu.assignment26.domain.rules.MovementRule;
-import uk.ac.mmu.assignment26.domain.rules.TeleportRule;
+import uk.ac.mmu.assignment26.domain.rules.hit.HitRule;
+import uk.ac.mmu.assignment26.domain.rules.movement.MovementRule;
+import uk.ac.mmu.assignment26.domain.rules.teleport.TeleportRule;
 
 import java.util.EnumMap;
 import java.util.List;
