@@ -24,7 +24,7 @@ public class DiceShakerFactoryRegistry {
         DiceShakerFactory factory = diceFactories.get(type);
 
         if (factory == null) {
-            throw new IllegalArgumentException("No dice shaker factory registered for " + type);
+            throw new IllegalArgumentException("No dice shaker factory registered for " + type + ".");
         }
 
         return factory.create();
@@ -53,12 +53,12 @@ public class DiceShakerFactoryRegistry {
             return;
         }
 
-        throw new IllegalArgumentException("Fixed dice rolls require SINGLE or DOUBLE dice type");
+        throw new IllegalArgumentException("Fixed dice rolls require SINGLE or DOUBLE dice type.");
     }
 
     private void validateRollRange(List<Integer> fixedRolls, int min, int max) {
         if (fixedRolls == null || fixedRolls.isEmpty()) {
-            throw new IllegalArgumentException("Fixed dice sequence must not be empty");
+            throw new IllegalArgumentException("Fixed dice sequence must not be empty.");
         }
 
         for (Integer roll: fixedRolls) {

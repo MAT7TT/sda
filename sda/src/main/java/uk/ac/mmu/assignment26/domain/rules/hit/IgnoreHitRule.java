@@ -15,6 +15,8 @@ public class IgnoreHitRule implements HitRule {
 
     @Override
     public HitResult apply(Player currentPlayer, int startTurnPathIndex, List<Player> players) {
+        validateApply(currentPlayer, players);
+
         int currentPosition = currentPlayer.getCurrentPosition();
 
         for (Player otherPlayer : players) {
@@ -28,5 +30,21 @@ public class IgnoreHitRule implements HitRule {
         }
 
         return HitResult.noHit(currentPosition);
+    }
+
+    private void validateApply(Player currentPlayer, List<Player> players) {
+        if (currentPlayer == null) {
+            throw new IllegalArgumentException("Current player must not be null.");
+        }
+
+        if (players == null || players.isEmpty()) {
+            throw new IllegalArgumentException("Players must not be empty.");
+        }
+
+        for (Player player : players) {
+            if (player == null) {
+                throw new IllegalArgumentException("Player must not contain null.");
+            }
+        }
     }
 }

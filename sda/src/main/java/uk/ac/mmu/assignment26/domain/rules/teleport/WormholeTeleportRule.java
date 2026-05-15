@@ -14,6 +14,8 @@ public class WormholeTeleportRule implements TeleportRule {
 
     @Override
     public TeleportResult apply(Board board, Player player) {
+        validateApply(board, player);
+
         int from = player.getCurrentPosition();
 
         if (!board.hasWormholeAt(from)) {
@@ -24,5 +26,15 @@ public class WormholeTeleportRule implements TeleportRule {
         player.setPathIndex(player.findPathIndexOfPosition(to));
 
         return TeleportResult.teleported(from, to);
+    }
+
+    private void validateApply(Board board, Player player) {
+        if (board == null) {
+            throw new IllegalArgumentException("Board must not be null.");
+        }
+
+        if (player == null) {
+            throw new IllegalArgumentException("Player must not be null.");
+        }
     }
 }

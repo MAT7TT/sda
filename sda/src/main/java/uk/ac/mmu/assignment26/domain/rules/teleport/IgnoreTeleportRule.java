@@ -14,6 +14,10 @@ public class IgnoreTeleportRule implements TeleportRule {
 
     @Override
     public TeleportResult apply(Board board, Player player) {
+        if (player == null) {
+            throw new IllegalArgumentException("Player must not be null.");
+        }
+
         return TeleportResult.notTeleported(player.getCurrentPosition());
     }
 }

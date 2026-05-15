@@ -15,6 +15,8 @@ public class ForfeitOnHitRule implements HitRule {
 
     @Override
     public HitResult apply(Player currentPlayer, int startTurnPathIndex, List<Player> players) {
+        validateApply(currentPlayer, startTurnPathIndex, players);
+
         int from = currentPlayer.getCurrentPosition();
 
         for (Player otherPlayer : players) {
@@ -35,5 +37,25 @@ public class ForfeitOnHitRule implements HitRule {
         }
 
         return HitResult.noHit(from);
+    }
+
+    private void validateApply(Player currentPlayer, int startTurnPathIndex, List<Player> players) {
+        if (currentPlayer == null) {
+            throw new IllegalArgumentException("Current player must not be null.");
+        }
+
+        if (players == null || players.isEmpty()) {
+            throw new IllegalArgumentException("Players must not be empty.");
+        }
+
+        if (startTurnPathIndex < 0 || startTurnPathIndex >= currentPlayer.getPathLength()) {
+            throw new IllegalArgumentException("Start turn path index is outside the player's path.");
+        }
+
+        for (Player player : players) {
+            if (player == null) {
+                throw new IllegalArgumentException("Player must not contain null.");
+            }
+        }
     }
 }

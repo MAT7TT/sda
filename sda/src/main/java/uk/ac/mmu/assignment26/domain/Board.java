@@ -30,6 +30,10 @@ public class Board {
     }
 
     private void validateWormhole(int firstPosition, int secondPosition, List<Integer> blockedPositions) {
+        if (blockedPositions == null) {
+            throw new IllegalArgumentException("Blocked positions must not be null.");
+        }
+
         if (firstPosition == secondPosition) {
             throw new IllegalArgumentException("Wormhole endpoints must be different.");
         }
