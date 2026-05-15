@@ -12,7 +12,7 @@ public interface DiceShakerFactory {
 
     default DiceShaker create(List<Integer> fixedRolls) {
         throw new UnsupportedOperationException(
-                getType() + "dice does not support fixed rolls."
+                getType() + " dice does not support fixed rolls."
         );
     }
 }

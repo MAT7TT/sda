@@ -48,7 +48,9 @@ public class ConfiguredGameFactory implements GameFactory {
     @Override
     public Game createGame(GameConfiguration configuration, List<Integer> fixedDiceRolls) {
         DiceShaker diceShaker =
-                diceShakerFactoryRegistry.createFixedDiceShaker(fixedDiceRolls);
+                diceShakerFactoryRegistry.createFixedDiceShaker(
+                        configuration.diceType(),
+                        fixedDiceRolls);
 
         return buildGame(configuration, diceShaker);
     }

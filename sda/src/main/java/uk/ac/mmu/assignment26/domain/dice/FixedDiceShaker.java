@@ -6,15 +6,15 @@ import java.util.List;
 public class FixedDiceShaker implements DiceShaker {
     private final List<Integer> rolls;
     private int currentIndex;
-    private static int MAX_ROLL = 12;
-    private static int MIN_ROLL = 1;
+    private static final int MAX_ROLL = 12;
+    private static final int MIN_ROLL = 1;
 
     public FixedDiceShaker(List<Integer> rolls) {
         if (rolls == null || rolls.isEmpty()) {
             throw new IllegalArgumentException("Fixed dice sequence must not be empty.");
         }
 
-        for (int roll : rolls) {
+        for (Integer roll : rolls) {
             validateRoll(roll);
         }
 
