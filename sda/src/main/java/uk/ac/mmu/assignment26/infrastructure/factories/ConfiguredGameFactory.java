@@ -71,25 +71,15 @@ public class ConfiguredGameFactory implements GameFactory {
     }
 
     private Board createBoard(GameConfiguration configuration) {
-        if (configuration.numberOfPlayers() == 4) {
-            return boardFactory.createLargeBoard();
-        }
-
-        return boardFactory.createSmallBoard();
+        return boardFactory.createBoard(configuration.rows(), configuration.columns());
     }
 
     private List<Player> createPlayers(GameConfiguration configuration, Board board) {
-        List<Player> players = new ArrayList<>();
-
-        players.add(playerFactory.createRed(board));
-        players.add(playerFactory.createBlue(board));
-
-        if (configuration.numberOfPlayers() == 4) {
-            players.add(playerFactory.createYellow(board));
-            players.add(playerFactory.createGreen(board));
+        if (configuration.numberOfPlayers() == 2) {
+            return playerFactory.createTwoPlayerGamePlayers(board);
         }
 
-        return players;
+        return playerFactory.createFourPlayerGamePlayers(board);
     }
 
     private void addWormholes(Board board, GameConfiguration configuration, List<Player> players) {
