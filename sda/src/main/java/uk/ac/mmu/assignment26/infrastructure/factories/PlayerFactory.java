@@ -5,43 +5,83 @@ import uk.ac.mmu.assignment26.domain.Board;
 import uk.ac.mmu.assignment26.domain.Player;
 import uk.ac.mmu.assignment26.domain.path.*;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Component
 public class PlayerFactory {
 
     public List<Player> createTwoPlayerGamePlayers(Board board) {
-        return List.of(
+        validateBoard(board);
+
+        return validatePlayers(List.of(
                 createRed(board),
-                createBlue(board)
+                createBlue(board))
         );
     }
 
     public List<Player> createFourPlayerGamePlayers(Board board) {
-        return List.of(
+        validateBoard(board);
+
+        return validatePlayers(List.of(
                 createRed(board),
                 createBlue(board),
                 createYellow(board),
-                createGreen(board)
+                createGreen(board))
         );
     }
 
-    public Player createRed(Board board) {
+    private void validateBoard(Board board) {
+        if (board == null) {
+            throw new IllegalArgumentException("Board must not be null.");
+        }
+    }
+
+    private List<Player> validatePlayers(List<Player> players) {
+        Set<String> names = new HashSet<>();
+        Set<Integer> homes = new HashSet<>();
+        Set<Integer> ends = new HashSet<>();
+
+        for (Player player : players) {
+            if (!names.add(player.getName())) {
+                throw new IllegalArgumentException("Player names must be unique");
+            }
+
+            if (!homes.add(player.getHomePosition())) {
+                throw new IllegalArgumentException("Player home positions must be unique");
+            }
+
+            if (!ends.add(player.getEndPosition())) {
+                throw new IllegalArgumentException("Player end positions must be unique.");
+            }
+
+            if (player.getHomePosition() == player.getEndPosition()) {
+                throw new IllegalArgumentException(
+                        "Player home and end positions must be different."
+                );
+            }
+        }
+
+        return players;
+    }
+
+    private Player createRed(Board board) {
         PathStrategy strategy = new LeftStartSnakePathStrategy();
         return new Player("Red", board, strategy);
     }
 
-    public Player createBlue(Board board) {
+    private Player createBlue(Board board) {
         PathStrategy strategy = new TopRightStartSnakePathStrategy();
         return new Player("Blue", board, strategy);
     }
 
-    public Player createYellow(Board board) {
+    private Player createYellow(Board board) {
         PathStrategy strategy = new TopLeftStartSnakePathStrategy();
         return new Player("Yellow", board, strategy);
     }
 
-    public Player createGreen(Board board) {
+    private Player createGreen(Board board) {
         PathStrategy strategy = new RightStartSnakePathStrategy();
         return new Player("Green", board, strategy);
     }

@@ -2,7 +2,6 @@ package uk.ac.mmu.assignment26.domain.path;
 
 import uk.ac.mmu.assignment26.domain.Board;
 
-import java.nio.file.Path;
 import java.util.List;
 
 public class TopLeftStartSnakePathStrategy implements PathStrategy {
@@ -12,7 +11,8 @@ public class TopLeftStartSnakePathStrategy implements PathStrategy {
 
         if (board.getRows() % 2 == 1) {
             baseStrategy = new RightStartSnakePathStrategy();
-        }   else {
+        } else
+        {
             baseStrategy = new LeftStartSnakePathStrategy();
         }
 
