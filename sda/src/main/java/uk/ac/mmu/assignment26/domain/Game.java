@@ -1,9 +1,7 @@
 package uk.ac.mmu.assignment26.domain;
 
 import uk.ac.mmu.assignment26.domain.dice.DiceShaker;
-import uk.ac.mmu.assignment26.domain.events.GameStartedEvent;
-import uk.ac.mmu.assignment26.domain.events.GameWonEvent;
-import uk.ac.mmu.assignment26.domain.events.TurnCompletedEvent;
+import uk.ac.mmu.assignment26.domain.events.*;
 import uk.ac.mmu.assignment26.domain.rules.hit.HitRule;
 import uk.ac.mmu.assignment26.domain.rules.movement.MovementRule;
 import uk.ac.mmu.assignment26.domain.rules.teleport.TeleportRule;
@@ -13,7 +11,6 @@ import uk.ac.mmu.assignment26.domain.rules.result.TeleportResult;
 import uk.ac.mmu.assignment26.domain.rules.result.TurnResult;
 import uk.ac.mmu.assignment26.domain.state.GameState;
 import uk.ac.mmu.assignment26.domain.state.ReadyState;
-import uk.ac.mmu.assignment26.domain.events.GameEventPublisher;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,7 +88,7 @@ public class Game {
     }
 
     public GameResult play() {
-        publishEvent(new GameStartedEvent(board.getRows(), board.getColumns(), List.copyOf(players)));
+        publishEvent(new GameStartedEvent(board.getRows(), board.getColumns(), createPlayerSnapshots()));
         start();
 
         while (winner == null) {
@@ -163,6 +160,19 @@ public class Game {
                 teleportResult,
                 hitResult
         );
+    }
+
+    private List<PlayerPathSnapshot> createPlayerSnapshots() {
+        List<PlayerPathSnapshot> pathSnapshotList = new ArrayList<>();
+
+        for (Player player : players) {
+            pathSnapshotList.add(new PlayerPathSnapshot(player.getName(),
+                    player.getPathPositions(),
+                    player.getHomePosition(),
+                    player.getEndPosition()));
+        }
+
+        return pathSnapshotList;
     }
 
     private void moveToNextPlayer() {

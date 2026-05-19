@@ -3,11 +3,7 @@ package uk.ac.mmu.assignment26.infrastructure.output;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import uk.ac.mmu.assignment26.domain.Player;
-import uk.ac.mmu.assignment26.domain.events.GameOverAttemptedEvent;
-import uk.ac.mmu.assignment26.domain.events.GameStartedEvent;
-import uk.ac.mmu.assignment26.domain.events.GameStateChangedEvent;
-import uk.ac.mmu.assignment26.domain.events.GameWonEvent;
-import uk.ac.mmu.assignment26.domain.events.TurnCompletedEvent;
+import uk.ac.mmu.assignment26.domain.events.*;
 import uk.ac.mmu.assignment26.domain.rules.result.HitResult;
 import uk.ac.mmu.assignment26.domain.rules.result.MoveResult;
 import uk.ac.mmu.assignment26.domain.rules.result.TeleportResult;
@@ -26,8 +22,8 @@ public class ConsoleGameEventObserver {
         outputWriter.writeLine("Game");
         outputWriter.writeLine("Board: rows=" + event.rows() + " columns=" + event.columns());
 
-        for (Player player : event.players()) {
-            outputWriter.writeLine(player.getName() + " " + player.getPathDescription());
+        for (PlayerPathSnapshot player : event.players()) {
+            outputWriter.writeLine(player.playerName() + " " + formatPath(player));
         }
     }
 
@@ -152,6 +148,24 @@ public class ConsoleGameEventObserver {
         }
 
         return String.valueOf(position);
+    }
+
+    private String formatPath(PlayerPathSnapshot player) {
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < player.pathPositions().size(); i++) {
+            int position = player.pathPositions().get(i);
+
+            if (position == player.homePosition()) {
+                sb.append("Home (Position ").append(position).append(")");
+            } else if (position == player.endPosition()) {
+                sb.append(", End (Position ").append(position).append(")");
+            } else {
+                sb.append(", ").append(position);
+            }
+        }
+
+        return sb.toString();
     }
 
     @EventListener

@@ -2,6 +2,7 @@ package uk.ac.mmu.assignment26.domain;
 
 import uk.ac.mmu.assignment26.domain.path.PathStrategy;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -123,5 +124,9 @@ public class Player {
         }
 
         return sb.toString();
+    }
+
+    public List<Integer> getPathPositions() {
+        return List.copyOf(path);
     }
 }

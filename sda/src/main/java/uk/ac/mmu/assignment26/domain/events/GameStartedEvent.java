@@ -7,5 +7,9 @@ import java.util.List;
 public record GameStartedEvent(
         int rows,
         int columns,
-        List<Player> players
-) {}
+        List<PlayerPathSnapshot> players
+) {
+    public GameStartedEvent {
+        players = List.copyOf(players);
+    }
+}
