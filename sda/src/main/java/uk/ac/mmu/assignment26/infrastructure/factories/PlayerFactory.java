@@ -3,7 +3,11 @@ package uk.ac.mmu.assignment26.infrastructure.factories;
 import org.springframework.stereotype.Component;
 import uk.ac.mmu.assignment26.domain.Board;
 import uk.ac.mmu.assignment26.domain.Player;
-import uk.ac.mmu.assignment26.domain.path.*;
+import uk.ac.mmu.assignment26.domain.path.LeftStartSnakePathStrategy;
+import uk.ac.mmu.assignment26.domain.path.PathStrategy;
+import uk.ac.mmu.assignment26.domain.path.RightStartSnakePathStrategy;
+import uk.ac.mmu.assignment26.domain.path.TopLeftStartSnakePathStrategy;
+import uk.ac.mmu.assignment26.domain.path.TopRightStartSnakePathStrategy;
 
 import java.util.HashSet;
 import java.util.List;
@@ -45,11 +49,11 @@ public class PlayerFactory {
 
         for (Player player : players) {
             if (!names.add(player.getName())) {
-                throw new IllegalArgumentException("Player names must be unique");
+                throw new IllegalArgumentException("Player names must be unique.");
             }
 
             if (!homes.add(player.getHomePosition())) {
-                throw new IllegalArgumentException("Player home positions must be unique");
+                throw new IllegalArgumentException("Player home positions must be unique.");
             }
 
             if (!ends.add(player.getEndPosition())) {

@@ -3,9 +3,12 @@ package uk.ac.mmu.assignment26.usecase;
 import uk.ac.mmu.assignment26.domain.Game;
 import uk.ac.mmu.assignment26.domain.GameResult;
 import uk.ac.mmu.assignment26.usecase.ports.GameFactory;
+import uk.ac.mmu.assignment26.usecase.ports.ReplayGame;
 import uk.ac.mmu.assignment26.usecase.ports.SavedGameRepository;
 
-public class ReplayGameUseCase {
+import java.util.Optional;
+
+public class ReplayGameUseCase implements ReplayGame {
     private final GameFactory gameFactory;
     private final SavedGameRepository savedGameRepository;
 
@@ -17,8 +20,13 @@ public class ReplayGameUseCase {
         this.savedGameRepository = savedGameRepository;
     }
 
-    public GameResult replay(int gameId) {
-        SavedGame savedGame = savedGameRepository.findById(gameId)
+    @Override
+    public Optional<SavedGame> findSavedGame(int gameId) {
+        return savedGameRepository.findById(gameId);
+    }
+
+    public void replay(int gameId) {
+        SavedGame savedGame = findSavedGame(gameId)
                 .orElseThrow(() -> new IllegalArgumentException(
                         "No saved game found for id " + gameId
                 ));
@@ -29,9 +37,11 @@ public class ReplayGameUseCase {
         );
 
         GameResult result = game.play();
-        attemptExtraTurnsAfterGameOver(game, savedGame.diceRolls().size() - result.diceRolls().size());
-
-        return result;
+        attemptExtraTurnsAfterGameOver(
+                game,
+                savedGame.diceRolls().size() -
+                        result.diceRolls().size()
+        );
     }
 
     private void attemptExtraTurnsAfterGameOver(Game game, int extraTurnAttempts) {

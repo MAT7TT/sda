@@ -11,8 +11,7 @@ public class TopLeftStartSnakePathStrategy implements PathStrategy {
 
         if (board.getRows() % 2 == 1) {
             baseStrategy = new RightStartSnakePathStrategy();
-        } else
-        {
+        } else {
             baseStrategy = new LeftStartSnakePathStrategy();
         }
 
