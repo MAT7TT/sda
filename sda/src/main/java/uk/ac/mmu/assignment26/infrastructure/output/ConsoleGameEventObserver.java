@@ -2,8 +2,12 @@ package uk.ac.mmu.assignment26.infrastructure.output;
 
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
-import uk.ac.mmu.assignment26.domain.Player;
-import uk.ac.mmu.assignment26.domain.events.*;
+import uk.ac.mmu.assignment26.domain.events.GameStateChangedEvent;
+import uk.ac.mmu.assignment26.domain.events.GameStartedEvent;
+import uk.ac.mmu.assignment26.domain.events.PlayerPathSnapshot;
+import uk.ac.mmu.assignment26.domain.events.TurnCompletedEvent;
+import uk.ac.mmu.assignment26.domain.events.GameOverAttemptedEvent;
+import uk.ac.mmu.assignment26.domain.events.GameWonEvent;
 import uk.ac.mmu.assignment26.domain.rules.result.HitResult;
 import uk.ac.mmu.assignment26.domain.rules.result.MoveResult;
 import uk.ac.mmu.assignment26.domain.rules.result.TeleportResult;

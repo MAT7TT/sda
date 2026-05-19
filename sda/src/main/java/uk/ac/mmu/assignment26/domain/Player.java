@@ -2,7 +2,6 @@ package uk.ac.mmu.assignment26.domain;
 
 import uk.ac.mmu.assignment26.domain.path.PathStrategy;
 
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -106,24 +105,6 @@ public class Player {
 
     public int getTurnCount() {
         return turnCount;
-    }
-
-    public String getPathDescription() {
-        StringBuilder sb = new StringBuilder();
-
-        for (int i = 0; i < path.size(); i++) {
-            if (i == 0) {
-                sb.append("Home (Position ").append(path.get(i)).append(")");
-            }
-            else if (i == path.size() - 1) {
-                sb.append(", End (Position ").append(path.get(i)).append(")");
-            }
-            else {
-                sb.append(", ").append(path.get(i));
-            }
-        }
-
-        return sb.toString();
     }
 
     public List<Integer> getPathPositions() {

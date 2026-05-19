@@ -1,7 +1,11 @@
 package uk.ac.mmu.assignment26.domain;
 
 import uk.ac.mmu.assignment26.domain.dice.DiceShaker;
-import uk.ac.mmu.assignment26.domain.events.*;
+import uk.ac.mmu.assignment26.domain.events.GameEventPublisher;
+import uk.ac.mmu.assignment26.domain.events.GameStartedEvent;
+import uk.ac.mmu.assignment26.domain.events.PlayerPathSnapshot;
+import uk.ac.mmu.assignment26.domain.events.TurnCompletedEvent;
+import uk.ac.mmu.assignment26.domain.events.GameWonEvent;
 import uk.ac.mmu.assignment26.domain.rules.hit.HitRule;
 import uk.ac.mmu.assignment26.domain.rules.movement.MovementRule;
 import uk.ac.mmu.assignment26.domain.rules.teleport.TeleportRule;

@@ -10,14 +10,16 @@ import java.util.List;
 @Component
 public class ConsoleScenarioPrinter {
     private final GameOutputWriter outputWriter;
+    private final GameConfigurationFormatter configurationFormatter;
 
-    public ConsoleScenarioPrinter(GameOutputWriter outputWriter) {
+    public ConsoleScenarioPrinter(GameOutputWriter outputWriter, GameConfigurationFormatter configurationFormatter) {
         this.outputWriter = outputWriter;
+        this.configurationFormatter = configurationFormatter;
     }
 
     public void printScenarioStart(GameScenario scenario) {
         outputWriter.writeLine(scenario.title());
-        outputWriter.writeLine(scenario.configuration().getRuleDescription());
+        outputWriter.writeLine(configurationFormatter.formatRules(scenario.configuration()));
 
         if (scenario.usesFixedDice()) {
             outputWriter.writeLine("Fixed sequence of dice rolls "
@@ -35,7 +37,7 @@ public class ConsoleScenarioPrinter {
 
     public void printReplayStart(int gameId, SavedGame savedGame) {
         outputWriter.writeLine("Replay Game Id: " + gameId);
-        outputWriter.writeLine(savedGame.configuration().getRuleDescription());
+        outputWriter.writeLine(configurationFormatter.formatRules(savedGame.configuration()));
         outputWriter.writeLine("Dice: Replay sequence of dice rolls "
                 + formatDiceRolls(savedGame.diceRolls()));
     }
@@ -50,12 +52,7 @@ public class ConsoleScenarioPrinter {
     }
 
     private void printRandomDiceSummary(DiceType diceType) {
-        if (diceType == DiceType.SINGLE) {
-            outputWriter.writeLine("Single random 6 sided die");
-            return;
-        }
-
-        outputWriter.writeLine("Two random 6 sided dice");
+        outputWriter.writeLine(configurationFormatter.formatRandomDice(diceType));
     }
 
     private String formatDiceRolls(List<Integer> diceRolls) {

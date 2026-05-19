@@ -1,7 +1,6 @@
 package uk.ac.mmu.assignment26.domain.config;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public record GameConfiguration(
         int rows,
@@ -43,36 +42,5 @@ public record GameConfiguration(
         } else {
             wormholes = List.copyOf(wormholes);
         }
-    }
-
-    public String getBoardDescription() {
-        if (rows == 5 && columns == 5) {
-            return "Small";
-        }
-
-        if (rows == 6 && columns == 6) {
-            return "Large";
-        }
-
-        return rows + "x" + columns;
-    }
-
-    public String getWormholeDescription() {
-        if (wormholes.isEmpty()) {
-            return "None";
-        }
-
-        return wormholes.stream()
-                .map(wormhole -> wormhole.firstPosition() + " and " + wormhole.secondPosition())
-                .collect(Collectors.joining(", "));
-    }
-
-    public String getRuleDescription() {
-        return "Board: " + getBoardDescription()
-                + ", Players: " + numberOfPlayers
-                + ", Exact End: " + endRuleType.getDescription()
-                + ", Hit: " + hitRuleType.getDescription()
-                + ", Teleport: " + teleportRuleType.getDescription()
-                + ", Wormholes: " + getWormholeDescription();
     }
 }
