@@ -6,31 +6,29 @@ import org.springframework.stereotype.Component;
 import uk.ac.mmu.assignment26.infrastructure.output.ConsoleScenarioPrinter;
 import uk.ac.mmu.assignment26.infrastructure.scenarios.GameScenario;
 import uk.ac.mmu.assignment26.infrastructure.scenarios.GameScenarioProvider;
-import uk.ac.mmu.assignment26.usecase.PlayGameUseCase;
-import uk.ac.mmu.assignment26.usecase.ReplayGameUseCase;
+import uk.ac.mmu.assignment26.usecase.PlayGameResult;
 import uk.ac.mmu.assignment26.usecase.SavedGame;
+import uk.ac.mmu.assignment26.usecase.ports.PlayGame;
+import uk.ac.mmu.assignment26.usecase.ports.ReplayGame;
 import uk.ac.mmu.assignment26.usecase.ports.SavedGameRepository;
 
 import java.util.Optional;
 
 @Component
 public class ConsoleGameRunner implements CommandLineRunner, Ordered {
-    private final PlayGameUseCase playGameUseCase;
-    private final ReplayGameUseCase replayGameUseCase;
-    private final SavedGameRepository savedGameRepository;
+    private final PlayGame playGame;
+    private final ReplayGame replayGame;
     private final GameScenarioProvider scenarioProvider;
     private final ConsoleScenarioPrinter scenarioPrinter;
 
     public ConsoleGameRunner(
-            PlayGameUseCase playGameUseCase,
-            ReplayGameUseCase replayGameUseCase,
-            SavedGameRepository savedGameRepository,
+            PlayGame playGame,
+            ReplayGame replayGame,
             GameScenarioProvider scenarioProvider,
             ConsoleScenarioPrinter scenarioPrinter
     ) {
-        this.playGameUseCase = playGameUseCase;
-        this.replayGameUseCase = replayGameUseCase;
-        this.savedGameRepository = savedGameRepository;
+        this.playGame = playGame;
+        this.replayGame = replayGame;
         this.scenarioProvider = scenarioProvider;
         this.scenarioPrinter = scenarioPrinter;
     }
@@ -47,32 +45,22 @@ public class ConsoleGameRunner implements CommandLineRunner, Ordered {
     private void runScenario(GameScenario scenario) {
         scenarioPrinter.printScenarioStart(scenario);
 
-        int gameId;
+        PlayGameResult result;
 
         if (scenario.usesFixedDice()) {
-            gameId = playGameUseCase.play(
+            result = playGame.play(
                     scenario.configuration(),
                     scenario.fixedDiceRolls()
             );
         } else {
-            gameId = playGameUseCase.play(scenario.configuration());
+            result = playGame.play(scenario.configuration());
         }
 
-        printSavedGame(gameId);
-    }
-
-    private void printSavedGame(int gameId) {
-        Optional<SavedGame> savedGame = savedGameRepository.findById(gameId);
-
-        if (savedGame.isEmpty()) {
-            return;
-        }
-
-        scenarioPrinter.printSavedGame(gameId, savedGame.get());
+        scenarioPrinter.printSavedGame(result.gameId(), result.savedGame());
     }
 
     private void replaySavedGame(int gameId) {
-        Optional<SavedGame> savedGame = savedGameRepository.findById(gameId);
+        Optional<SavedGame> savedGame = replayGame.findSavedGame(gameId);
 
         if (savedGame.isEmpty()) {
             scenarioPrinter.printNoSavedGameFound(gameId);
@@ -80,7 +68,7 @@ public class ConsoleGameRunner implements CommandLineRunner, Ordered {
         }
 
         scenarioPrinter.printReplayStart(gameId, savedGame.get());
-        replayGameUseCase.replay(gameId);
+        replayGame.replay(gameId);
         scenarioPrinter.printBlankLine();
     }
 
