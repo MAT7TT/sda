@@ -39,8 +39,7 @@ public class ReplayGameUseCase implements ReplayGame {
         GameResult result = game.play();
         attemptExtraTurnsAfterGameOver(
                 game,
-                savedGame.diceRolls().size() -
-                        result.diceRolls().size()
+                savedGame.diceRolls().size() - result.diceRolls().size()
         );
     }
 

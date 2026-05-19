@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 import uk.ac.mmu.assignment26.domain.config.DiceType;
 import uk.ac.mmu.assignment26.domain.dice.DiceShaker;
 import uk.ac.mmu.assignment26.infrastructure.dice.DoubleDiceShakerFactory;
-import uk.ac.mmu.assignment26.infrastructure.dice.FixedDiceShakerFactory;
 import uk.ac.mmu.assignment26.infrastructure.dice.SingleDiceShakerFactory;
 
 import java.util.List;
@@ -49,18 +48,25 @@ class DiceShakerFactoryRegistryTest {
     }
 
     @Test
-    void rejectsFixedDiceTypeAsGameDiceVariation() {
+    void rejectsNullDiceTypeWhenCreatingFixedDice() {
         assertThrows(
                 IllegalArgumentException.class,
-                () -> createRegistry().createFixedDiceShaker(DiceType.FIXED, List.of(6))
+                () -> createRegistry().createFixedDiceShaker(null, List.of(6))
+        );
+    }
+
+    @Test
+    void rejectsNullDiceTypeWhenCreatingRandomDice() {
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> createRegistry().createDiceShaker(null)
         );
     }
 
     private DiceShakerFactoryRegistry createRegistry() {
         return new DiceShakerFactoryRegistry(List.of(
                 new SingleDiceShakerFactory(),
-                new DoubleDiceShakerFactory(),
-                new FixedDiceShakerFactory()
+                new DoubleDiceShakerFactory()
         ));
     }
 }

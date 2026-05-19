@@ -1,47 +1,42 @@
 package uk.ac.mmu.assignment26.domain.dice;
 
+import uk.ac.mmu.assignment26.domain.config.DiceType;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class FixedDiceShaker implements DiceShaker {
     private final List<Integer> rolls;
     private int currentIndex;
-    private static final int MAX_ROLL = 12;
-    private static final int MIN_ROLL = 1;
 
-    public FixedDiceShaker(List<Integer> rolls) {
+    public FixedDiceShaker(List<Integer> rolls, DiceType diceType) {
+        if (diceType == null) {
+            throw new IllegalArgumentException("Dice type must not be null.");
+        }
+
         if (rolls == null || rolls.isEmpty()) {
             throw new IllegalArgumentException("Fixed dice sequence must not be empty.");
         }
 
         for (Integer roll : rolls) {
-            validateRoll(roll);
+            validateRoll(roll, diceType);
         }
 
         this.rolls = new ArrayList<>(rolls);
     }
 
-    public FixedDiceShaker(int... rolls) {
-        if (rolls == null || rolls.length == 0) {
-            throw new IllegalArgumentException("Fixed dice sequence must not be empty.");
-        }
-
-        this.rolls = new ArrayList<>();
-
-        for (int roll : rolls) {
-            validateRoll(roll);
-            this.rolls.add(roll);
-        }
-    }
-
-    private void validateRoll(Integer roll) {
+    private void validateRoll(Integer roll, DiceType diceType) {
         if (roll == null) {
             throw new IllegalArgumentException(("Fixed dice roll must not be null"));
         }
 
-        if (roll < MIN_ROLL || roll > MAX_ROLL) {
+        if (!diceType.acceptsRoll(roll)) {
             throw new IllegalArgumentException(
-                    "Fixed dice rolls must be between " + MIN_ROLL + " and " + MAX_ROLL);
+                    "Fixed dice rolls must be between "
+                            + diceType.getMinimumRoll()
+                            + " and "
+                            + diceType.getMaximumRoll()
+            );
         }
     }
 
@@ -52,13 +47,5 @@ public class FixedDiceShaker implements DiceShaker {
         }
 
         return rolls.get(currentIndex++);
-    }
-
-    public List<Integer> getRolls() {
-        return new ArrayList<>(rolls);
-    }
-
-    public String describeSequence() {
-        return rolls.toString();
     }
 }

@@ -8,6 +8,10 @@ public record GameStartedEvent(
         List<PlayerPathSnapshot> players
 ) {
     public GameStartedEvent {
+        if (players == null || players.isEmpty()) {
+            throw new IllegalArgumentException("Players must not be empty.");
+        }
+
         players = List.copyOf(players);
     }
 }
