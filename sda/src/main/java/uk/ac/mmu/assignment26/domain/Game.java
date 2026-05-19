@@ -50,6 +50,12 @@ public class Game {
             throw new IllegalArgumentException("Players must not be empty.");
         }
 
+        for (Player player : players) {
+            if (player == null) {
+                throw new IllegalArgumentException("Players must not contain null.");
+            }
+        }
+
         if (diceShaker == null) {
             throw new IllegalArgumentException("Dice shaker must not be null.");
         }

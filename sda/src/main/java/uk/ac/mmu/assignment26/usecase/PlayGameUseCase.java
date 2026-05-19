@@ -31,13 +31,15 @@ public class PlayGameUseCase {
         Game game = gameFactory.createGame(configuration, fixedDiceRolls);
         GameResult result = game.play();
 
-        int unusedDiceRolls = fixedDiceRolls.size() - result.diceRolls().size();
-
-        for (int i = 0; i < unusedDiceRolls; i++) {
-            game.playTurn();
-        }
+        attemptExtraTurnsAfterGameOver(game,fixedDiceRolls.size() - result.diceRolls().size());
 
         return saveGame(configuration, fixedDiceRolls);
+    }
+
+    private void attemptExtraTurnsAfterGameOver(Game game, int extraTurnAttempts) {
+        for (int i = 0; i < extraTurnAttempts; i++) {
+            game.playTurn();
+        }
     }
 
     private int saveGame(GameConfiguration configuration, List<Integer> diceRolls) {

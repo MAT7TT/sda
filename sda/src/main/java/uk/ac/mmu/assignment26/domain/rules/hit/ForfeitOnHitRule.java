@@ -54,7 +54,7 @@ public class ForfeitOnHitRule implements HitRule {
 
         for (Player player : players) {
             if (player == null) {
-                throw new IllegalArgumentException("Player must not contain null.");
+                throw new IllegalArgumentException("Players must not contain null.");
             }
         }
     }

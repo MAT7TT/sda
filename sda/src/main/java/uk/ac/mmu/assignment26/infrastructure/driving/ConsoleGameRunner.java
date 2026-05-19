@@ -3,6 +3,7 @@ package uk.ac.mmu.assignment26.infrastructure.driving;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.Ordered;
 import org.springframework.stereotype.Component;
+import uk.ac.mmu.assignment26.domain.GameResult;
 import uk.ac.mmu.assignment26.infrastructure.output.ConsoleScenarioPrinter;
 import uk.ac.mmu.assignment26.infrastructure.scenarios.GameScenario;
 import uk.ac.mmu.assignment26.infrastructure.scenarios.GameScenarioProvider;

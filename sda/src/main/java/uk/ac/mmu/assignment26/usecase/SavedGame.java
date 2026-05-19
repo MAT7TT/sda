@@ -9,6 +9,20 @@ public record SavedGame(
         List<Integer> diceRolls
 ) {
     public SavedGame {
+        if (configuration == null) {
+            throw new IllegalArgumentException("Game configuration must not be null.");
+        }
+
+        if (diceRolls == null || diceRolls.isEmpty()) {
+            throw new IllegalArgumentException("Dice rolls must not be empty.");
+        }
+
+        for (Integer diceRoll : diceRolls) {
+            if (diceRoll == null) {
+                throw new IllegalArgumentException("Dice rolls must not contain null.");
+            }
+        }
+
         diceRolls = List.copyOf(diceRolls);
     }
 }

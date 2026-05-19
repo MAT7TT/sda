@@ -10,6 +10,10 @@ public abstract class PathDecorator implements PathStrategy {
     protected final PathStrategy wrappedStrategy;
 
     protected PathDecorator(PathStrategy wrappedStrategy) {
+        if (wrappedStrategy == null) {
+            throw new IllegalArgumentException("Wrapped path strategy must not be null.");
+        }
+
         this.wrappedStrategy = wrappedStrategy;
     }
 

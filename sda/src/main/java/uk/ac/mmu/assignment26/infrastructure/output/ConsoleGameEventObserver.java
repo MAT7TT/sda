@@ -33,7 +33,7 @@ public class ConsoleGameEventObserver {
 
     @EventListener
     public void onGameStateChanged(GameStateChangedEvent event) {
-        outputWriter.writeLine("Game State: " + event.from() + " → " + event.to());
+        outputWriter.writeLine("Game State: " + event.from() + " -> " + event.to());
     }
 
     @EventListener

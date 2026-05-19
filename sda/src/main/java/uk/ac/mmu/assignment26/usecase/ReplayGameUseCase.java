@@ -17,7 +17,7 @@ public class ReplayGameUseCase {
         this.savedGameRepository = savedGameRepository;
     }
 
-    public void replay(int gameId) {
+    public GameResult replay(int gameId) {
         SavedGame savedGame = savedGameRepository.findById(gameId)
                 .orElseThrow(() -> new IllegalArgumentException(
                         "No saved game found for id " + gameId
@@ -29,10 +29,13 @@ public class ReplayGameUseCase {
         );
 
         GameResult result = game.play();
+        attemptExtraTurnsAfterGameOver(game, savedGame.diceRolls().size() - result.diceRolls().size());
 
-        int unusedDiceRolls = savedGame.diceRolls().size() - result.diceRolls().size();
+        return result;
+    }
 
-        for (int i = 0; i < unusedDiceRolls; i++) {
+    private void attemptExtraTurnsAfterGameOver(Game game, int extraTurnAttempts) {
+        for (int i = 0; i < extraTurnAttempts; i++) {
             game.playTurn();
         }
     }
