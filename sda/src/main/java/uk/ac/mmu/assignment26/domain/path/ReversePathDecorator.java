@@ -1,8 +1,5 @@
 package uk.ac.mmu.assignment26.domain.path;
 
-
-
-
 import uk.ac.mmu.assignment26.domain.Board;
 
 import java.util.ArrayList;

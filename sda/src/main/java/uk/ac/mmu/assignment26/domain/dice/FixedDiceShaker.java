@@ -2,7 +2,6 @@ package uk.ac.mmu.assignment26.domain.dice;
 
 import uk.ac.mmu.assignment26.domain.config.DiceType;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class FixedDiceShaker implements DiceShaker {
@@ -22,12 +21,12 @@ public class FixedDiceShaker implements DiceShaker {
             validateRoll(roll, diceType);
         }
 
-        this.rolls = new ArrayList<>(rolls);
+        this.rolls = List.copyOf(rolls);
     }
 
     private void validateRoll(Integer roll, DiceType diceType) {
         if (roll == null) {
-            throw new IllegalArgumentException(("Fixed dice roll must not be null"));
+            throw new IllegalArgumentException(("Fixed dice roll must not be null."));
         }
 
         if (!diceType.acceptsRoll(roll)) {

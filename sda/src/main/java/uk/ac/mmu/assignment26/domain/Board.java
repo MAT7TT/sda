@@ -26,9 +26,9 @@ public class Board {
     }
 
     public void addWormhole(Wormhole wormhole, List<Integer> blockedPositions) {
-        validateWormhole(wormhole.firstPosition(), wormhole.secondPosition(), blockedPositions);
+        validateWormhole(wormhole, blockedPositions);
         wormholes.put(wormhole.firstPosition(), wormhole.secondPosition());
-        wormholes.put(wormhole.firstPosition(), wormhole.secondPosition());
+        wormholes.put(wormhole.secondPosition(), wormhole.firstPosition());
     }
 
     private void validateWormhole(Wormhole wormhole, List<Integer> blockedPositions) {

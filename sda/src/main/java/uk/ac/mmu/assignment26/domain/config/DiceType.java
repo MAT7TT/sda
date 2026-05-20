@@ -2,8 +2,7 @@ package uk.ac.mmu.assignment26.domain.config;
 
 public enum DiceType {
     SINGLE(1, 6),
-    DOUBLE(2, 12),
-    ;
+    DOUBLE(2, 12),;
 
     private final int minimumRoll;
     private final int maximumRoll;

@@ -2,6 +2,7 @@ package uk.ac.mmu.assignment26.domain;
 
 import org.junit.jupiter.api.Test;
 import uk.ac.mmu.assignment26.domain.config.DiceType;
+import uk.ac.mmu.assignment26.domain.config.Wormhole;
 import uk.ac.mmu.assignment26.domain.dice.FixedDiceShaker;
 import uk.ac.mmu.assignment26.domain.events.GameEventPublisher;
 import uk.ac.mmu.assignment26.domain.events.TurnCompletedEvent;
@@ -70,7 +71,7 @@ class GameFunctionalScenarioTest {
     @Test
     void wormholeTeleportMovesPlayerToExitPosition() {
         Board board = new Board(3, 3);
-        board.addWormhole(3, 8, List.of());
+        board.addWormhole(new Wormhole(3, 8), List.of());
 
         CapturingGameEventPublisher publisher = new CapturingGameEventPublisher();
 

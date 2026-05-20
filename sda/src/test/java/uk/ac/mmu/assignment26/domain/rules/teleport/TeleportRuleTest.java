@@ -3,6 +3,7 @@ package uk.ac.mmu.assignment26.domain.rules.teleport;
 import org.junit.jupiter.api.Test;
 import uk.ac.mmu.assignment26.domain.Board;
 import uk.ac.mmu.assignment26.domain.Player;
+import uk.ac.mmu.assignment26.domain.config.Wormhole;
 import uk.ac.mmu.assignment26.domain.path.LeftStartSnakePathStrategy;
 
 import java.util.List;
@@ -39,7 +40,7 @@ class TeleportRuleTest {
     @Test
     void wormholeTeleportRuleMovesPlayerToWormholeExit() {
         Board board = new Board(3, 3);
-        board.addWormhole(2, 8, List.of());
+        board.addWormhole(new Wormhole(2, 8), List.of());
 
         Player player = createPlayer(board);
         player.setPathIndex(player.findPathIndexOfPosition(2));
