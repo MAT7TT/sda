@@ -38,9 +38,15 @@ public record GameConfiguration(
         }
 
         if (wormholes == null) {
-            wormholes = List.of();
-        } else {
-            wormholes = List.copyOf(wormholes);
+            throw new IllegalArgumentException("Wormholes must not be null");
         }
+
+        for (Wormhole wormhole : wormholes) {
+            if (wormhole == null) {
+                throw new IllegalArgumentException("Wormholes must not be null.");
+            }
+        }
+
+        wormholes = List.copyOf(wormholes);
     }
 }

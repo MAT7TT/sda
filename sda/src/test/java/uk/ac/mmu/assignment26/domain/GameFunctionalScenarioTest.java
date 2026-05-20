@@ -1,6 +1,7 @@
 package uk.ac.mmu.assignment26.domain;
 
 import org.junit.jupiter.api.Test;
+import uk.ac.mmu.assignment26.domain.config.DiceType;
 import uk.ac.mmu.assignment26.domain.dice.FixedDiceShaker;
 import uk.ac.mmu.assignment26.domain.events.GameEventPublisher;
 import uk.ac.mmu.assignment26.domain.events.TurnCompletedEvent;
@@ -29,7 +30,7 @@ class GameFunctionalScenarioTest {
 
         Game game = createGame(
                 new Board(3, 3),
-                new FixedDiceShaker(List.of(8)),
+                new FixedDiceShaker(List.of(8), DiceType.DOUBLE),
                 new StandardEndMovementRule(),
                 new IgnoreTeleportRule(),
                 new IgnoreHitRule(),
@@ -50,7 +51,7 @@ class GameFunctionalScenarioTest {
 
         Game game = createGame(
                 new Board(3, 3),
-                new FixedDiceShaker(List.of(1, 8)),
+                new FixedDiceShaker(List.of(2, 8), DiceType.DOUBLE),
                 new StandardEndMovementRule(),
                 new IgnoreTeleportRule(),
                 new IgnoreHitRule(),
@@ -63,19 +64,19 @@ class GameFunctionalScenarioTest {
 
         assertEquals("Red", firstTurn.result().playerName());
         assertEquals(1, firstTurn.result().moveResult().from());
-        assertEquals(2, firstTurn.result().moveResult().to());
+        assertEquals(3, firstTurn.result().moveResult().to());
     }
 
     @Test
     void wormholeTeleportMovesPlayerToExitPosition() {
         Board board = new Board(3, 3);
-        board.addWormhole(2, 8, List.of());
+        board.addWormhole(3, 8, List.of());
 
         CapturingGameEventPublisher publisher = new CapturingGameEventPublisher();
 
         Game game = createGame(
                 board,
-                new FixedDiceShaker(List.of(1, 8)),
+                new FixedDiceShaker(List.of(2, 8), DiceType.DOUBLE),
                 new StandardEndMovementRule(),
                 new WormholeTeleportRule(),
                 new IgnoreHitRule(),
@@ -87,7 +88,7 @@ class GameFunctionalScenarioTest {
         TurnCompletedEvent firstTurn = publisher.eventsOfType(TurnCompletedEvent.class).getFirst();
 
         assertTrue(firstTurn.result().teleportResult().teleported());
-        assertEquals(2, firstTurn.result().teleportResult().from());
+        assertEquals(3, firstTurn.result().teleportResult().from());
         assertEquals(8, firstTurn.result().teleportResult().to());
     }
 
@@ -97,7 +98,7 @@ class GameFunctionalScenarioTest {
 
         Game game = createGame(
                 new Board(3, 3),
-                new FixedDiceShaker(List.of(2, 8)),
+                new FixedDiceShaker(List.of(2, 8), DiceType.DOUBLE),
                 new StandardEndMovementRule(),
                 new IgnoreTeleportRule(),
                 new ForfeitOnHitRule(),
@@ -156,4 +157,3 @@ class GameFunctionalScenarioTest {
         }
     }
 }
-
