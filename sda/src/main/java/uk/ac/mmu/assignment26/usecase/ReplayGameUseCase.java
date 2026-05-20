@@ -25,7 +25,7 @@ public class ReplayGameUseCase implements ReplayGame {
         return savedGameRepository.findById(gameId);
     }
 
-    public void replay(int gameId) {
+    public GameResult replay(int gameId) {
         SavedGame savedGame = findSavedGame(gameId)
                 .orElseThrow(() -> new IllegalArgumentException(
                         "No saved game found for id " + gameId
@@ -41,6 +41,8 @@ public class ReplayGameUseCase implements ReplayGame {
                 game,
                 savedGame.diceRolls().size() - result.diceRolls().size()
         );
+
+        return result;
     }
 
     private void attemptExtraTurnsAfterGameOver(Game game, int extraTurnAttempts) {

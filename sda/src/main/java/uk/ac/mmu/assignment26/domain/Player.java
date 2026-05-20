@@ -3,7 +3,9 @@ package uk.ac.mmu.assignment26.domain;
 import uk.ac.mmu.assignment26.domain.path.PathStrategy;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Player {
     private final String name;
@@ -46,9 +48,15 @@ public class Player {
             throw new IllegalArgumentException("Player path must include every board position.");
         }
 
+        Set<Integer> uniquePositions = new HashSet<>();
+
         for (Integer position : path) {
             if (position == null || !board.isValidPosition(position)) {
                 throw new IllegalArgumentException("Player path contains an invalid board position.");
+            }
+
+            if (!uniquePositions.add(position)) {
+                throw new IllegalArgumentException("Player must not contain duplicate positions");
             }
         }
     }

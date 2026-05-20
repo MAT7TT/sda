@@ -88,11 +88,7 @@ public class ConfiguredGameFactory implements GameFactory {
         List<Integer> blockedPositions = getBlockedWormholePositions(players);
 
         for (Wormhole wormhole : configuration.wormholes()) {
-            board.addWormhole(
-                    wormhole.firstPosition(),
-                    wormhole.secondPosition(),
-                    blockedPositions
-            );
+            board.addWormhole(wormhole, blockedPositions);
         }
     }
 

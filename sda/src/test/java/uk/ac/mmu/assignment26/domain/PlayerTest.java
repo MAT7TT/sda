@@ -86,6 +86,16 @@ class PlayerTest {
     }
 
     @Test
+    void rejectsPathContainingDuplicatePositoins() {
+        PathStrategy pathStrategy = board -> Arrays.asList(1, 2, 3, 4, 4, 6, 7, 8, 9);
+
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> new Player("Red", new Board(3, 3), pathStrategy)
+        );
+    }
+
+    @Test
     void rejectsPathContainingPositionOutsideBoard() {
         PathStrategy pathStrategy = board -> List.of(1, 2, 3, 4, 5, 6, 7, 8, 10);
 

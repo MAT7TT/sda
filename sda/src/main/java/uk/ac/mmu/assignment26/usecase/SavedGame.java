@@ -21,6 +21,12 @@ public record SavedGame(
             if (diceRoll == null) {
                 throw new IllegalArgumentException("Dice rolls must not contain null.");
             }
+
+            if (!configuration.diceType().acceptsRoll(diceRoll)) {
+                throw new IllegalArgumentException(
+                        "Dice rolls must match the configured dice type."
+                );
+            }
         }
 
         diceRolls = List.copyOf(diceRolls);

@@ -16,8 +16,26 @@ public class DiceShakerFactoryRegistry {
             new EnumMap<>(DiceType.class);
 
     public DiceShakerFactoryRegistry(List<DiceShakerFactory> diceFactories) {
+        if (diceFactories == null || diceFactories.isEmpty()) {
+            throw new IllegalArgumentException("Dice shaker factories must not be empty.");
+        }
+
         for (DiceShakerFactory factory : diceFactories) {
-            this.diceFactories.put(factory.getType(), factory);
+            if (factory == null) {
+                throw new IllegalArgumentException("Dice shaker factories must not contain null.");
+            }
+
+            DiceType type = factory.getType();
+
+            if (type == null) {
+                throw new IllegalArgumentException("Dice shaker factory type must not be null");
+            }
+
+            if (this.diceFactories.containsKey(type)) {
+                throw new IllegalArgumentException("Duplicate dice shaker factory for " + type + ".");
+            }
+
+            this.diceFactories.put(type, factory);
         }
     }
 
@@ -36,6 +54,10 @@ public class DiceShakerFactoryRegistry {
     }
 
     public DiceShaker createFixedDiceShaker(DiceType diceType, List<Integer> fixedRolls) {
+        if (diceType == null) {
+            throw new IllegalArgumentException("Dice type must not be null.");
+        }
+
         return new FixedDiceShaker(fixedRolls, diceType);
     }
 }

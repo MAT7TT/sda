@@ -1,5 +1,7 @@
 package uk.ac.mmu.assignment26.domain;
 
+import uk.ac.mmu.assignment26.domain.config.Wormhole;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,20 +25,23 @@ public class Board {
         fillBoard();
     }
 
-    public void addWormhole(int firstPosition, int secondPosition, List<Integer> blockedPositions) {
-        validateWormhole(firstPosition, secondPosition, blockedPositions);
-        wormholes.put(firstPosition, secondPosition);
-        wormholes.put(secondPosition, firstPosition);
+    public void addWormhole(Wormhole wormhole, List<Integer> blockedPositions) {
+        validateWormhole(wormhole.firstPosition(), wormhole.secondPosition(), blockedPositions);
+        wormholes.put(wormhole.firstPosition(), wormhole.secondPosition());
+        wormholes.put(wormhole.firstPosition(), wormhole.secondPosition());
     }
 
-    private void validateWormhole(int firstPosition, int secondPosition, List<Integer> blockedPositions) {
+    private void validateWormhole(Wormhole wormhole, List<Integer> blockedPositions) {
+        if (wormhole == null) {
+            throw new IllegalArgumentException("Wormhole must not be null.");
+        }
+
         if (blockedPositions == null) {
             throw new IllegalArgumentException("Blocked positions must not be null.");
         }
 
-        if (firstPosition == secondPosition) {
-            throw new IllegalArgumentException("Wormhole endpoints must be different.");
-        }
+        int firstPosition = wormhole.firstPosition();
+        int secondPosition = wormhole.secondPosition();
 
         if (!isValidPosition(firstPosition) || !isValidPosition(secondPosition)) {
             throw new IllegalArgumentException("Wormhole endpoint is outside the board.");
