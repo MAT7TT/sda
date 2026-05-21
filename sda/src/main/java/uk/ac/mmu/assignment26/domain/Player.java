@@ -56,7 +56,7 @@ public class Player {
             }
 
             if (!uniquePositions.add(position)) {
-                throw new IllegalArgumentException("Player must not contain duplicate positions");
+                throw new IllegalArgumentException("Player path must not contain duplicate positions");
             }
         }
     }

@@ -26,7 +26,7 @@ public class FixedDiceShaker implements DiceShaker {
 
     private void validateRoll(Integer roll, DiceType diceType) {
         if (roll == null) {
-            throw new IllegalArgumentException(("Fixed dice roll must not be null."));
+            throw new IllegalArgumentException("Fixed dice roll must not be null.");
         }
 
         if (!diceType.acceptsRoll(roll)) {

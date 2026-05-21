@@ -1,6 +1,5 @@
 package uk.ac.mmu.assignment26.infrastructure.persistence.memory;
 
-import org.springframework.stereotype.Component;
 import uk.ac.mmu.assignment26.usecase.SavedGame;
 import uk.ac.mmu.assignment26.usecase.ports.SavedGameRepository;
 
@@ -8,7 +7,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-@Component
 public class InMemorySavedGameRepository implements SavedGameRepository {
     private final Map<Integer, SavedGame> savedGames = new HashMap<>();
     private int nextId = 1;

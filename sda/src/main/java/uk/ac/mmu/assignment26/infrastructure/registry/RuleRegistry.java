@@ -104,7 +104,7 @@ public class RuleRegistry {
 
     public HitRule getHitRule(HitRuleType type) {
         if (type == null) {
-            throw new IllegalArgumentException("End rule type must not be null.");
+            throw new IllegalArgumentException("Hit rule type must not be null.");
         }
 
         HitRule rule = hitRules.get(type);
@@ -118,7 +118,7 @@ public class RuleRegistry {
 
     public TeleportRule getTeleportRule(TeleportRuleType type) {
         if (type == null) {
-            throw new IllegalArgumentException("End rule type must not be null.");
+            throw new IllegalArgumentException("Teleport rule type must not be null.");
         }
 
         TeleportRule rule = teleportRules.get(type);
