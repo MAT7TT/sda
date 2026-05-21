@@ -6,7 +6,7 @@ import uk.ac.mmu.assignment26.usecase.SavedGame;
 import java.util.Optional;
 
 public interface ReplayGame {
-    Optional<SavedGame> findSavedGame(int gameId);
+  Optional<SavedGame> findSavedGame(int gameId);
 
-    GameResult replay(int gameId);
+  GameResult replay(int gameId);
 }

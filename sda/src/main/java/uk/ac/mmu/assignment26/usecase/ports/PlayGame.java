@@ -6,7 +6,7 @@ import uk.ac.mmu.assignment26.usecase.PlayGameResult;
 import java.util.List;
 
 public interface PlayGame {
-    PlayGameResult play(GameConfiguration configuration);
+  PlayGameResult play(GameConfiguration configuration);
 
-    PlayGameResult play(GameConfiguration configuration, List<Integer> fixedDiceRolls);
+  PlayGameResult play(GameConfiguration configuration, List<Integer> fixedDiceRolls);
 }

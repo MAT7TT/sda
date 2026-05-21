@@ -7,14 +7,14 @@ import java.util.Collections;
 import java.util.List;
 
 public class ReversePathDecorator extends PathDecorator {
-    public ReversePathDecorator(PathStrategy wrappedStrategy) {
-        super(wrappedStrategy);
-    }
+  public ReversePathDecorator(PathStrategy wrappedStrategy) {
+    super(wrappedStrategy);
+  }
 
-    @Override
-    public List<Integer> buildPath(Board board) {
-        List<Integer> path = new ArrayList<>(wrappedStrategy.buildPath(board));
-        Collections.reverse(path);
-        return path;
-    }
+  @Override
+  public List<Integer> buildPath(Board board) {
+    List<Integer> path = new ArrayList<>(wrappedStrategy.buildPath(board));
+    Collections.reverse(path);
+    return path;
+  }
 }

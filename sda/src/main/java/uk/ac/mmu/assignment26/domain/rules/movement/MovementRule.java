@@ -5,7 +5,7 @@ import uk.ac.mmu.assignment26.domain.config.EndRuleType;
 import uk.ac.mmu.assignment26.domain.rules.result.MoveResult;
 
 public interface MovementRule {
-    EndRuleType getType();
+  EndRuleType getType();
 
-    MoveResult move(Player player, int roll);
+  MoveResult move(Player player, int roll);
 }

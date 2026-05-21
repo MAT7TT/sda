@@ -3,7 +3,6 @@ package uk.ac.mmu.assignment26.usecase;
 import org.junit.jupiter.api.Test;
 import uk.ac.mmu.assignment26.domain.Board;
 import uk.ac.mmu.assignment26.domain.Game;
-import uk.ac.mmu.assignment26.domain.GameResult;
 import uk.ac.mmu.assignment26.domain.Player;
 import uk.ac.mmu.assignment26.domain.config.DiceType;
 import uk.ac.mmu.assignment26.domain.config.EndRuleType;
@@ -25,13 +24,13 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class ReplayGameUseCaseTest {
+class PlayGameUseCaseTest {
 
     @Test
     void rejectsNullGameFactory() {
         assertThrows(
                 IllegalArgumentException.class,
-                () -> new ReplayGameUseCase(null, new TestSavedGameRepository(null))
+                () -> new PlayGameUseCase(null, new TestSavedGameRepository())
         );
     }
 
@@ -39,54 +38,64 @@ class ReplayGameUseCaseTest {
     void rejectsNullSavedGameRepository() {
         assertThrows(
                 IllegalArgumentException.class,
-                () -> new ReplayGameUseCase(new TestGameFactory(), null)
+                () -> new PlayGameUseCase(new TestGameFactory(), null)
         );
     }
 
     @Test
-    void rejectsInvalidGameId() {
-        ReplayGameUseCase replayGameUseCase = new ReplayGameUseCase(
+    void rejectsNullConfiguration() {
+        PlayGameUseCase playGameUseCase = new PlayGameUseCase(
                 new TestGameFactory(),
-                new TestSavedGameRepository(null)
+                new TestSavedGameRepository()
         );
 
         assertThrows(
                 IllegalArgumentException.class,
-                () -> replayGameUseCase.findSavedGame(0)
+                () -> playGameUseCase.play(null)
         );
     }
 
     @Test
-    void replaysSavedGameAndReturnsResult() {
-        SavedGame savedGame = new SavedGame(
-                createConfiguration(),
-                List.of(8)
-        );
-
-        ReplayGameUseCase replayGameUseCase = new ReplayGameUseCase(
+    void rejectsNullFixedDiceRolls() {
+        PlayGameUseCase playGameUseCase = new PlayGameUseCase(
                 new TestGameFactory(),
-                new TestSavedGameRepository(savedGame)
-        );
-
-        GameResult result = replayGameUseCase.replay(1);
-
-        assertEquals("Red", result.winnerName());
-        assertEquals(1, result.winnerTurns());
-        assertEquals(1, result.totalTurns());
-        assertEquals(List.of(8), result.diceRolls());
-    }
-
-    @Test
-    void rejectsReplayWhenSavedGameDoesNotExist() {
-        ReplayGameUseCase replayGameUseCase = new ReplayGameUseCase(
-                new TestGameFactory(),
-                new TestSavedGameRepository(null)
+                new TestSavedGameRepository()
         );
 
         assertThrows(
                 IllegalArgumentException.class,
-                () -> replayGameUseCase.replay(1)
+                () -> playGameUseCase.play(createConfiguration(), null)
         );
+    }
+
+    @Test
+    void rejectsEmptyFixedDiceRolls() {
+        PlayGameUseCase playGameUseCase = new PlayGameUseCase(
+                new TestGameFactory(),
+                new TestSavedGameRepository()
+        );
+
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> playGameUseCase.play(createConfiguration(), List.of())
+        );
+    }
+
+    @Test
+    void savesPlayedGameWithConfigurationAndDiceRolls() {
+        TestSavedGameRepository repository = new TestSavedGameRepository();
+
+        PlayGameUseCase playGameUseCase = new PlayGameUseCase(
+                new TestGameFactory(),
+                repository
+        );
+
+        PlayGameResult result = playGameUseCase.play(createConfiguration(), List.of(8));
+
+        assertEquals(1, result.gameId());
+        assertEquals(createConfiguration(), result.savedGame().configuration());
+        assertEquals(List.of(8), result.savedGame().diceRolls());
+        assertEquals(result.savedGame(), repository.findById(1).orElseThrow());
     }
 
     private GameConfiguration createConfiguration() {
@@ -105,7 +114,7 @@ class ReplayGameUseCaseTest {
     private static class TestGameFactory implements GameFactory {
         @Override
         public Game createGame(GameConfiguration configuration) {
-            throw new UnsupportedOperationException("Replay should use fixed dice rolls.");
+            return createGame(configuration, List.of(8));
         }
 
         @Override
@@ -129,15 +138,12 @@ class ReplayGameUseCaseTest {
     }
 
     private static class TestSavedGameRepository implements SavedGameRepository {
-        private final SavedGame savedGame;
-
-        private TestSavedGameRepository(SavedGame savedGame) {
-            this.savedGame = savedGame;
-        }
+        private SavedGame savedGame;
 
         @Override
         public int save(SavedGame savedGame) {
-            throw new UnsupportedOperationException("Replay should not save games.");
+            this.savedGame = savedGame;
+            return 1;
         }
 
         @Override

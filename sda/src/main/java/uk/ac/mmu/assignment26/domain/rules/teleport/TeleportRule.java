@@ -6,7 +6,7 @@ import uk.ac.mmu.assignment26.domain.config.TeleportRuleType;
 import uk.ac.mmu.assignment26.domain.rules.result.TeleportResult;
 
 public interface TeleportRule {
-    TeleportRuleType getType();
+  TeleportRuleType getType();
 
-    TeleportResult apply(Board board, Player player);
+  TeleportResult apply(Board board, Player player);
 }

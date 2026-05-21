@@ -17,89 +17,84 @@ import java.util.List;
 
 @Component
 public class ConfiguredGameFactory implements GameFactory {
-    private final BoardFactory boardFactory;
-    private final PlayerFactory playerFactory;
-    private final RuleRegistry ruleRegistry;
-    private final DiceShakerFactoryRegistry diceShakerFactoryRegistry;
-    private final GameEventPublisher eventPublisher;
+  private final BoardFactory boardFactory;
+  private final PlayerFactory playerFactory;
+  private final RuleRegistry ruleRegistry;
+  private final DiceShakerFactoryRegistry diceShakerFactoryRegistry;
+  private final GameEventPublisher eventPublisher;
 
-    public ConfiguredGameFactory(
-            BoardFactory boardFactory,
-            PlayerFactory playerFactory,
-            RuleRegistry ruleRegistry,
-            DiceShakerFactoryRegistry diceShakerFactoryRegistry,
-            GameEventPublisher eventPublisher
-    ) {
-        this.boardFactory = boardFactory;
-        this.playerFactory = playerFactory;
-        this.ruleRegistry = ruleRegistry;
-        this.diceShakerFactoryRegistry = diceShakerFactoryRegistry;
-        this.eventPublisher = eventPublisher;
+  public ConfiguredGameFactory(
+      BoardFactory boardFactory,
+      PlayerFactory playerFactory,
+      RuleRegistry ruleRegistry,
+      DiceShakerFactoryRegistry diceShakerFactoryRegistry,
+      GameEventPublisher eventPublisher) {
+    this.boardFactory = boardFactory;
+    this.playerFactory = playerFactory;
+    this.ruleRegistry = ruleRegistry;
+    this.diceShakerFactoryRegistry = diceShakerFactoryRegistry;
+    this.eventPublisher = eventPublisher;
+  }
+
+  @Override
+  public Game createGame(GameConfiguration configuration) {
+    DiceShaker diceShaker = diceShakerFactoryRegistry.createDiceShaker(configuration.diceType());
+
+    return buildGame(configuration, diceShaker);
+  }
+
+  @Override
+  public Game createGame(GameConfiguration configuration, List<Integer> fixedDiceRolls) {
+    DiceShaker diceShaker =
+        diceShakerFactoryRegistry.createFixedDiceShaker(configuration.diceType(), fixedDiceRolls);
+
+    return buildGame(configuration, diceShaker);
+  }
+
+  private Game buildGame(GameConfiguration configuration, DiceShaker diceShaker) {
+    Board board = createBoard(configuration);
+    List<Player> players = createPlayers(configuration, board);
+
+    addWormholes(board, configuration, players);
+
+    return new Game(
+        board,
+        players,
+        diceShaker,
+        ruleRegistry.getMovementRule(configuration.endRuleType()),
+        ruleRegistry.getTeleportRule(configuration.teleportRuleType()),
+        ruleRegistry.getHitRule(configuration.hitRuleType()),
+        eventPublisher);
+  }
+
+  private Board createBoard(GameConfiguration configuration) {
+    return boardFactory.createBoard(configuration.rows(), configuration.columns());
+  }
+
+  private List<Player> createPlayers(GameConfiguration configuration, Board board) {
+    if (configuration.numberOfPlayers() == 2) {
+      return playerFactory.createTwoPlayerGamePlayers(board);
     }
 
-    @Override
-    public Game createGame(GameConfiguration configuration) {
-        DiceShaker diceShaker =
-                diceShakerFactoryRegistry.createDiceShaker(configuration.diceType());
+    return playerFactory.createFourPlayerGamePlayers(board);
+  }
 
-        return buildGame(configuration, diceShaker);
+  private void addWormholes(Board board, GameConfiguration configuration, List<Player> players) {
+    List<Integer> blockedPositions = getBlockedWormholePositions(players);
+
+    for (Wormhole wormhole : configuration.wormholes()) {
+      board.addWormhole(wormhole, blockedPositions);
+    }
+  }
+
+  private List<Integer> getBlockedWormholePositions(List<Player> players) {
+    List<Integer> blockedPositions = new ArrayList<>();
+
+    for (Player player : players) {
+      blockedPositions.add(player.getHomePosition());
+      blockedPositions.add(player.getEndPosition());
     }
 
-    @Override
-    public Game createGame(GameConfiguration configuration, List<Integer> fixedDiceRolls) {
-        DiceShaker diceShaker =
-                diceShakerFactoryRegistry.createFixedDiceShaker(
-                        configuration.diceType(),
-                        fixedDiceRolls);
-
-        return buildGame(configuration, diceShaker);
-    }
-
-    private Game buildGame(GameConfiguration configuration, DiceShaker diceShaker) {
-        Board board = createBoard(configuration);
-        List<Player> players = createPlayers(configuration, board);
-
-        addWormholes(board, configuration, players);
-
-        return new Game(
-                board,
-                players,
-                diceShaker,
-                ruleRegistry.getMovementRule(configuration.endRuleType()),
-                ruleRegistry.getTeleportRule(configuration.teleportRuleType()),
-                ruleRegistry.getHitRule(configuration.hitRuleType()),
-                eventPublisher
-        );
-    }
-
-    private Board createBoard(GameConfiguration configuration) {
-        return boardFactory.createBoard(configuration.rows(), configuration.columns());
-    }
-
-    private List<Player> createPlayers(GameConfiguration configuration, Board board) {
-        if (configuration.numberOfPlayers() == 2) {
-            return playerFactory.createTwoPlayerGamePlayers(board);
-        }
-
-        return playerFactory.createFourPlayerGamePlayers(board);
-    }
-
-    private void addWormholes(Board board, GameConfiguration configuration, List<Player> players) {
-        List<Integer> blockedPositions = getBlockedWormholePositions(players);
-
-        for (Wormhole wormhole : configuration.wormholes()) {
-            board.addWormhole(wormhole, blockedPositions);
-        }
-    }
-
-    private List<Integer> getBlockedWormholePositions(List<Player> players) {
-        List<Integer> blockedPositions = new ArrayList<>();
-
-        for (Player player : players) {
-            blockedPositions.add(player.getHomePosition());
-            blockedPositions.add(player.getEndPosition());
-        }
-
-        return blockedPositions;
-    }
+    return blockedPositions;
+  }
 }

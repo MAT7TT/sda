@@ -6,8 +6,8 @@ import java.util.List;
 
 public class RightStartSnakePathStrategy implements PathStrategy {
 
-    @Override
-    public List<Integer> buildPath(Board board) {
-        return board.getRightStartSnakePath();
-    }
+  @Override
+  public List<Integer> buildPath(Board board) {
+    return board.getRightStartSnakePath();
+  }
 }

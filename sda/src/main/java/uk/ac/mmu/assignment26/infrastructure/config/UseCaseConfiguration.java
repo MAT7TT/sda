@@ -12,19 +12,15 @@ import uk.ac.mmu.assignment26.usecase.ports.SavedGameRepository;
 @Configuration
 public class UseCaseConfiguration {
 
-    @Bean
-    public PlayGame playGameUseCase(
-            GameFactory gameFactory,
-            SavedGameRepository savedGameRepository
-    ) {
-        return new PlayGameUseCase(gameFactory, savedGameRepository);
-    }
+  @Bean
+  public PlayGame playGameUseCase(
+      GameFactory gameFactory, SavedGameRepository savedGameRepository) {
+    return new PlayGameUseCase(gameFactory, savedGameRepository);
+  }
 
-    @Bean
-    public ReplayGame replayGameUseCase(
-            GameFactory gameFactory,
-            SavedGameRepository savedGameRepository
-    ) {
-        return new ReplayGameUseCase(gameFactory, savedGameRepository);
-    }
+  @Bean
+  public ReplayGame replayGameUseCase(
+      GameFactory gameFactory, SavedGameRepository savedGameRepository) {
+    return new ReplayGameUseCase(gameFactory, savedGameRepository);
+  }
 }

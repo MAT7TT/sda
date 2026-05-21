@@ -15,33 +15,33 @@ import uk.ac.mmu.assignment26.domain.rules.teleport.WormholeTeleportRule;
 @Configuration
 public class RuleConfiguration {
 
-    @Bean
-    public MovementRule standardEndMovementRule() {
-        return new StandardEndMovementRule();
-    }
+  @Bean
+  public MovementRule standardEndMovementRule() {
+    return new StandardEndMovementRule();
+  }
 
-    @Bean
-    public MovementRule exactEndBounceMovementRule() {
-        return new ExactEndBounceMovementRule();
-    }
+  @Bean
+  public MovementRule exactEndBounceMovementRule() {
+    return new ExactEndBounceMovementRule();
+  }
 
-    @Bean
-    public HitRule ignoreHitRule() {
-        return new IgnoreHitRule();
-    }
+  @Bean
+  public HitRule ignoreHitRule() {
+    return new IgnoreHitRule();
+  }
 
-    @Bean
-    public HitRule forfeitOnHitRule() {
-        return new ForfeitOnHitRule();
-    }
+  @Bean
+  public HitRule forfeitOnHitRule() {
+    return new ForfeitOnHitRule();
+  }
 
-    @Bean
-    public TeleportRule ignoreTeleportRule() {
-        return new IgnoreTeleportRule();
-    }
+  @Bean
+  public TeleportRule ignoreTeleportRule() {
+    return new IgnoreTeleportRule();
+  }
 
-    @Bean
-    public TeleportRule wormholeTeleportRule() {
-        return new WormholeTeleportRule();
-    }
+  @Bean
+  public TeleportRule wormholeTeleportRule() {
+    return new WormholeTeleportRule();
+  }
 }

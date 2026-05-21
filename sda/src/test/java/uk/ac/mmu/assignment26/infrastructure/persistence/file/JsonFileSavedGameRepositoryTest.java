@@ -11,6 +11,7 @@ import uk.ac.mmu.assignment26.domain.config.TeleportRuleType;
 import uk.ac.mmu.assignment26.domain.config.Wormhole;
 import uk.ac.mmu.assignment26.usecase.SavedGame;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
@@ -23,6 +24,17 @@ class JsonFileSavedGameRepositoryTest {
 
     @TempDir
     Path tempDir;
+
+    @Test
+    void rejectsCorruptJsonFile() throws IOException {
+        Path filePath = tempDir.resolve("saved-games.json");
+        Files.writeString(filePath, "not valid json");
+
+        assertThrows(
+                IllegalStateException.class,
+                () -> new JsonFileSavedGameRepository(filePath, new ObjectMapper())
+        );
+    }
 
     @Test
     void savesGameToJsonFileAndFindsItById() {

@@ -12,94 +12,91 @@ import java.util.Map;
 import java.util.Optional;
 
 public class JsonFileSavedGameRepository implements SavedGameRepository {
-    private final Path filePath;
-    private final ObjectMapper objectMapper;
-    private final Map<Integer, SavedGame> savedGames;
-    private int nextId;
+  private final Path filePath;
+  private final ObjectMapper objectMapper;
+  private final Map<Integer, SavedGame> savedGames;
+  private int nextId;
 
-    public JsonFileSavedGameRepository(Path filePath, ObjectMapper objectMapper) {
-        if (filePath == null) {
-            throw new IllegalArgumentException("File path must not be null.");
-        }
-
-        if (objectMapper == null) {
-            throw new IllegalArgumentException("Object mapper must not be null.");
-        }
-
-        this.filePath = filePath;
-        this.objectMapper = objectMapper;
-
-        SavedGameStore savedGameStore = readSavedGameStore();
-        this.savedGames = new HashMap<>(savedGameStore.savedGames());
-        this.nextId = savedGameStore.nextId();
+  public JsonFileSavedGameRepository(Path filePath, ObjectMapper objectMapper) {
+    if (filePath == null) {
+      throw new IllegalArgumentException("File path must not be null.");
     }
 
-    @Override
-    public int save(SavedGame savedGame) {
-        if (savedGame == null) {
-            throw new IllegalArgumentException("Saved game must not be null.");
-        }
-
-        int id = nextId;
-        savedGames.put(id, savedGame);
-        nextId++;
-
-        writeSavedGameStore();
-
-        return id;
+    if (objectMapper == null) {
+      throw new IllegalArgumentException("Object mapper must not be null.");
     }
 
-    @Override
-    public Optional<SavedGame> findById(int id) {
-        if (id <= 0) {
-            throw new IllegalArgumentException("Saved game id must be positive.");
-        }
+    this.filePath = filePath;
+    this.objectMapper = objectMapper;
 
-        return Optional.ofNullable(savedGames.get(id));
+    SavedGameStore savedGameStore = readSavedGameStore();
+    this.savedGames = new HashMap<>(savedGameStore.savedGames());
+    this.nextId = savedGameStore.nextId();
+  }
+
+  @Override
+  public int save(SavedGame savedGame) {
+    if (savedGame == null) {
+      throw new IllegalArgumentException("Saved game must not be null.");
     }
 
-    private SavedGameStore readSavedGameStore() {
-        try {
-            if (!Files.exists(filePath) || Files.size(filePath) == 0) {
-                return new SavedGameStore(1, Map.of());
-            }
+    int id = nextId;
+    savedGames.put(id, savedGame);
+    nextId++;
 
-            return objectMapper.readValue(filePath.toFile(), SavedGameStore.class);
-        } catch (IOException e) {
-            throw new IllegalArgumentException("Could not read saved games file.", e);
-        }
+    writeSavedGameStore();
+
+    return id;
+  }
+
+  @Override
+  public Optional<SavedGame> findById(int id) {
+    if (id <= 0) {
+      throw new IllegalArgumentException("Saved game id must be positive.");
     }
 
-    private void writeSavedGameStore() {
-        try {
-            Path parent = filePath.getParent();
+    return Optional.ofNullable(savedGames.get(id));
+  }
 
-            if (parent != null) {
-                Files.createDirectories(parent);
-            }
+  private SavedGameStore readSavedGameStore() {
+    try {
+      if (!Files.exists(filePath) || Files.size(filePath) == 0) {
+        return new SavedGameStore(1, Map.of());
+      }
 
-            objectMapper
-                    .writerWithDefaultPrettyPrinter()
-                    .writeValue(filePath.toFile(), new SavedGameStore(nextId, savedGames));
-        } catch (IOException e) {
-            throw new IllegalArgumentException("Could not  write saved games file.", e);
-        }
+      return objectMapper.readValue(filePath.toFile(), SavedGameStore.class);
+    } catch (IOException e) {
+      throw new IllegalStateException("Could not read saved games file.", e);
     }
+  }
 
-    public record SavedGameStore(
-            int nextId,
-            Map<Integer, SavedGame> savedGames
-    ) {
-        public SavedGameStore {
-            if (nextId <= 0) {
-                throw new IllegalArgumentException("Next id must be positive.");
-            }
+  private void writeSavedGameStore() {
+    try {
+      Path parent = filePath.getParent();
 
-            if (savedGames == null) {
-                throw new IllegalArgumentException("Saved games must not be null.");
-            }
+      if (parent != null) {
+        Files.createDirectories(parent);
+      }
 
-            savedGames = Map.copyOf(savedGames);
-        }
+      objectMapper
+          .writerWithDefaultPrettyPrinter()
+          .writeValue(filePath.toFile(), new SavedGameStore(nextId, savedGames));
+    } catch (IOException e) {
+      throw new IllegalStateException("Could not write saved games file.", e);
     }
+  }
+
+  public record SavedGameStore(int nextId, Map<Integer, SavedGame> savedGames) {
+    public SavedGameStore {
+      if (nextId <= 0) {
+        throw new IllegalArgumentException("Next id must be positive.");
+      }
+
+      if (savedGames == null) {
+        throw new IllegalArgumentException("Saved games must not be null.");
+      }
+
+      savedGames = Map.copyOf(savedGames);
+    }
+  }
 }

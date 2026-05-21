@@ -16,77 +16,68 @@ import java.util.Set;
 @Component
 public class PlayerFactory {
 
-    public List<Player> createTwoPlayerGamePlayers(Board board) {
-        validateBoard(board);
+  public List<Player> createTwoPlayerGamePlayers(Board board) {
+    validateBoard(board);
 
-        return validatePlayers(List.of(
-                createRed(board),
-                createBlue(board))
-        );
+    return validatePlayers(List.of(createRed(board), createBlue(board)));
+  }
+
+  public List<Player> createFourPlayerGamePlayers(Board board) {
+    validateBoard(board);
+
+    return validatePlayers(
+        List.of(createRed(board), createBlue(board), createYellow(board), createGreen(board)));
+  }
+
+  private void validateBoard(Board board) {
+    if (board == null) {
+      throw new IllegalArgumentException("Board must not be null.");
+    }
+  }
+
+  private List<Player> validatePlayers(List<Player> players) {
+    Set<String> names = new HashSet<>();
+    Set<Integer> homes = new HashSet<>();
+    Set<Integer> ends = new HashSet<>();
+
+    for (Player player : players) {
+      if (!names.add(player.getName())) {
+        throw new IllegalArgumentException("Player names must be unique.");
+      }
+
+      if (!homes.add(player.getHomePosition())) {
+        throw new IllegalArgumentException("Player home positions must be unique.");
+      }
+
+      if (!ends.add(player.getEndPosition())) {
+        throw new IllegalArgumentException("Player end positions must be unique.");
+      }
+
+      if (player.getHomePosition() == player.getEndPosition()) {
+        throw new IllegalArgumentException("Player home and end positions must be different.");
+      }
     }
 
-    public List<Player> createFourPlayerGamePlayers(Board board) {
-        validateBoard(board);
+    return players;
+  }
 
-        return validatePlayers(List.of(
-                createRed(board),
-                createBlue(board),
-                createYellow(board),
-                createGreen(board))
-        );
-    }
+  private Player createRed(Board board) {
+    PathStrategy strategy = new LeftStartSnakePathStrategy();
+    return new Player("Red", board, strategy);
+  }
 
-    private void validateBoard(Board board) {
-        if (board == null) {
-            throw new IllegalArgumentException("Board must not be null.");
-        }
-    }
+  private Player createBlue(Board board) {
+    PathStrategy strategy = new TopRightStartSnakePathStrategy();
+    return new Player("Blue", board, strategy);
+  }
 
-    private List<Player> validatePlayers(List<Player> players) {
-        Set<String> names = new HashSet<>();
-        Set<Integer> homes = new HashSet<>();
-        Set<Integer> ends = new HashSet<>();
+  private Player createYellow(Board board) {
+    PathStrategy strategy = new TopLeftStartSnakePathStrategy();
+    return new Player("Yellow", board, strategy);
+  }
 
-        for (Player player : players) {
-            if (!names.add(player.getName())) {
-                throw new IllegalArgumentException("Player names must be unique.");
-            }
-
-            if (!homes.add(player.getHomePosition())) {
-                throw new IllegalArgumentException("Player home positions must be unique.");
-            }
-
-            if (!ends.add(player.getEndPosition())) {
-                throw new IllegalArgumentException("Player end positions must be unique.");
-            }
-
-            if (player.getHomePosition() == player.getEndPosition()) {
-                throw new IllegalArgumentException(
-                        "Player home and end positions must be different."
-                );
-            }
-        }
-
-        return players;
-    }
-
-    private Player createRed(Board board) {
-        PathStrategy strategy = new LeftStartSnakePathStrategy();
-        return new Player("Red", board, strategy);
-    }
-
-    private Player createBlue(Board board) {
-        PathStrategy strategy = new TopRightStartSnakePathStrategy();
-        return new Player("Blue", board, strategy);
-    }
-
-    private Player createYellow(Board board) {
-        PathStrategy strategy = new TopLeftStartSnakePathStrategy();
-        return new Player("Yellow", board, strategy);
-    }
-
-    private Player createGreen(Board board) {
-        PathStrategy strategy = new RightStartSnakePathStrategy();
-        return new Player("Green", board, strategy);
-    }
+  private Player createGreen(Board board) {
+    PathStrategy strategy = new RightStartSnakePathStrategy();
+    return new Player("Green", board, strategy);
+  }
 }

@@ -9,55 +9,54 @@ import java.util.List;
 
 @Component
 public class ConsoleScenarioPrinter {
-    private final GameOutputWriter outputWriter;
-    private final GameConfigurationFormatter configurationFormatter;
+  private final GameOutputWriter outputWriter;
+  private final GameConfigurationFormatter configurationFormatter;
 
-    public ConsoleScenarioPrinter(GameOutputWriter outputWriter, GameConfigurationFormatter configurationFormatter) {
-        this.outputWriter = outputWriter;
-        this.configurationFormatter = configurationFormatter;
+  public ConsoleScenarioPrinter(
+      GameOutputWriter outputWriter, GameConfigurationFormatter configurationFormatter) {
+    this.outputWriter = outputWriter;
+    this.configurationFormatter = configurationFormatter;
+  }
+
+  public void printScenarioStart(GameScenario scenario) {
+    outputWriter.writeLine(scenario.title());
+    outputWriter.writeLine(configurationFormatter.formatRules(scenario.configuration()));
+
+    if (scenario.usesFixedDice()) {
+      outputWriter.writeLine(
+          "Fixed sequence of dice rolls " + formatDiceRolls(scenario.fixedDiceRolls()));
+    } else {
+      printRandomDiceSummary(scenario.configuration().diceType());
     }
+  }
 
-    public void printScenarioStart(GameScenario scenario) {
-        outputWriter.writeLine(scenario.title());
-        outputWriter.writeLine(configurationFormatter.formatRules(scenario.configuration()));
+  public void printSavedGame(int gameId, SavedGame savedGame) {
+    outputWriter.writeLine("Dice rolls: " + formatDiceRolls(savedGame.diceRolls()));
+    outputWriter.writeLine("Game Id: " + gameId + " saved.");
+    outputWriter.writeBlankLine();
+  }
 
-        if (scenario.usesFixedDice()) {
-            outputWriter.writeLine("Fixed sequence of dice rolls "
-                    + formatDiceRolls(scenario.fixedDiceRolls()));
-        } else {
-            printRandomDiceSummary(scenario.configuration().diceType());
-        }
-    }
+  public void printReplayStart(int gameId, SavedGame savedGame) {
+    outputWriter.writeLine("Replay Game Id: " + gameId);
+    outputWriter.writeLine(configurationFormatter.formatRules(savedGame.configuration()));
+    outputWriter.writeLine(
+        "Dice: Replay sequence of dice rolls " + formatDiceRolls(savedGame.diceRolls()));
+  }
 
-    public void printSavedGame(int gameId, SavedGame savedGame) {
-        outputWriter.writeLine("Dice rolls: " + formatDiceRolls(savedGame.diceRolls()));
-        outputWriter.writeLine("Game Id: " + gameId + " saved.");
-        outputWriter.writeBlankLine();
-    }
+  public void printNoSavedGameFound(int gameId) {
+    outputWriter.writeLine("No saved game found for id " + gameId);
+    outputWriter.writeBlankLine();
+  }
 
-    public void printReplayStart(int gameId, SavedGame savedGame) {
-        outputWriter.writeLine("Replay Game Id: " + gameId);
-        outputWriter.writeLine(configurationFormatter.formatRules(savedGame.configuration()));
-        outputWriter.writeLine("Dice: Replay sequence of dice rolls "
-                + formatDiceRolls(savedGame.diceRolls()));
-    }
+  public void printBlankLine() {
+    outputWriter.writeBlankLine();
+  }
 
-    public void printNoSavedGameFound(int gameId) {
-        outputWriter.writeLine("No saved game found for id " + gameId);
-        outputWriter.writeBlankLine();
-    }
+  private void printRandomDiceSummary(DiceType diceType) {
+    outputWriter.writeLine(configurationFormatter.formatRandomDice(diceType));
+  }
 
-    public void printBlankLine() {
-        outputWriter.writeBlankLine();
-    }
-
-    private void printRandomDiceSummary(DiceType diceType) {
-        outputWriter.writeLine(configurationFormatter.formatRandomDice(diceType));
-    }
-
-    private String formatDiceRolls(List<Integer> diceRolls) {
-        return diceRolls.toString()
-                .replace("[", "{")
-                .replace("]", "}");
-    }
+  private String formatDiceRolls(List<Integer> diceRolls) {
+    return diceRolls.toString().replace("[", "{").replace("]", "}");
+  }
 }

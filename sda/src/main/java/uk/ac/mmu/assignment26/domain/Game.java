@@ -20,178 +20,176 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Game {
-    private final Board board;
-    private final List<Player> players;
-    private final DiceShaker diceShaker;
-    private final MovementRule movementRule;
-    private final TeleportRule teleportRule;
-    private final HitRule hitRule;
-    private final GameEventPublisher eventPublisher;
-    private final List<Integer> diceRolls;
+  private final Board board;
+  private final List<Player> players;
+  private final DiceShaker diceShaker;
+  private final MovementRule movementRule;
+  private final TeleportRule teleportRule;
+  private final HitRule hitRule;
+  private final GameEventPublisher eventPublisher;
+  private final List<Integer> diceRolls;
 
-    private GameState state;
-    private int currentPlayerIndex;
-    private int totalTurns;
-    private Player winner;
+  private GameState state;
+  private int currentPlayerIndex;
+  private int totalTurns;
+  private Player winner;
 
-    public Game(
-            Board board,
-            List<Player> players,
-            DiceShaker diceShaker,
-            MovementRule movementRule,
-            TeleportRule teleportRule,
-            HitRule hitRule,
-            GameEventPublisher eventPublisher
-    ) {
-        if (board == null) {
-            throw new IllegalArgumentException("Board must not be null.");
-        }
-
-        if (players == null || players.isEmpty()) {
-            throw new IllegalArgumentException("Players must not be empty.");
-        }
-
-        for (Player player : players) {
-            if (player == null) {
-                throw new IllegalArgumentException("Players must not contain null.");
-            }
-        }
-
-        if (diceShaker == null) {
-            throw new IllegalArgumentException("Dice shaker must not be null.");
-        }
-
-        if (movementRule == null) {
-            throw new IllegalArgumentException("Movement rule must not be null.");
-        }
-
-        if (teleportRule == null) {
-            throw new IllegalArgumentException("Teleport rule must not be null.");
-        }
-
-        if (hitRule == null) {
-            throw new IllegalArgumentException("Hit rule must not be null.");
-        }
-
-        if (eventPublisher == null) {
-            throw new IllegalArgumentException("Event publisher must not be null.");
-        }
-
-        this.board = board;
-        this.players = new ArrayList<>(players);
-        this.diceShaker = diceShaker;
-        this.movementRule = movementRule;
-        this.teleportRule = teleportRule;
-        this.hitRule = hitRule;
-        this.eventPublisher = eventPublisher;
-        this.diceRolls = new ArrayList<>();
-
-        this.state = new ReadyState();
-        this.currentPlayerIndex = 0;
-        this.totalTurns = 0;
+  public Game(
+      Board board,
+      List<Player> players,
+      DiceShaker diceShaker,
+      MovementRule movementRule,
+      TeleportRule teleportRule,
+      HitRule hitRule,
+      GameEventPublisher eventPublisher) {
+    if (board == null) {
+      throw new IllegalArgumentException("Board must not be null.");
     }
 
-    public GameResult play() {
-        publishEvent(new GameStartedEvent(board.getRows(), board.getColumns(), createPlayerSnapshots()));
-        start();
-
-        while (winner == null) {
-            playTurn();
-        }
-        finish();
-
-        return new GameResult(winner.getName(), winner.getTurnCount(), totalTurns, List.copyOf(diceRolls));
+    if (players == null || players.isEmpty()) {
+      throw new IllegalArgumentException("Players must not be empty.");
     }
 
-    public void start() {
-        state.start(this);
+    for (Player player : players) {
+      if (player == null) {
+        throw new IllegalArgumentException("Players must not contain null.");
+      }
     }
 
-    public void playTurn() {
-        state.playTurn(this);
+    if (diceShaker == null) {
+      throw new IllegalArgumentException("Dice shaker must not be null.");
     }
 
-    public void finish() {
-        state.finish(this);
+    if (movementRule == null) {
+      throw new IllegalArgumentException("Movement rule must not be null.");
     }
 
-    public void executeTurn() {
-        if (winner != null) {
-            return;
-        }
-
-        Player currentPlayer = players.get(currentPlayerIndex);
-
-        TurnResult turnResult = takeTurn(currentPlayer);
-
-        publishEvent(new TurnCompletedEvent(turnResult));
-
-        if (currentPlayer.isAtEnd()) {
-            winner = currentPlayer;
-
-            publishEvent(new GameWonEvent(
-                    winner.getName(),
-                    winner.getTurnCount(),
-                    totalTurns
-            ));
-
-            return;
-        }
-
-        moveToNextPlayer();
+    if (teleportRule == null) {
+      throw new IllegalArgumentException("Teleport rule must not be null.");
     }
 
-    private TurnResult takeTurn(Player currentPlayer) {
-        int startTurnPathIndex = currentPlayer.getPathIndex();
-
-        int roll = diceShaker.shake();
-        diceRolls.add(roll);
-
-        currentPlayer.incrementTurnCount();
-        totalTurns++;
-
-        MoveResult moveResult = movementRule.move(currentPlayer, roll);
-        TeleportResult teleportResult = teleportRule.apply(board, currentPlayer);
-        HitResult hitResult = hitRule.apply(currentPlayer, startTurnPathIndex, players);
-
-        return new TurnResult(
-                currentPlayer.getName(),
-                roll,
-                currentPlayer.getTurnCount(),
-                currentPlayer.getHomePosition(),
-                currentPlayer.getEndPosition(),
-                moveResult,
-                teleportResult,
-                hitResult
-        );
+    if (hitRule == null) {
+      throw new IllegalArgumentException("Hit rule must not be null.");
     }
 
-    private List<PlayerPathSnapshot> createPlayerSnapshots() {
-        List<PlayerPathSnapshot> pathSnapshotList = new ArrayList<>();
-
-        for (Player player : players) {
-            pathSnapshotList.add(new PlayerPathSnapshot(player.getName(),
-                    player.getPathPositions(),
-                    player.getHomePosition(),
-                    player.getEndPosition()));
-        }
-
-        return pathSnapshotList;
+    if (eventPublisher == null) {
+      throw new IllegalArgumentException("Event publisher must not be null.");
     }
 
-    private void moveToNextPlayer() {
-        currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+    this.board = board;
+    this.players = new ArrayList<>(players);
+    this.diceShaker = diceShaker;
+    this.movementRule = movementRule;
+    this.teleportRule = teleportRule;
+    this.hitRule = hitRule;
+    this.eventPublisher = eventPublisher;
+    this.diceRolls = new ArrayList<>();
+
+    this.state = new ReadyState();
+    this.currentPlayerIndex = 0;
+    this.totalTurns = 0;
+  }
+
+  public GameResult play() {
+    publishEvent(
+        new GameStartedEvent(board.getRows(), board.getColumns(), createPlayerSnapshots()));
+    start();
+
+    while (winner == null) {
+      playTurn();
+    }
+    finish();
+
+    return new GameResult(
+        winner.getName(), winner.getTurnCount(), totalTurns, List.copyOf(diceRolls));
+  }
+
+  public void start() {
+    state.start(this);
+  }
+
+  public void playTurn() {
+    state.playTurn(this);
+  }
+
+  public void finish() {
+    state.finish(this);
+  }
+
+  public void executeTurn() {
+    if (winner != null) {
+      return;
     }
 
-    public void setState(GameState state) {
-        if (state == null) {
-            throw new IllegalArgumentException("Game state must not be null.");
-        }
+    Player currentPlayer = players.get(currentPlayerIndex);
 
-        this.state = state;
+    TurnResult turnResult = takeTurn(currentPlayer);
+
+    publishEvent(new TurnCompletedEvent(turnResult));
+
+    if (currentPlayer.isAtEnd()) {
+      winner = currentPlayer;
+
+      publishEvent(new GameWonEvent(winner.getName(), winner.getTurnCount(), totalTurns));
+
+      return;
     }
 
-    public void publishEvent(Object event) {
-        eventPublisher.publish(event);
+    moveToNextPlayer();
+  }
+
+  private TurnResult takeTurn(Player currentPlayer) {
+    int startTurnPathIndex = currentPlayer.getPathIndex();
+
+    int roll = diceShaker.shake();
+    diceRolls.add(roll);
+
+    currentPlayer.incrementTurnCount();
+    totalTurns++;
+
+    MoveResult moveResult = movementRule.move(currentPlayer, roll);
+    TeleportResult teleportResult = teleportRule.apply(board, currentPlayer);
+    HitResult hitResult = hitRule.apply(currentPlayer, startTurnPathIndex, players);
+
+    return new TurnResult(
+        currentPlayer.getName(),
+        roll,
+        currentPlayer.getTurnCount(),
+        currentPlayer.getHomePosition(),
+        currentPlayer.getEndPosition(),
+        moveResult,
+        teleportResult,
+        hitResult);
+  }
+
+  private List<PlayerPathSnapshot> createPlayerSnapshots() {
+    List<PlayerPathSnapshot> pathSnapshotList = new ArrayList<>();
+
+    for (Player player : players) {
+      pathSnapshotList.add(
+          new PlayerPathSnapshot(
+              player.getName(),
+              player.getPathPositions(),
+              player.getHomePosition(),
+              player.getEndPosition()));
     }
+
+    return pathSnapshotList;
+  }
+
+  private void moveToNextPlayer() {
+    currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+  }
+
+  public void setState(GameState state) {
+    if (state == null) {
+      throw new IllegalArgumentException("Game state must not be null.");
+    }
+
+    this.state = state;
+  }
+
+  public void publishEvent(Object event) {
+    eventPublisher.publish(event);
+  }
 }

@@ -7,13 +7,13 @@ import uk.ac.mmu.assignment26.domain.dice.RandomSingleDiceShaker;
 
 @Component
 public class SingleDiceShakerFactory implements DiceShakerFactory {
-    @Override
-    public DiceType getType() {
-        return DiceType.SINGLE;
-    }
+  @Override
+  public DiceType getType() {
+    return DiceType.SINGLE;
+  }
 
-    @Override
-    public DiceShaker create() {
-        return new RandomSingleDiceShaker();
-    }
+  @Override
+  public DiceShaker create() {
+    return new RandomSingleDiceShaker();
+  }
 }

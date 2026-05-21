@@ -7,13 +7,13 @@ import org.springframework.stereotype.Component;
 @Primary
 public class ConsoleGameOutputWriter implements GameOutputWriter {
 
-    @Override
-    public void writeLine(String message) {
-        System.out.println(message);
-    }
+  @Override
+  public void writeLine(String message) {
+    System.out.println(message);
+  }
 
-    @Override
-    public void writeBlankLine() {
-        System.out.println();
-    }
+  @Override
+  public void writeBlankLine() {
+    System.out.println();
+  }
 }

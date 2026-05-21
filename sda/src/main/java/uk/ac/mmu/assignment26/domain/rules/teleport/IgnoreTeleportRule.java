@@ -7,17 +7,17 @@ import uk.ac.mmu.assignment26.domain.rules.result.TeleportResult;
 
 public class IgnoreTeleportRule implements TeleportRule {
 
-    @Override
-    public TeleportRuleType getType() {
-        return TeleportRuleType.IGNORE_WORMHOLES;
+  @Override
+  public TeleportRuleType getType() {
+    return TeleportRuleType.IGNORE_WORMHOLES;
+  }
+
+  @Override
+  public TeleportResult apply(Board board, Player player) {
+    if (player == null) {
+      throw new IllegalArgumentException("Player must not be null.");
     }
 
-    @Override
-    public TeleportResult apply(Board board, Player player) {
-        if (player == null) {
-            throw new IllegalArgumentException("Player must not be null.");
-        }
-
-        return TeleportResult.notTeleported(player.getCurrentPosition());
-    }
+    return TeleportResult.notTeleported(player.getCurrentPosition());
+  }
 }

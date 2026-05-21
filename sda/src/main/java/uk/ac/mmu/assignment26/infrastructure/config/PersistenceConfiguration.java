@@ -13,26 +13,22 @@ import java.nio.file.Path;
 @Configuration
 public class PersistenceConfiguration {
 
-    @Bean
-    public ObjectMapper objectMapper() {
-        return new ObjectMapper();
-    }
+  @Bean
+  public ObjectMapper objectMapper() {
+    return new ObjectMapper();
+  }
 
-    @Bean
-    @Profile("file-persistence")
-    public SavedGameRepository fileSavedGameRepository(ObjectMapper objectMapper) {
-        Path filePath = Path.of(
-                System.getProperty("user.home"),
-                ".sda",
-                "saved-games.json"
-        );
+  @Bean
+  @Profile("file-persistence")
+  public SavedGameRepository fileSavedGameRepository(ObjectMapper objectMapper) {
+    Path filePath = Path.of(System.getProperty("user.home"), ".sda", "saved-games.json");
 
-        return new JsonFileSavedGameRepository(filePath, objectMapper);
-    }
+    return new JsonFileSavedGameRepository(filePath, objectMapper);
+  }
 
-    @Bean
-    @Profile("memory-persistence")
-    public SavedGameRepository inMemorySavedGameRepository() {
-        return new InMemorySavedGameRepository();
-    }
+  @Bean
+  @Profile("memory-persistence")
+  public SavedGameRepository inMemorySavedGameRepository() {
+    return new InMemorySavedGameRepository();
+  }
 }

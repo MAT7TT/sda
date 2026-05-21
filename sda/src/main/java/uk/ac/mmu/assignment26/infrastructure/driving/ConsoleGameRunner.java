@@ -11,68 +11,76 @@ import uk.ac.mmu.assignment26.usecase.SavedGame;
 import uk.ac.mmu.assignment26.usecase.ports.PlayGame;
 import uk.ac.mmu.assignment26.usecase.ports.ReplayGame;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Component
 public class ConsoleGameRunner implements CommandLineRunner, Ordered {
-    private final PlayGame playGame;
-    private final ReplayGame replayGame;
-    private final GameScenarioProvider scenarioProvider;
-    private final ConsoleScenarioPrinter scenarioPrinter;
+  private final PlayGame playGame;
+  private final ReplayGame replayGame;
+  private final GameScenarioProvider scenarioProvider;
+  private final ConsoleScenarioPrinter scenarioPrinter;
 
-    public ConsoleGameRunner(
-            PlayGame playGame,
-            ReplayGame replayGame,
-            GameScenarioProvider scenarioProvider,
-            ConsoleScenarioPrinter scenarioPrinter
-    ) {
-        this.playGame = playGame;
-        this.replayGame = replayGame;
-        this.scenarioProvider = scenarioProvider;
-        this.scenarioPrinter = scenarioPrinter;
+  public ConsoleGameRunner(
+      PlayGame playGame,
+      ReplayGame replayGame,
+      GameScenarioProvider scenarioProvider,
+      ConsoleScenarioPrinter scenarioPrinter) {
+    this.playGame = playGame;
+    this.replayGame = replayGame;
+    this.scenarioProvider = scenarioProvider;
+    this.scenarioPrinter = scenarioPrinter;
+  }
+
+  @Override
+  public void run(String... args) {
+    List<Integer> savedGameIds = new ArrayList<>();
+
+    for (GameScenario scenario : scenarioProvider.getScenarios()) {
+      savedGameIds.add(runScenario(scenario));
     }
 
-    @Override
-    public void run(String... args) {
-        for (GameScenario scenario : scenarioProvider.getScenarios()) {
-            runScenario(scenario);
-        }
+    replaySavedGames(savedGameIds);
+  }
 
-        replaySavedGame(1);
+  private int runScenario(GameScenario scenario) {
+    scenarioPrinter.printScenarioStart(scenario);
+
+    PlayGameResult result;
+
+    if (scenario.usesFixedDice()) {
+      result = playGame.play(scenario.configuration(), scenario.fixedDiceRolls());
+    } else {
+      result = playGame.play(scenario.configuration());
     }
 
-    private void runScenario(GameScenario scenario) {
-        scenarioPrinter.printScenarioStart(scenario);
+    scenarioPrinter.printSavedGame(result.gameId(), result.savedGame());
 
-        PlayGameResult result;
+    return result.gameId();
+  }
 
-        if (scenario.usesFixedDice()) {
-            result = playGame.play(
-                    scenario.configuration(),
-                    scenario.fixedDiceRolls()
-            );
-        } else {
-            result = playGame.play(scenario.configuration());
-        }
+  private void replaySavedGames(List<Integer> savedGameIds) {
+    for (int gameId : savedGameIds) {
+      replaySavedGame(gameId);
+    }
+  }
 
-        scenarioPrinter.printSavedGame(result.gameId(), result.savedGame());
+  private void replaySavedGame(int gameId) {
+    Optional<SavedGame> savedGame = replayGame.findSavedGame(gameId);
+
+    if (savedGame.isEmpty()) {
+      scenarioPrinter.printNoSavedGameFound(gameId);
+      return;
     }
 
-    private void replaySavedGame(int gameId) {
-        Optional<SavedGame> savedGame = replayGame.findSavedGame(gameId);
+    scenarioPrinter.printReplayStart(gameId, savedGame.get());
+    replayGame.replay(gameId);
+    scenarioPrinter.printBlankLine();
+  }
 
-        if (savedGame.isEmpty()) {
-            scenarioPrinter.printNoSavedGameFound(gameId);
-            return;
-        }
-
-        scenarioPrinter.printReplayStart(gameId, savedGame.get());
-        replayGame.replay(gameId);
-        scenarioPrinter.printBlankLine();
-    }
-
-    @Override
-    public int getOrder() {
-        return Ordered.HIGHEST_PRECEDENCE;
-    }
+  @Override
+  public int getOrder() {
+    return Ordered.HIGHEST_PRECEDENCE;
+  }
 }

@@ -8,27 +8,27 @@ import java.util.Map;
 import java.util.Optional;
 
 public class InMemorySavedGameRepository implements SavedGameRepository {
-    private final Map<Integer, SavedGame> savedGames = new HashMap<>();
-    private int nextId = 1;
+  private final Map<Integer, SavedGame> savedGames = new HashMap<>();
+  private int nextId = 1;
 
-    @Override
-    public int save(SavedGame savedGame) {
-        if (savedGame == null) {
-            throw new IllegalArgumentException("Saved game must not be null.");
-        }
-
-        int id = nextId;
-        savedGames.put(id, savedGame);
-        nextId++;
-        return id;
+  @Override
+  public int save(SavedGame savedGame) {
+    if (savedGame == null) {
+      throw new IllegalArgumentException("Saved game must not be null.");
     }
 
-    @Override
-    public Optional<SavedGame> findById(int id) {
-        if (id <= 0) {
-            throw new IllegalArgumentException("Saved game id must be positive.");
-        }
+    int id = nextId;
+    savedGames.put(id, savedGame);
+    nextId++;
+    return id;
+  }
 
-        return Optional.ofNullable(savedGames.get(id));
+  @Override
+  public Optional<SavedGame> findById(int id) {
+    if (id <= 0) {
+      throw new IllegalArgumentException("Saved game id must be positive.");
     }
+
+    return Optional.ofNullable(savedGames.get(id));
+  }
 }

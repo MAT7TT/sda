@@ -7,7 +7,7 @@ import uk.ac.mmu.assignment26.domain.rules.result.HitResult;
 import java.util.List;
 
 public interface HitRule {
-    HitRuleType getType();
+  HitRuleType getType();
 
-    HitResult apply(Player currentPlayer, int startTurnPathIndex, List<Player> players);
+  HitResult apply(Player currentPlayer, int startTurnPathIndex, List<Player> players);
 }

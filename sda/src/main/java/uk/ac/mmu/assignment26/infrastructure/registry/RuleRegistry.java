@@ -14,119 +14,113 @@ import java.util.Map;
 
 @Component
 public class RuleRegistry {
-    private final Map<EndRuleType, MovementRule> movementRules =
-            new EnumMap<>(EndRuleType.class);
+  private final Map<EndRuleType, MovementRule> movementRules = new EnumMap<>(EndRuleType.class);
 
-    private final Map<HitRuleType, HitRule> hitRules =
-            new EnumMap<>(HitRuleType.class);
+  private final Map<HitRuleType, HitRule> hitRules = new EnumMap<>(HitRuleType.class);
 
-    private final Map<TeleportRuleType, TeleportRule> teleportRules =
-            new EnumMap<>(TeleportRuleType.class);
+  private final Map<TeleportRuleType, TeleportRule> teleportRules =
+      new EnumMap<>(TeleportRuleType.class);
 
-    public RuleRegistry(
-            List<MovementRule> movementRules,
-            List<HitRule> hitRules,
-            List<TeleportRule> teleportRules
-    ) {
-        validateRuleList(movementRules, "Movement");
-        validateRuleList(hitRules, "Hit");
-        validateRuleList(teleportRules, "Teleport");
+  public RuleRegistry(
+      List<MovementRule> movementRules, List<HitRule> hitRules, List<TeleportRule> teleportRules) {
+    validateRuleList(movementRules, "Movement");
+    validateRuleList(hitRules, "Hit");
+    validateRuleList(teleportRules, "Teleport");
 
-        for (MovementRule rule : movementRules) {
-            EndRuleType type = rule.getType();
+    for (MovementRule rule : movementRules) {
+      EndRuleType type = rule.getType();
 
-            if (type == null) {
-                throw new IllegalArgumentException("Movement rule type must not be null.");
-            }
+      if (type == null) {
+        throw new IllegalArgumentException("Movement rule type must not be null.");
+      }
 
-            if (this.movementRules.containsKey(type)) {
-                throw new IllegalArgumentException("Duplicate movement rule for " + type + ".");
-            }
+      if (this.movementRules.containsKey(type)) {
+        throw new IllegalArgumentException("Duplicate movement rule for " + type + ".");
+      }
 
-            this.movementRules.put(type, rule);
-        }
-
-        for (HitRule rule : hitRules) {
-            HitRuleType type = rule.getType();
-
-            if (type == null) {
-                throw new IllegalArgumentException("Hit rule type must not be null.");
-            }
-
-            if (this.hitRules.containsKey(type)) {
-                throw new IllegalArgumentException("Duplicate hit rule for " + type + ".");
-            }
-
-            this.hitRules.put(type, rule);
-        }
-
-        for (TeleportRule rule : teleportRules) {
-            TeleportRuleType type = rule.getType();
-
-            if (type == null) {
-                throw new IllegalArgumentException("Teleport rule type must not be null.");
-            }
-
-            if (this.teleportRules.containsKey(type)) {
-                throw new IllegalArgumentException("Duplicate teleport rule for " + type + ".");
-            }
-
-            this.teleportRules.put(type, rule);
-        }
+      this.movementRules.put(type, rule);
     }
 
-    private <T> void validateRuleList(List<T> rules, String ruleName) {
-        if (rules == null || rules.isEmpty()) {
-            throw new IllegalArgumentException(ruleName + " rules must not be empty.");
-        }
+    for (HitRule rule : hitRules) {
+      HitRuleType type = rule.getType();
 
-        for (T rule : rules) {
-            if (rule == null) {
-                throw new IllegalArgumentException(ruleName + " rules must not contain null");
+      if (type == null) {
+        throw new IllegalArgumentException("Hit rule type must not be null.");
+      }
 
-            }
-        }
+      if (this.hitRules.containsKey(type)) {
+        throw new IllegalArgumentException("Duplicate hit rule for " + type + ".");
+      }
+
+      this.hitRules.put(type, rule);
     }
 
-    public MovementRule getMovementRule(EndRuleType type) {
-        if (type == null) {
-            throw new IllegalArgumentException("End rule type must not be null.");
-        }
+    for (TeleportRule rule : teleportRules) {
+      TeleportRuleType type = rule.getType();
 
-        MovementRule rule = movementRules.get(type);
+      if (type == null) {
+        throw new IllegalArgumentException("Teleport rule type must not be null.");
+      }
 
-        if (rule == null) {
-            throw new IllegalArgumentException("No movement rule registered for " + type);
-        }
+      if (this.teleportRules.containsKey(type)) {
+        throw new IllegalArgumentException("Duplicate teleport rule for " + type + ".");
+      }
 
-        return rule;
+      this.teleportRules.put(type, rule);
+    }
+  }
+
+  private <T> void validateRuleList(List<T> rules, String ruleName) {
+    if (rules == null || rules.isEmpty()) {
+      throw new IllegalArgumentException(ruleName + " rules must not be empty.");
     }
 
-    public HitRule getHitRule(HitRuleType type) {
-        if (type == null) {
-            throw new IllegalArgumentException("Hit rule type must not be null.");
-        }
+    for (T rule : rules) {
+      if (rule == null) {
+        throw new IllegalArgumentException(ruleName + " rules must not contain null");
+      }
+    }
+  }
 
-        HitRule rule = hitRules.get(type);
-
-        if (rule == null) {
-            throw new IllegalArgumentException("No hit rule registered for " + type);
-        }
-
-        return rule;
+  public MovementRule getMovementRule(EndRuleType type) {
+    if (type == null) {
+      throw new IllegalArgumentException("End rule type must not be null.");
     }
 
-    public TeleportRule getTeleportRule(TeleportRuleType type) {
-        if (type == null) {
-            throw new IllegalArgumentException("Teleport rule type must not be null.");
-        }
+    MovementRule rule = movementRules.get(type);
 
-        TeleportRule rule = teleportRules.get(type);
-
-        if (rule == null) {
-            throw new IllegalArgumentException("No teleport rule registered for " + type);
-        }
-
-        return rule;
+    if (rule == null) {
+      throw new IllegalArgumentException("No movement rule registered for " + type);
     }
+
+    return rule;
+  }
+
+  public HitRule getHitRule(HitRuleType type) {
+    if (type == null) {
+      throw new IllegalArgumentException("Hit rule type must not be null.");
+    }
+
+    HitRule rule = hitRules.get(type);
+
+    if (rule == null) {
+      throw new IllegalArgumentException("No hit rule registered for " + type);
+    }
+
+    return rule;
+  }
+
+  public TeleportRule getTeleportRule(TeleportRuleType type) {
+    if (type == null) {
+      throw new IllegalArgumentException("Teleport rule type must not be null.");
+    }
+
+    TeleportRule rule = teleportRules.get(type);
+
+    if (rule == null) {
+      throw new IllegalArgumentException("No teleport rule registered for " + type);
+    }
+
+    return rule;
+  }
 }
