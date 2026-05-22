@@ -11,9 +11,9 @@ import uk.ac.mmu.assignment26.usecase.ports.SavedGameRepository;
 /**
  * Use case for playing and saving a configured game.
  *
- * <p>The use case coordinates application flow. It asks the game factory to create
- * a domain game, runs the game to completion and saves the configuration and dice rolls
- * through the repository port.</p>
+ * <p>The use case coordinates application flow. It asks the game factory to create a domain game,
+ * runs the game to completion and saves the configuration and dice rolls through the repository
+ * port.
  */
 public class PlayGameUseCase implements PlayGame {
   private final GameFactory gameFactory;
@@ -22,7 +22,7 @@ public class PlayGameUseCase implements PlayGame {
   /**
    * Create the play-game use case.
    *
-   * @param gameFactory factory use to create configured games
+   * @param gameFactory factory used to create configured games
    * @param savedGameRepository used to save completed games
    * @throws IllegalArgumentException if a required port is null
    */
@@ -58,12 +58,14 @@ public class PlayGameUseCase implements PlayGame {
   /**
    * Plays a game using a fixed dice sequence.
    *
-   * <p>This method is used for deterministic demonstration scenarios and for replaying known dice sequence.</p>
+   * <p>This method is used for deterministic demonstration scenarios and for replaying a known dice
+   * sequence.
    *
    * @param configuration the game configuration to play
    * @param fixedDiceRolls the dice rolls to use
    * @return the saved game result
-   * @throws IllegalArgumentException if the configuration is null or the fixed dice sequence is empty.
+   * @throws IllegalArgumentException if the configuration is null or the fixed dice sequence is
+   *     empty.
    */
   public PlayGameResult play(GameConfiguration configuration, List<Integer> fixedDiceRolls) {
     validateConfiguration(configuration);

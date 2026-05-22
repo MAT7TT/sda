@@ -3,7 +3,8 @@
 ## 1. Overview
 
 This project is a Java Spring Boot console application that simulates the board game.
-The application runs a set of demonstration games, prints each game to the console, saves completed games, and can replay a saved game using the original configuration and dice rolls.
+The application runs a set of demonstration games, prints each game to the console, saves completed games, and can
+replay a saved game using the original configuration and dice rolls.
 The design follows the Clean Architecture / Ports and Adapters style.
 
 | Package          | Responsibility                                                                           |
@@ -12,11 +13,13 @@ The design follows the Clean Architecture / Ports and Adapters style.
 | `usecase`        | Application flow for playing, saving and replaying games                                 |
 | `infrastructure` | Spring configuration, console output, scenario setup, factories and persistence adapters |
 
-The implementation supports all required variations and also implements the advanced State pattern and save/replay features.
+The implementation supports all required variations and also implements the advanced State pattern and save/replay
+features.
 
 ## 2. Key Classes And Responsibilities
 
-The main static structure is split by responsibility. The domain classes model the game rules, while the use case and infrastructure classes coordinate application flow and technology details.
+The main static structure is split by responsibility. The domain classes model the game rules, while the use case and
+infrastructure classes coordinate application flow and technology details.
 
 | Class / Interface             | Layer                  | Responsibility                                                                                              |
 |-------------------------------|------------------------|-------------------------------------------------------------------------------------------------------------|
@@ -39,7 +42,8 @@ The main static structure is split by responsibility. The domain classes model t
 | `ConsoleGameEventObserver`    | Infrastructure adapter | Observes game events and writes readable console output                                                     |
 | `JsonFileSavedGameRepository` | Infrastructure adapter | Persists saved games to a JSON file                                                                         |
 
-The most important design decision is that `Game` depends on abstractions such as `MovementRule`, `HitRule`, `TeleportRule`, `DiceShaker` and `GameEventPublisher`. 
+The most important design decision is that `Game` depends on abstractions such as `MovementRule`, `HitRule`,
+`TeleportRule`, `DiceShaker` and `GameEventPublisher`.
 This keeps the main game loop stable while allowing rule, dice and output behaviour to vary.
 
 ## 3. Successful Execution Flow
@@ -85,7 +89,8 @@ sequenceDiagram
 
 ## 4. Variations and Advanced Features
 
-Variations are selected through `GameConfiguration`, then mapped to the correct strategies by infrastructure factories and registries.
+Variations are selected through `GameConfiguration`, then mapped to the correct strategies by infrastructure factories
+and registries.
 
 | Feature               | Implementation                                                                    | Design point                                                                    |
 |-----------------------|-----------------------------------------------------------------------------------|---------------------------------------------------------------------------------|
@@ -102,37 +107,53 @@ Variations are selected through `GameConfiguration`, then mapped to the correct 
 | Game state            | `ReadyState`, `InPlayState`, `GameOverState`                                      | State pattern models the game lifecycle and handles extra turns after game over |
 | Save and replay       | `SavedGameRepository`, `SavedGame`, `ReplayGameUseCase`                           | Replay stores configuration and dice rolls, then runs the game logic again      |
 
-A key design choice is that the player paths are generated rather than written out as fixed lists. This still matches the 5x5 and 6x6 examples, but it keeps the design open to other board sizes and avoids duplicating long path definitions for each player.
+A key design choice is that the player paths are generated rather than written out as fixed lists. This still matches
+the 5x5 and 6x6 examples, but it keeps the design open to other board sizes and avoids duplicating long path definitions
+for each player.
 
 ## 5. Design Patterns Used
 
 ### Strategy Pattern
 
 Strategy is used for `MovementRule`, `HitRule`, `TeleportRule`, `DiceShaker` and `PathStrategy`.
-`Game` depends on these interfaces rather than concrete classes, so the same game loop can run different rule combinations by handling variation with polymorphism instead of large conditional statements.
+`Game` depends on these interfaces rather than concrete classes, so the same game loop can run different rule
+combinations by handling variation with polymorphism instead of large conditional statements.
 
 ### State Pattern
-State is used through `GameState`, `ReadyState`, `InPlayState` and `GameOverState` making the game lifecycle explicit. Extra play attempts after the winner has been found are handled by `GameOverState` rather than having game-over checks throughout the code.
+
+State is used through `GameState`, `ReadyState`, `InPlayState` and `GameOverState` making the game lifecycle explicit.
+Extra play attempts after the winner has been found are handled by `GameOverState` rather than having game-over checks
+throughout the code.
 
 ### Factory Pattern
+
 Factories are used by `ConfiguredGameFactory`, `PlayerFactory`, `BoardFactory` and the dice factories.
-They keep object construction separate from use case logic meaning the use case can ask for a configured game without directly creating boards, players, rules or dice.
+They keep object construction separate from use case logic meaning the use case can ask for a configured game without
+directly creating boards, players, rules or dice.
 
 ### Repository Pattern
+
 `SavedGameRepository` is the repository abstraction for save/replay.
-`InMemorySavedGameRepository` and `JsonFileSavedGameRepository` are alternative adapters. The use cases can save and load games without knowing which storage mechanism is active.
+`InMemorySavedGameRepository` and `JsonFileSavedGameRepository` are alternative adapters. The use cases can save and
+load games without knowing which storage mechanism is active.
 
 ### Observer Pattern
+
 Observer is used through `GameEventPublisher` and `ConsoleGameEventObserver`.
-The domain publishes events describing what happened. The infrastructure layer observes those events and prints them to the console, keeping output separate from game logic.
+The domain publishes events describing what happened. The infrastructure layer observes those events and prints them to
+the console, keeping output separate from game logic.
 
 ### Decorator Pattern
+
 `ReversePathDecorator` wraps a `PathStrategy` and reverses its generated path.
-This avoids duplicating the path-building algorithm when a player needs to follow an existing route in the opposite direction.
+This avoids duplicating the path-building algorithm when a player needs to follow an existing route in the opposite
+direction.
 
 ### Value Objects
+
 `GameConfiguration`, `Wormhole`, `SavedGame` and the result records are used as value objects.
-They group related values together and make the contracts between classes clearer, especially for configuration, replay and turn results.
+They group related values together and make the contracts between classes clearer, especially for configuration, replay
+and turn results.
 
 ## 6. SOLID Principles
 
@@ -144,7 +165,8 @@ Those responsibilities are handled by infrastructure classes.
 
 ### Open/Closed Principle
 
-`Game` is open to new rule behaviour without changing its main loop. New movement, hit, teleport, dice or path behaviour can be added by creating another implementation of an existing interface such as `MovementRule`.
+`Game` is open to new rule behaviour without changing its main loop. New movement, hit, teleport, dice or path behaviour
+can be added by creating another implementation of an existing interface such as `MovementRule`.
 
 ### Liskov Substitution Principle
 
@@ -155,13 +177,15 @@ The rest of the application should not need to know which implementation has bee
 
 ### Interface Segregation Principle
 
-Interfaces are focused contracts rather than one large general interface. `MovementRule`, `HitRule`, `TeleportRule`, `DiceShaker`, `GameFactory`, and `SavedGameRepository` each describe one role.
+Interfaces are focused contracts rather than one large general interface. `MovementRule`, `HitRule`, `TeleportRule`,
+`DiceShaker`, `GameFactory`, and `SavedGameRepository` each describe one role.
 This means classes only depend on the operations they actually need.
 
 ### Dependency Inversion Principle
 
-Higher-level code depends on abstractions. `Game` depends on rule, dice and event interfaces, while the use cases 
-depend on `GameFactory` and `SavedGameRepository` ports. Spring Dependency Injection supplies the concrete infrastructure implementations from the outside.
+Higher-level code depends on abstractions. `Game` depends on rule, dice and event interfaces, while the use cases
+depend on `GameFactory` and `SavedGameRepository` ports. Spring Dependency Injection supplies the concrete
+infrastructure implementations from the outside.
 
 ## 7. Clean Architecture / Ports And Adapters
 
@@ -184,9 +208,9 @@ flowchart TD
  Infrastructure --> UseCase
  UseCase --> Domain
 
- classDef infrastructure fill:#1d4ed8,stroke:#1d4ed8,color:#111827
- classDef usecase fill:#15803d,stroke:#15803d,color:#111827
- classDef domain fill:#d97706,stroke:#d97706,color:#111827
+ classDef infrastructure fill:#1d4ed8,stroke:#1d4ed8,color:#ffffff
+ classDef usecase fill:#15803d,stroke:#15803d,color:#ffffff
+ classDef domain fill:#d97706,stroke:#d97706,color:#ffffff
 
  class Infrastructure infrastructure
  class UseCase usecase

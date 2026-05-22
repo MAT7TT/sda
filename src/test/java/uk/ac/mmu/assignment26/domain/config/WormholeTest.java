@@ -7,35 +7,26 @@ import org.junit.jupiter.api.Test;
 
 class WormholeTest {
 
-    @Test
-    void storesWormholePositions() {
-        Wormhole wormhole = new Wormhole(4, 9);
+  @Test
+  void storesWormholePositions() {
+    Wormhole wormhole = new Wormhole(4, 9);
 
-        assertEquals(4, wormhole.firstPosition());
-        assertEquals(9, wormhole.secondPosition());
-    }
+    assertEquals(4, wormhole.firstPosition());
+    assertEquals(9, wormhole.secondPosition());
+  }
 
-    @Test
-    void rejectsFirstPositionLessThanOne() {
-        assertThrows(
-                IllegalArgumentException.class,
-                () -> new Wormhole(0, 9)
-        );
-    }
+  @Test
+  void rejectsFirstPositionLessThanOne() {
+    assertThrows(IllegalArgumentException.class, () -> new Wormhole(0, 9));
+  }
 
-    @Test
-    void rejectsSecondPositionLessThanOne() {
-        assertThrows(
-                IllegalArgumentException.class,
-                () -> new Wormhole(4, 0)
-        );
-    }
+  @Test
+  void rejectsSecondPositionLessThanOne() {
+    assertThrows(IllegalArgumentException.class, () -> new Wormhole(4, 0));
+  }
 
-    @Test
-    void rejectsSameEndpoint() {
-        assertThrows(
-                IllegalArgumentException.class,
-                () -> new Wormhole(4, 4)
-        );
-    }
+  @Test
+  void rejectsSameEndpoint() {
+    assertThrows(IllegalArgumentException.class, () -> new Wormhole(4, 4));
+  }
 }

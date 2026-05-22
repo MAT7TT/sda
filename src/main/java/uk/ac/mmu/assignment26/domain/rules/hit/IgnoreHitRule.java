@@ -8,8 +8,8 @@ import uk.ac.mmu.assignment26.domain.rules.result.HitResult;
 /**
  * Hit rule for the basic game behaviour.
  *
- * <p>Hits are detected for output, but the current player is not moved back.
- * Multiple players may occupy the same board position.</p>
+ * <p>Hits are detected for output, but the current player is not moved back. Multiple players may
+ * occupy the same board position.
  */
 public class IgnoreHitRule implements HitRule {
 
@@ -19,8 +19,8 @@ public class IgnoreHitRule implements HitRule {
   }
 
   /**
-   * Checks whether the current player has hit another player without changing
-   * the current player's position.
+   * Checks whether the current player has hit another player without changing the current player's
+   * position.
    *
    * @param currentPlayer the player whose turn is being resolved
    * @param startTurnPathIndex the player's path index before the turn started

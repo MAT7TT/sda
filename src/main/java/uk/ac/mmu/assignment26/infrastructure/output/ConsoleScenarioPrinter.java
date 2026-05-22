@@ -9,8 +9,8 @@ import uk.ac.mmu.assignment26.usecase.SavedGame;
 /**
  * Prints scenario-level console output.
  *
- *<p>This class prints information before and after a game, while
- * turn-by-turn output is handled by the event observer.</p>
+ * <p>This class prints information before and after a game, while turn-by-turn output is handled by
+ * the event observer.
  */
 @Component
 public class ConsoleScenarioPrinter {
@@ -71,9 +71,9 @@ public class ConsoleScenarioPrinter {
     outputWriter.writeLine(configurationFormatter.formatRules(savedGame.configuration()));
     outputWriter.writeLine(
         "Dice: Replay "
-                + configurationFormatter.formatFixedDice(savedGame.configuration().diceType())
-                + " "
-                + formatDiceRolls(savedGame.diceRolls()));
+            + configurationFormatter.formatFixedDice(savedGame.configuration().diceType())
+            + " "
+            + formatDiceRolls(savedGame.diceRolls()));
   }
 
   /**
@@ -86,9 +86,7 @@ public class ConsoleScenarioPrinter {
     outputWriter.writeBlankLine();
   }
 
-  /**
-   * Prints a blank line.
-   */
+  /** Prints a blank line. */
   public void printBlankLine() {
     outputWriter.writeBlankLine();
   }

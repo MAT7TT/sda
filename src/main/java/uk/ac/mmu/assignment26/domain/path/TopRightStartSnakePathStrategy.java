@@ -11,7 +11,7 @@ import uk.ac.mmu.assignment26.domain.Board;
  */
 public class TopRightStartSnakePathStrategy implements PathStrategy {
   /**
-   * builds a top-right start boustrophedon path.
+   * Builds a top-right start boustrophedon path.
    *
    * @param board the board to build the path for
    * @return the ordered path positions

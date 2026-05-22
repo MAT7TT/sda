@@ -22,7 +22,8 @@ import uk.ac.mmu.assignment26.domain.state.ReadyState;
  * Coordinates one game simulation.
  *
  * <p>The game is the domain context for the selected dice, movement, teleport and hit strategies.
- * It owns the turn order, total turn count, winner detection, state transitions and domain event publication.</p>
+ * It owns the turn order, total turn count, winner detection, state transitions and domain event
+ * publication.
  */
 public class Game {
   private final Board board;
@@ -49,7 +50,8 @@ public class Game {
    * @param teleportRule the teleport rule strategy
    * @param hitRule the hit rule strategy
    * @param eventPublisher publisher for domain events
-   * @throws IllegalArgumentException if any required collaborator is null or the player list is empty
+   * @throws IllegalArgumentException if any required collaborator is null or the player list is
+   *     empty
    */
   public Game(
       Board board,
@@ -126,23 +128,17 @@ public class Game {
         winner.getName(), winner.getTurnCount(), totalTurns, List.copyOf(diceRolls));
   }
 
-  /**
-   * Requests the current state to start the game.
-   */
+  /** Requests the current state to start the game. */
   public void start() {
     state.start(this);
   }
 
-  /**
-   * Requests the current state to play one turn.
-   */
+  /** Requests the current state to play one turn. */
   public void playTurn() {
     state.playTurn(this);
   }
 
-  /**
-   * Requests the current state to finish the game.
-   */
+  /** Requests the current state to finish the game. */
   public void finish() {
     state.finish(this);
   }
@@ -150,7 +146,7 @@ public class Game {
   /**
    * Executes one turn while the game is in play.
    *
-   * <p>The rule order is movement, teleport, hit, then winner detection.</p>
+   * <p>The rule order is movement, teleport, hit, then winner detection.
    */
   public void executeTurn() {
     if (winner != null) {
@@ -220,8 +216,8 @@ public class Game {
   /**
    * Changes the current game state.
    *
-   * <p>This method is used by the State pattern implementations to move the game
-   * context between Ready, InPlay and GameOver.</p>
+   * <p>This method is used by the State pattern implementations to move the game context between
+   * Ready, InPlay and GameOver.
    *
    * @param state the new game state
    * @throws IllegalArgumentException if the state is null

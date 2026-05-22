@@ -11,7 +11,7 @@ import uk.ac.mmu.assignment26.usecase.ports.SavedGameRepository;
  * Use case for finding and replaying saved games.
  *
  * <p>Replay uses the saved configuration and dice rolls to rebuild and execute the game again. It
- * does not replay by printing stored console output.</p>
+ * does not replay by printing stored console output.
  */
 public class ReplayGameUseCase implements ReplayGame {
   private final GameFactory gameFactory;

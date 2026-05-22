@@ -6,9 +6,8 @@ import uk.ac.mmu.assignment26.domain.config.GameConfiguration;
 /**
  * Value object containing the data required to replay a completed game.
  *
- * <p>Replay stores the game configuration and dice rolls rather than storing
- * previous console output. This allows the replay use case to rebuild the game and execute
- * the game logic again.</p>
+ * <p>Replay stores the game configuration and dice rolls rather than storing previous console
+ * output. This allows the replay use case to rebuild the game and execute the game logic again.
  *
  * @param configuration the original game configuration
  * @param diceRolls the dice rolls used during the game

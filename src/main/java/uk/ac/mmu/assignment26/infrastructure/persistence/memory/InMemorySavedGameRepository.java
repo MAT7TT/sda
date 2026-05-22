@@ -8,7 +8,8 @@ import uk.ac.mmu.assignment26.usecase.ports.SavedGameRepository;
 
 /**
  * In-memory adapter for the saved game repository port.
- * <p>This adapter stores saved games only for the lifetime of the application.</p>
+ *
+ * <p>This adapter stores saved games only for the lifetime of the application.
  */
 public class InMemorySavedGameRepository implements SavedGameRepository {
   private final Map<Integer, SavedGame> savedGames = new HashMap<>();

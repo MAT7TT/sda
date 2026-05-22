@@ -7,8 +7,8 @@ import uk.ac.mmu.assignment26.domain.config.GameConfiguration;
 /**
  * Output port for creating configured domain games.
  *
- * <p>The use cases depend on abstraction instead of constructing
- * concrete domain and infrastructure objects directly.</p>
+ * <p>The use cases depend on abstraction instead of constructing concrete domain and infrastructure
+ * objects directly.
  */
 public interface GameFactory {
   /**
@@ -26,7 +26,8 @@ public interface GameFactory {
    * @param configuration the game configuration
    * @param fixedDiceRolls the dice rolls to use
    * @return the configured game
-   * @throws IllegalArgumentException if the configuration or fixed dice rolls break the factory contract
+   * @throws IllegalArgumentException if the configuration or fixed dice rolls break the factory
+   *     contract
    */
   Game createGame(GameConfiguration configuration, List<Integer> fixedDiceRolls);
 }

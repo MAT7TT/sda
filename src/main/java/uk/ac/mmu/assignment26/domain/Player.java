@@ -9,8 +9,8 @@ import uk.ac.mmu.assignment26.domain.path.PathStrategy;
 /**
  * Represents one player piece in the game.
  *
- * <p>A player owns its name, generated path, current path index and turn count.
- * The player protects the invariant that its current path index always refers to a valid position on its path.</p>
+ * <p>A player owns its name, generated path, current path index and turn count. The player protects
+ * the invariant that its current path index always refers to a valid position on its path.
  */
 public class Player {
   private final String name;

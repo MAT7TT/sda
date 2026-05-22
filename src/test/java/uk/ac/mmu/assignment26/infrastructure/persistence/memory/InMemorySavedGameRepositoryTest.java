@@ -15,68 +15,60 @@ import uk.ac.mmu.assignment26.usecase.SavedGame;
 
 class InMemorySavedGameRepositoryTest {
 
-    @Test
-    void savesGameAndReturnsGeneratedId() {
-        InMemorySavedGameRepository repository = new InMemorySavedGameRepository();
-        SavedGame savedGame = createSavedGame();
+  @Test
+  void savesGameAndReturnsGeneratedId() {
+    InMemorySavedGameRepository repository = new InMemorySavedGameRepository();
+    SavedGame savedGame = createSavedGame();
 
-        int id = repository.save(savedGame);
+    int id = repository.save(savedGame);
 
-        assertEquals(1, id);
-        assertEquals(savedGame, repository.findById(id).orElseThrow());
-    }
+    assertEquals(1, id);
+    assertEquals(savedGame, repository.findById(id).orElseThrow());
+  }
 
-    @Test
-    void generatesDifferentIdsForDifferentSavedGames() {
-        InMemorySavedGameRepository repository = new InMemorySavedGameRepository();
+  @Test
+  void generatesDifferentIdsForDifferentSavedGames() {
+    InMemorySavedGameRepository repository = new InMemorySavedGameRepository();
 
-        int firstId = repository.save(createSavedGame());
-        int secondId = repository.save(createSavedGame());
+    int firstId = repository.save(createSavedGame());
+    int secondId = repository.save(createSavedGame());
 
-        assertEquals(1, firstId);
-        assertEquals(2, secondId);
-    }
+    assertEquals(1, firstId);
+    assertEquals(2, secondId);
+  }
 
-    @Test
-    void returnsEmptyWhenSavedGameDoesNotExist() {
-        InMemorySavedGameRepository repository = new InMemorySavedGameRepository();
+  @Test
+  void returnsEmptyWhenSavedGameDoesNotExist() {
+    InMemorySavedGameRepository repository = new InMemorySavedGameRepository();
 
-        assertTrue(repository.findById(99).isEmpty());
-    }
+    assertTrue(repository.findById(99).isEmpty());
+  }
 
-    @Test
-    void rejectsNullSavedGame() {
-        InMemorySavedGameRepository repository = new InMemorySavedGameRepository();
+  @Test
+  void rejectsNullSavedGame() {
+    InMemorySavedGameRepository repository = new InMemorySavedGameRepository();
 
-        assertThrows(
-                IllegalArgumentException.class,
-                () -> repository.save(null)
-        );
-    }
+    assertThrows(IllegalArgumentException.class, () -> repository.save(null));
+  }
 
-    @Test
-    void rejectsInvalidSavedGameId() {
-        InMemorySavedGameRepository repository = new InMemorySavedGameRepository();
+  @Test
+  void rejectsInvalidSavedGameId() {
+    InMemorySavedGameRepository repository = new InMemorySavedGameRepository();
 
-        assertThrows(
-                IllegalArgumentException.class,
-                () -> repository.findById(0)
-        );
-    }
+    assertThrows(IllegalArgumentException.class, () -> repository.findById(0));
+  }
 
-    private SavedGame createSavedGame() {
-        return new SavedGame(
-                new GameConfiguration(
-                        5,
-                        5,
-                        2,
-                        DiceType.DOUBLE,
-                        EndRuleType.STANDARD,
-                        HitRuleType.IGNORE_HITS,
-                        TeleportRuleType.IGNORE_WORMHOLES,
-                        List.of()
-                ),
-                List.of(12, 10, 12)
-        );
-    }
+  private SavedGame createSavedGame() {
+    return new SavedGame(
+        new GameConfiguration(
+            5,
+            5,
+            2,
+            DiceType.DOUBLE,
+            EndRuleType.STANDARD,
+            HitRuleType.IGNORE_HITS,
+            TeleportRuleType.IGNORE_WORMHOLES,
+            List.of()),
+        List.of(12, 10, 12));
+  }
 }

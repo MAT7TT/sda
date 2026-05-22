@@ -12,8 +12,7 @@ import uk.ac.mmu.assignment26.usecase.ports.SavedGameRepository;
 /**
  * Spring configuration for persistence adapters.
  *
- * <p>The active Spring profile decides whether saved games are stored
- * in memory or in a JSON file.</p>
+ * <p>The active Spring profile decides whether saved games are stored in memory or in a JSON file.
  */
 @Configuration
 public class PersistenceConfiguration {

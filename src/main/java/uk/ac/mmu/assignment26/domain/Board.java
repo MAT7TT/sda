@@ -11,7 +11,7 @@ import uk.ac.mmu.assignment26.domain.config.Wormhole;
  *
  * <p>The board owns the row and column dimensions, the generated boustrophedon numbering and the
  * configured wormholes. Its main invariant is that all positions must be inside the board and all
- * wormholes must connect two valid, distinct, unblocked positions.</p>
+ * wormholes must connect two valid, distinct, unblocked positions.
  */
 public class Board {
   private final int[][] positions;
@@ -41,13 +41,13 @@ public class Board {
   /**
    * Add a two-way wormhole to the board.
    *
-   * <p>The blocked positions are usually player home and end positions. This Prevents wormholes
-   * being placed where the brief says they are not allowed.</p>
+   * <p>The blocked positions are usually player home and end positions. This prevents wormholes
+   * being placed where the brief says they are not allowed.
    *
    * @param wormhole the wormhole to add
    * @param blockedPositions positions that cannot be wormhole endpoints
    * @throws IllegalArgumentException if the wormhole is null, outside the board, reuses an
-   * endpoint, or uses a blocked position
+   *     endpoint, or uses a blocked position
    */
   public void addWormhole(Wormhole wormhole, List<Integer> blockedPositions) {
     validateWormhole(wormhole, blockedPositions);
@@ -109,7 +109,7 @@ public class Board {
   }
 
   /**
-   * Checks whether a position inside the board.
+   * Checks whether a position is inside the board.
    *
    * @param position the position to check
    * @return true if the position is between one and the number of cells

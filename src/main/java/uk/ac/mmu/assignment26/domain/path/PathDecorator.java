@@ -6,8 +6,8 @@ import uk.ac.mmu.assignment26.domain.Board;
 /**
  * Base class for path decorators.
  *
- * <p>A path decorator wraps another {@link PathStrategy} and changes the generated
- * path without changing the wrapped strategy.</p>
+ * <p>A path decorator wraps another {@link PathStrategy} and changes the generated path without
+ * changing the wrapped strategy.
  */
 public abstract class PathDecorator implements PathStrategy {
   protected final PathStrategy wrappedStrategy;

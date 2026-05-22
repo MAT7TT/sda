@@ -21,121 +21,111 @@ import uk.ac.mmu.assignment26.usecase.SavedGame;
 
 class JsonFileSavedGameRepositoryTest {
 
-    @TempDir
-    Path tempDir;
+  @TempDir Path tempDir;
 
-    @Test
-    void rejectsCorruptJsonFile() throws IOException {
-        Path filePath = tempDir.resolve("saved-games.json");
-        Files.writeString(filePath, "not valid json");
+  @Test
+  void rejectsCorruptJsonFile() throws IOException {
+    Path filePath = tempDir.resolve("saved-games.json");
+    Files.writeString(filePath, "not valid json");
 
-        assertThrows(
-                IllegalStateException.class,
-                () -> new JsonFileSavedGameRepository(filePath, new ObjectMapper())
-        );
-    }
+    assertThrows(
+        IllegalStateException.class,
+        () -> new JsonFileSavedGameRepository(filePath, new ObjectMapper()));
+  }
 
-    @Test
-    void savesGameToJsonFileAndFindsItById() {
-        Path filePath = tempDir.resolve("saved-games.json");
-        JsonFileSavedGameRepository repository =
-                new JsonFileSavedGameRepository(filePath, new ObjectMapper());
+  @Test
+  void savesGameToJsonFileAndFindsItById() {
+    Path filePath = tempDir.resolve("saved-games.json");
+    JsonFileSavedGameRepository repository =
+        new JsonFileSavedGameRepository(filePath, new ObjectMapper());
 
-        SavedGame savedGame = createSavedGame();
+    SavedGame savedGame = createSavedGame();
 
-        int id = repository.save(savedGame);
+    int id = repository.save(savedGame);
 
-        assertEquals(1, id);
-        assertTrue(Files.exists(filePath));
-        assertEquals(savedGame, repository.findById(id).orElseThrow());
-    }
+    assertEquals(1, id);
+    assertTrue(Files.exists(filePath));
+    assertEquals(savedGame, repository.findById(id).orElseThrow());
+  }
 
-    @Test
-    void loadsSavedGamesFromExistingJsonFile() {
-        Path filePath = tempDir.resolve("saved-games.json");
-        ObjectMapper objectMapper = new ObjectMapper();
+  @Test
+  void loadsSavedGamesFromExistingJsonFile() {
+    Path filePath = tempDir.resolve("saved-games.json");
+    ObjectMapper objectMapper = new ObjectMapper();
 
-        JsonFileSavedGameRepository firstRepository =
-                new JsonFileSavedGameRepository(filePath, objectMapper);
+    JsonFileSavedGameRepository firstRepository =
+        new JsonFileSavedGameRepository(filePath, objectMapper);
 
-        SavedGame savedGame = createSavedGame();
-        int id = firstRepository.save(savedGame);
+    SavedGame savedGame = createSavedGame();
+    int id = firstRepository.save(savedGame);
 
-        JsonFileSavedGameRepository secondRepository =
-                new JsonFileSavedGameRepository(filePath, objectMapper);
+    JsonFileSavedGameRepository secondRepository =
+        new JsonFileSavedGameRepository(filePath, objectMapper);
 
-        assertEquals(savedGame, secondRepository.findById(id).orElseThrow());
-    }
+    assertEquals(savedGame, secondRepository.findById(id).orElseThrow());
+  }
 
-    @Test
-    void continuesIdSequenceAfterLoadingExistingJsonFile() {
-        Path filePath = tempDir.resolve("saved-games.json");
-        ObjectMapper objectMapper = new ObjectMapper();
+  @Test
+  void continuesIdSequenceAfterLoadingExistingJsonFile() {
+    Path filePath = tempDir.resolve("saved-games.json");
+    ObjectMapper objectMapper = new ObjectMapper();
 
-        JsonFileSavedGameRepository firstRepository =
-                new JsonFileSavedGameRepository(filePath, objectMapper);
+    JsonFileSavedGameRepository firstRepository =
+        new JsonFileSavedGameRepository(filePath, objectMapper);
 
-        firstRepository.save(createSavedGame());
+    firstRepository.save(createSavedGame());
 
-        JsonFileSavedGameRepository secondRepository =
-                new JsonFileSavedGameRepository(filePath, objectMapper);
+    JsonFileSavedGameRepository secondRepository =
+        new JsonFileSavedGameRepository(filePath, objectMapper);
 
-        int secondId = secondRepository.save(createSavedGame());
+    int secondId = secondRepository.save(createSavedGame());
 
-        assertEquals(2, secondId);
-    }
+    assertEquals(2, secondId);
+  }
 
-    @Test
-    void createsParentDirectoriesWhenSaving() {
-        Path filePath = tempDir.resolve("nested").resolve("saved-games.json");
+  @Test
+  void createsParentDirectoriesWhenSaving() {
+    Path filePath = tempDir.resolve("nested").resolve("saved-games.json");
 
-        JsonFileSavedGameRepository repository =
-                new JsonFileSavedGameRepository(filePath, new ObjectMapper());
+    JsonFileSavedGameRepository repository =
+        new JsonFileSavedGameRepository(filePath, new ObjectMapper());
 
-        repository.save(createSavedGame());
+    repository.save(createSavedGame());
 
-        assertTrue(Files.exists(filePath));
-    }
+    assertTrue(Files.exists(filePath));
+  }
 
-    @Test
-    void rejectsNullSavedGame() {
-        Path filePath = tempDir.resolve("saved-games.json");
+  @Test
+  void rejectsNullSavedGame() {
+    Path filePath = tempDir.resolve("saved-games.json");
 
-        JsonFileSavedGameRepository repository =
-                new JsonFileSavedGameRepository(filePath, new ObjectMapper());
+    JsonFileSavedGameRepository repository =
+        new JsonFileSavedGameRepository(filePath, new ObjectMapper());
 
-        assertThrows(
-                IllegalArgumentException.class,
-                () -> repository.save(null)
-        );
-    }
+    assertThrows(IllegalArgumentException.class, () -> repository.save(null));
+  }
 
-    @Test
-    void rejectsInvalidSavedGameId() {
-        Path filePath = tempDir.resolve("saved-games.json");
+  @Test
+  void rejectsInvalidSavedGameId() {
+    Path filePath = tempDir.resolve("saved-games.json");
 
-        JsonFileSavedGameRepository repository =
-                new JsonFileSavedGameRepository(filePath, new ObjectMapper());
+    JsonFileSavedGameRepository repository =
+        new JsonFileSavedGameRepository(filePath, new ObjectMapper());
 
-        assertThrows(
-                IllegalArgumentException.class,
-                () -> repository.findById(0)
-        );
-    }
+    assertThrows(IllegalArgumentException.class, () -> repository.findById(0));
+  }
 
-    private SavedGame createSavedGame() {
-        return new SavedGame(
-                new GameConfiguration(
-                        5,
-                        5,
-                        2,
-                        DiceType.DOUBLE,
-                        EndRuleType.STANDARD,
-                        HitRuleType.IGNORE_HITS,
-                        TeleportRuleType.USE_WORMHOLES,
-                        List.of(new Wormhole(4, 9))
-                ),
-                List.of(12, 10, 12)
-        );
-    }
+  private SavedGame createSavedGame() {
+    return new SavedGame(
+        new GameConfiguration(
+            5,
+            5,
+            2,
+            DiceType.DOUBLE,
+            EndRuleType.STANDARD,
+            HitRuleType.IGNORE_HITS,
+            TeleportRuleType.USE_WORMHOLES,
+            List.of(new Wormhole(4, 9))),
+        List.of(12, 10, 12));
+  }
 }

@@ -14,71 +14,56 @@ import uk.ac.mmu.assignment26.domain.rules.teleport.WormholeTeleportRule;
 
 class RuleRegistryTest {
 
-    @Test
-    void rejectsNullMovementRuleList() {
-        assertThrows(
-                IllegalArgumentException.class,
-                () -> new RuleRegistry(
-                        null,
-                        List.of(new IgnoreHitRule()),
-                        List.of(new IgnoreTeleportRule())
-                )
-        );
-    }
+  @Test
+  void rejectsNullMovementRuleList() {
+    assertThrows(
+        IllegalArgumentException.class,
+        () ->
+            new RuleRegistry(
+                null, List.of(new IgnoreHitRule()), List.of(new IgnoreTeleportRule())));
+  }
 
-    @Test
-    void rejectsNullMovementRuleInsideList() {
-        assertThrows(
-                IllegalArgumentException.class,
-                () -> new RuleRegistry(
-                        Arrays.asList(new StandardEndMovementRule(), null),
-                        List.of(new IgnoreHitRule()),
-                        List.of(new IgnoreTeleportRule())
-                )
-        );
-    }
+  @Test
+  void rejectsNullMovementRuleInsideList() {
+    assertThrows(
+        IllegalArgumentException.class,
+        () ->
+            new RuleRegistry(
+                Arrays.asList(new StandardEndMovementRule(), null),
+                List.of(new IgnoreHitRule()),
+                List.of(new IgnoreTeleportRule())));
+  }
 
-    @Test
-    void rejectsDuplicateMovementRuleType() {
-        assertThrows(
-                IllegalArgumentException.class,
-                () -> new RuleRegistry(
-                        List.of(new StandardEndMovementRule(), new StandardEndMovementRule()),
-                        List.of(new IgnoreHitRule()),
-                        List.of(new IgnoreTeleportRule())
-                )
-        );
-    }
+  @Test
+  void rejectsDuplicateMovementRuleType() {
+    assertThrows(
+        IllegalArgumentException.class,
+        () ->
+            new RuleRegistry(
+                List.of(new StandardEndMovementRule(), new StandardEndMovementRule()),
+                List.of(new IgnoreHitRule()),
+                List.of(new IgnoreTeleportRule())));
+  }
 
-    @Test
-    void rejectsNullEndRuleTypeLookup() {
-        assertThrows(
-                IllegalArgumentException.class,
-                () -> createRegistry().getMovementRule(null)
-        );
-    }
+  @Test
+  void rejectsNullEndRuleTypeLookup() {
+    assertThrows(IllegalArgumentException.class, () -> createRegistry().getMovementRule(null));
+  }
 
-    @Test
-    void rejectsNullHitRuleTypeLookup() {
-        assertThrows(
-                IllegalArgumentException.class,
-                () -> createRegistry().getHitRule(null)
-        );
-    }
+  @Test
+  void rejectsNullHitRuleTypeLookup() {
+    assertThrows(IllegalArgumentException.class, () -> createRegistry().getHitRule(null));
+  }
 
-    @Test
-    void rejectsNullTeleportRuleTypeLookup() {
-        assertThrows(
-                IllegalArgumentException.class,
-                () -> createRegistry().getTeleportRule(null)
-        );
-    }
+  @Test
+  void rejectsNullTeleportRuleTypeLookup() {
+    assertThrows(IllegalArgumentException.class, () -> createRegistry().getTeleportRule(null));
+  }
 
-    private RuleRegistry createRegistry() {
-        return new RuleRegistry(
-                List.of(new StandardEndMovementRule(), new ExactEndBounceMovementRule()),
-                List.of(new IgnoreHitRule(), new ForfeitOnHitRule()),
-                List.of(new IgnoreTeleportRule(), new WormholeTeleportRule())
-        );
-    }
+  private RuleRegistry createRegistry() {
+    return new RuleRegistry(
+        List.of(new StandardEndMovementRule(), new ExactEndBounceMovementRule()),
+        List.of(new IgnoreHitRule(), new ForfeitOnHitRule()),
+        List.of(new IgnoreTeleportRule(), new WormholeTeleportRule()));
+  }
 }

@@ -11,8 +11,7 @@ import uk.ac.mmu.assignment26.domain.config.TeleportRuleType;
 /**
  * Formats game configuration details for console output.
  *
- * <p>This keeps presentation strings in the infrastructure layer rather than
- * in the domain model.</p>
+ * <p>This keeps presentation strings in the infrastructure layer rather than in the domain model.
  */
 @Component
 public class GameConfigurationFormatter {

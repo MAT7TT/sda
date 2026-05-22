@@ -6,8 +6,7 @@ import uk.ac.mmu.assignment26.domain.config.GameConfiguration;
 /**
  * Describes one demonstration scenario for the console runner.
  *
- * <p>A scenario contains a title, a game configuration and optionally a
- * fixed dice sequence.</p>
+ * <p>A scenario contains a title, a game configuration and optionally a fixed dice sequence.
  */
 public class GameScenario {
   private final String title;

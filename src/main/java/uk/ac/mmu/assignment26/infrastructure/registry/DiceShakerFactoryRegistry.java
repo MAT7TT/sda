@@ -12,19 +12,19 @@ import uk.ac.mmu.assignment26.infrastructure.dice.DiceShakerFactory;
 /**
  * Registry for dice shaker factories.
  *
- * <p>Spring supplies the concrete dice factories, and this registry maps each dice type
- * to the factory that creates the matching dice strategy.</p>
+ * <p>Spring supplies the concrete dice factories, and this registry maps each dice type to the
+ * factory that creates the matching dice strategy.
  */
 @Component
 public class DiceShakerFactoryRegistry {
   private final Map<DiceType, DiceShakerFactory> diceFactories = new EnumMap<>(DiceType.class);
 
-
   /**
    * Create a dice shaker factory registry.
+   *
    * @param diceFactories the available dice factories
-   * @throws IllegalArgumentException if the factory list is empty,
-   * contains null, or contains duplicate dice types
+   * @throws IllegalArgumentException if the factory list is empty, contains null, or contains
+   *     duplicate dice types
    */
   public DiceShakerFactoryRegistry(List<DiceShakerFactory> diceFactories) {
     if (diceFactories == null || diceFactories.isEmpty()) {

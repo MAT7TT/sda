@@ -15,7 +15,7 @@ import uk.ac.mmu.assignment26.domain.rules.teleport.TeleportRule;
  * Registry for configured rule strategies.
  *
  * <p>Spring supplies the concrete rule implementations, and this registry maps each rule type to
- * the matching concrete strategy.</p>
+ * the matching concrete strategy.
  */
 @Component
 public class RuleRegistry {
@@ -32,8 +32,8 @@ public class RuleRegistry {
    * @param movementRules movement rule strategies
    * @param hitRules hit rule strategies
    * @param teleportRules teleport rule strategies
-   * @throws IllegalArgumentException if a rule list is empty, contains null,
-   * or contains duplicate rule types
+   * @throws IllegalArgumentException if a rule list is empty, contains null, or contains duplicate
+   *     rule types
    */
   public RuleRegistry(
       List<MovementRule> movementRules, List<HitRule> hitRules, List<TeleportRule> teleportRules) {

@@ -15,14 +15,15 @@ import uk.ac.mmu.assignment26.domain.path.TopRightStartSnakePathStrategy;
 /**
  * Factory for creating the player layouts used by the assessment variations
  *
- * <p>The factory creates either the two-player Red/Blue setup or the
- * four-player Red/Blue/Yellow/Green setup and validate that player homes, ends and names are usable</p>
+ * <p>The factory creates either the two-player Red/Blue setup or the four-player
+ * Red/Blue/Yellow/Green setup and validate that player homes, ends and names are usable
  */
 @Component
 public class PlayerFactory {
 
   /**
    * Create players for the two-player game.
+   *
    * @param board the board the players will use
    * @return Red and Blue players in turn order
    * @throws IllegalArgumentException if the board or generated players are invalid

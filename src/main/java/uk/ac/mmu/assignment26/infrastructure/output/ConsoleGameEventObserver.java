@@ -16,8 +16,8 @@ import uk.ac.mmu.assignment26.domain.rules.result.TurnResult;
 /**
  * Observer that converts domain events into console output.
  *
- * <p>The domain publishes events describing what happened. This
- * infrastructure observer decides how those events are displayed.</p>
+ * <p>The domain publishes events describing what happened. This infrastructure observer decides how
+ * those events are displayed.
  */
 @Component
 public class ConsoleGameEventObserver {
@@ -26,14 +26,14 @@ public class ConsoleGameEventObserver {
   /**
    * Creates a console game event observer.
    *
-   * @param outputWriter write used to send lines to the console
+   * @param outputWriter writer used to send lines to the console
    */
   public ConsoleGameEventObserver(GameOutputWriter outputWriter) {
     this.outputWriter = outputWriter;
   }
 
   /**
-   * Handles the event publishes when a game starts.
+   * Handles the event published when a game starts.
    *
    * @param event the game started event
    */
@@ -190,6 +190,7 @@ public class ConsoleGameEventObserver {
 
   /**
    * Handles an attempt to play after the game has ended.
+   *
    * @param event
    */
   @EventListener

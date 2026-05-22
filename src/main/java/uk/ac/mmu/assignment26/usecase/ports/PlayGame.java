@@ -7,8 +7,8 @@ import uk.ac.mmu.assignment26.usecase.PlayGameResult;
 /**
  * Input port for playing a game.
  *
- * <p>This port is called by driving adapter, such as the console runner. It represents
- * the application use case for running a configured game to completion.</p>
+ * <p>This port is called by driving adapter, such as the console runner. It represents the
+ * application use case for running a configured game to completion.
  */
 public interface PlayGame {
   /**
@@ -26,7 +26,8 @@ public interface PlayGame {
    * @param configuration the game configuration to play
    * @param fixedDiceRolls the dice rolls to use
    * @return the saved game id and saved game data
-   * @throws IllegalArgumentException if the configuration or fixed dice rolls break the use case contract
+   * @throws IllegalArgumentException if the configuration or fixed dice rolls break the use case
+   *     contract
    */
   PlayGameResult play(GameConfiguration configuration, List<Integer> fixedDiceRolls);
 }
