@@ -2,70 +2,57 @@
 
 ## 1. Overview
 
-This is a Java console application that simulates the board game from the assessment brief.
-It runs the configured game scenarios, prints the progress of each game, saves completed games, and replays saved games
-using the original configuration and dice rolls.
+This project is a Java Spring Boot console application that simulates the board game.
+The application runs a set of demonstration games, prints each game to the console, saves completed games, and can replay a saved game using the original configuration and dice rolls.
+The design follows the Clean Architecture / Ports and Adapters style.
 
-The `domain` package contains the board, players, dice, paths game state machine.
-The `usecase` package coordinates playing and replaying games.
-The `infrastructure` package contains Spring configuration, console output, scenerio setup, factories, registries and
-persistence adapters.
+| Package          | Responsibility                                                                           |
+|------------------|------------------------------------------------------------------------------------------|
+| `domain`         | Board, players, paths, dice contracts, rules, state machine and game logic               |
+| `usecase`        | Application flow for playing, saving and replaying games                                 |
+| `infrastructure` | Spring configuration, console output, scenario setup, factories and persistence adapters |
 
-The implementation supports the required variations: single or double, standard or exact-end movement, ignored or
-forfeit-on-hit behaviour, ignored or active wormholes, and two-player or four-player board setups.
-It also attempts the advanced state machine and save/replay features.
+The implementation supports all required variations and also implements the advanced State pattern and save/replay features.
 
 ## 2. Key Classes And Responsibilities
 
-The main domain class is `Game`. It coordinates the gameplay loop, tracks the current player, counts turns, applies the
-selected rules correctly, detects the winner and publishes games events.
+The main static structure is split by responsibility. The domain classes model the game rules, while the use case and infrastructure classes coordinate application flow and technology details.
 
-`Board` represents the size and numbered positions of the board. It is responsible for checking whether positions are
-valid and for validating and storing wormhole positions.
+| Class / Interface             | Layer                  | Responsibility                                                                                              |
+|-------------------------------|------------------------|-------------------------------------------------------------------------------------------------------------|
+| `Game`                        | Domain                 | Coordinates turn order, dice rolls, rule application, winner detection, state transitions and domain events |
+| `Board`                       | Domain                 | Stores board dimensions and validates board positions and wormholes                                         |
+| `Player`                      | Domain                 | Stores a player's name, path, current path index and turn count                                             |
+| `GameConfiguration`           | Domain                 | Value object describing board size, player count, dice type, rule types and wormholes                       |
+| `MovementRule`                | Domain                 | Strategy interface for standard end or exact-end movement                                                   |
+| `HitRule`                     | Domain                 | Strategy interface for ignored hits or forfeit-on-hit behaviour                                             |
+| `TeleportRule`                | Domain                 | Strategy interface for ignored wormholes or active wormhole teleporting                                     |
+| `DiceShaker`                  | Domain                 | Strategy interface for random and fixed dice rolling                                                        |
+| `PathStrategy`                | Domain                 | Builds a player's boustrophedon path from the board size and starting corner                                |
+| `GameState`                   | Domain                 | State interface for `ReadyState`, `InPlayState` and `GameOverState`                                         |
+| `GameEventPublisher`          | Domain port            | Allows the domain to publish events without depending on Spring or console output                           |
+| `PlayGameUseCase`             | Use case               | Runs a configured game and saves the completed result                                                       |
+| `ReplayGameUseCase`           | Use case               | Loads a saved game and replays it using saved configuration and dice rolls                                  |
+| `SavedGameRepository`         | Use case port          | Abstract repository contract for saving and loading games                                                   |
+| `ConfiguredGameFactory`       | Infrastructure adapter | Builds a complete `Game` from a `GameConfiguration`                                                         |
+| `ConsoleGameRunner`           | Infrastructure adapter | Starts the console demonstration and calls the use case ports                                               |
+| `ConsoleGameEventObserver`    | Infrastructure adapter | Observes game events and writes readable console output                                                     |
+| `JsonFileSavedGameRepository` | Infrastructure adapter | Persists saved games to a JSON file                                                                         |
 
-`Player` represents a player. It stores the name, generated path, current path index and turn count. It does not decide
-how movement, hits or teleports work.
-
-`Game Configuration` describes one game setup. It stores board size, number of players, dice type, rule types and
-configured wormholes. This allows game scenarios to change.
-
-Rules interfaces `MovementRule`, `HitRule` and `TeleportRule` represent the main gameplay variations. Their concrete
-implementations define if the game uses standard or exact-end movement, ignored or forfeit-on-hit behaviour, and ignored
-or active wormholes.
-
-`PathStrategy` create a route followed by each player. This is important as players can start from different corners and
-move in different directions. The path logic also supports flexible board sizes instead of hardcoding fixed sizes.
-
-`DiceShaker` represents dice rolling. Random dice shakers are used for normal play, while `FixedDiceShaker` is used for
-testing, demonstrating scenarios and replay.
-
-The state classes `ReadyState`, `InPlayState` and `GameOverState` represent the lifecycle of a game. They are used so
-the game can move through the required states and reject extra play attempts after the game has ended.
-
-At the use case layer, `PlayGameUseCase` runs a configured game and saves the result. `ReplayGameUseCase` loads a saved
-game and replays it using the saved configuration and dice rolls.
-
-`SavedGameRepository` is the persistence port. The in-memory repository and JSON file repository are infrastructure
-adapters. This means the storage can be changed without changing the domain or use case code.
+The most important design decision is that `Game` depends on abstractions such as `MovementRule`, `HitRule`, `TeleportRule`, `DiceShaker` and `GameEventPublisher`. 
+This keeps the main game loop stable while allowing rule, dice and output behaviour to vary.
 
 ## 3. Successful Execution Flow
 
-The execution starts in `ConsoleGameRunner`, which acts as the console driving adapter. It asks the
-`GameScenarioProvider` for the configured scenario and then passes each `GameConfiguration` to `PlayGameUseCase`.
+A successful game is driven from the infrastructure layer into the use case layer, then into the domain model.
 
-Once the `Game` has been created, the use case calls `play()`. The game changes from ready to in-play state and then
-players take turns until a player reaches their end position.
-
-On each turn, the current player rolls the dice using `DiceShaker`. The selected `MovementRule` moves the player along
-their path. After movement, the selected `TeleportRule` checks if the player has landed on a wormhole. The selected
-`HitRule` then checks whether the move has caused a hit with another player.
-
-During the game, domain events are published through `GameEventPublisher`. The domain does not print to the console
-directly. Instead, the infrastructure observer receives the events and formats the console output.
-
-When a player wins, the games changes to the game-over state and returns a `GameResult`. `PlayGameUseCase` then saves
-the completed game through `SavedGameRepository` port. The repository stores the game configuration and dice rolls so
-that the game can be replayed later.
+1. `ConsoleGameRunner` selects a demonstration scenario.
+2. `PlayGameUseCase` asks `ConfiguredGameFactory` to create a `Game`.
+3. `Game` starts in `ReadyState` and moves into `InPlayState`.
+4. Each turn rolls dice, applies movement, teleport and hit rules, the publishes a turn event.
+5. When a player reaches their end position, the game publishes a win event and moves to `GameOverState`.
+6. `PlayGameUseCase` saves a `SavedGame` containing the configuration and dice rolls.
+7. `ReplayGameUseCase` can rebuild the game and replay it using the saved dice sequence.
 
 ```mermaid
 sequenceDiagram
@@ -98,135 +85,66 @@ sequenceDiagram
 
 ## 4. Variations and Advanced Features
 
-### Dice Variation
+Variations are selected through `GameConfiguration`, then mapped to the correct strategies by infrastructure factories and registries.
 
-The game supports both single six-sided die and two six-sided dice. This is reprented by `DiceType`.
-Random dice for normal simulation runs and fixed dice for demonstration scenarios, testing and replaying.
+| Feature               | Implementation                                                                    | Design point                                                                    |
+|-----------------------|-----------------------------------------------------------------------------------|---------------------------------------------------------------------------------|
+| Single or double dice | `DiceType`, `RandomSingleDiceShaker`, `RandomDoubleDiceShaker`, `FixedDiceShaker` | Dice rolling is hidden behind the `DiceShaker` strategy interface               |
+| Standard end          | `StandardEndMovementRule`                                                         | A player can win by landing on or overshooting the end position                 |
+| Exact end             | `ExactEndBounceMovementRule`                                                      | Overshoots bounce back along the same player path                               |
+| Ignored hits          | `IgnoreHitRule`                                                                   | Multiple players may occupy the same board position                             |
+| Forfeit on hit        | `ForfeitOnHitRule`                                                                | A player that would hit another player returns to their start-of-turn position  |
+| Ignored wormholes     | `IgnoreTeleportRule`                                                              | Wormholes can exist on the board but have no effect                             |
+| Active wormholes      | `WormholeTeleportRule`                                                            | Landing on either endpoint moves the player to the other endpoint               |
+| Two players           | `PlayerFactory.createTwoPlayerGamePlayers`                                        | Creates Red and Blue with opposite paths                                        |
+| Four players          | `PlayerFactory.createFourPlayerGamePlayers`                                       | Creates Red, Blue, Yellow and Green from different starting corners             |
+| Flexible board paths  | `PathStrategy` implementations                                                    | Paths are generated from board size rather than hardcoded strategies            |
+| Game state            | `ReadyState`, `InPlayState`, `GameOverState`                                      | State pattern models the game lifecycle and handles extra turns after game over |
+| Save and replay       | `SavedGameRepository`, `SavedGame`, `ReplayGameUseCase`                           | Replay stores configuration and dice rolls, then runs the game logic again      |
 
-### Exact End Variation
-
-The movement rule is selected through `Movement Rule`.
-`StandardEndMovementRule` allows player to win by landing on or overshooting the end position.
-`ExactEndBounceMovementRule` requires the play to land on the end position. If overshoots the player bounces back along
-the same path.
-
-### Hit Variation
-
-The hit rule is selected through `HitRule`.
-`IgnoreHitRule` allows more than one player to occupy the same board position.
-`ForfeitOnHitRule` makes the player return to position they were on before if they land on another player.
-
-### Teleport Variation
-
-The teleport rule is selected through `Teleport Rule`
-`IgnoreTeleportRule` means wormholes exist on the board but have no effect when a player lands on them.
-`WormholeTeleportRule` moves a player from one end of a wormhole to the other. Wormholes are configured as pairs of
-board positions.
-
-### Large Board and Four Players
-
-The implementation supports two and four player games. Two-player using Red and Blue players and four-players using Red,
-Blue, Yellow and Green player.
-The design uses path strategies to generate players path from the board size and starting corner making the board size
-and number of players variable.
-
-### Game State Advanced Feature
-
-A new game starts in the ready state. When play begins it moves into the in-play state. When a player wins it moves into
-the game-over state.
-If extra play attempts are made after the game has ended remaining turns output a game-over message.
-
-### Save and Replay Advanced Feature
-
-The implementation supports the save and replay feature. When a game finishes, the use case saves `SavedGame` containing
-the original `GameConfiguration` and the dice rolls.
-When replay is requested, `ReplayGameUseCase` loads the saved game, rebuilds the game using the saved game configuration
-and uses fixed dice to replay the same dice sequence.
+A key design choice is that the player paths are generated rather than written out as fixed lists. This still matches the 5x5 and 6x6 examples, but it keeps the design open to other board sizes and avoids duplicating long path definitions for each player.
 
 ## 5. Design Patterns Used
 
 ### Strategy Pattern
 
-The Strategy pattern is used for the main rule variations.
-The concrete Strategies are:
-
-- `StandardEndMovementRule` and `ExactEndBounceMovementRule`
-- `IgnoreHitRule` and `ForfeitOnHitRule`
-- `IgnoreTeleportRule` and `WormholeTeleportRule`
-
-This means different rule combinations can be selected without changing the main game loop.
-
-Dice rolling also uses Strategy. `Game` depends on `DiceShaker`, while `RandomSingleDiceShaker` and `FixedDiceShaker`
-provide different concrete rolling behaviour.
-
-`PathStrategy` is another use of Strategy.
-Instead of hardcoding Red, Blue, Green and Yellow paths, the path strategies generate paths from the board size and
-starting corner.
-This supports the boustrophedon track, odd/even row behaviour and flexible board sizes without duplicating path lists.
-
-### Decorator Pattern
-
-`ReversePathDecorator` uses the Decorator pattern
-It wraps an `existing `PathStrategy` and reverses the generated path. This reverses the path without changing the
-original strategy class or duplicating the path algorithm.
+Strategy is used for `MovementRule`, `HitRule`, `TeleportRule`, `DiceShaker` and `PathStrategy`
+`Game` depends on these interfaces rather than concrete classes, so the same game loop can run different rule combinations by handling variation with polymorphism instead of large conditional statements.
 
 ### State Pattern
-
-The State pattern is used for the game state machine.
-`GameState` is the abstract state interface. `ReadyState`, `InPlayState` and `GameOverState` are concrete states.
-This models the state transition explicitly opposed to using a boolean.
+State is used through `GameState`, `ReadyState`, `InPlayState` and `GameOverState` making the game lifecycle explicit. Extra play attempts after then winner has been found are handled by `GameOverState` rather than having game-over checks throughout the code.
 
 ### Factory Pattern
+Factories are used by `ConfiguredGameFactory`, `PlayerFactory`, `BoardFactory` and the dice factories.
+They keep object construction seperate from use case logic meaning the use case can ask for a configured game without directly creating boards, player, rules or dice.
 
-Factory classes are used to create configured objects.
-`ConfiguredGame` creates a complete `Game` from a `GameConfiguration`.
-`PlayerFactory` creates the correct players for two-player and four-player games.
-Dice shaker factories create the selected dice implementation.
-
-### Repository pattern
-
-The Repository pattern is used for saved games.
-`SavedGameRepository` is the abstract repository interface. The in-memory and JSON file repositories are concrete
-implementations.
-The use case depends on the repository abstraction, so the persistence mechanism can change without the application
-logic.
+### Repository Pattern
+`SavedGameRepository` is the repository abstraction for save/replay.
+`InMemorySavedGameRepository` and `JsonFileSavedRepository` are alternative adapters. The use cases can save and load games without knowing which storage mechanism is active.
 
 ### Observer Pattern
+Observer is used through `GameEventPublisher` and `ConsoleGameEventObserver`.
+The domain publishes events describing what happened. The infrastructure layer observers those events and prints them to the console, keeping output seperate from game logic.
 
-The Observer pattern is used for output.
-The domain publishes events through `GameEventPublisher`. The console observer receives those events and formats them
-for the console.
+### Decorator Pattern.
+`ReversePathDecorator` wraps a `PathStrategy` and reverses its generated path.
+This avoids duplicating the path-building algorithm when a player needs to follow an existing root in the opposite direction.
 
-### Value Object
-
-`GameConfiguration` describes a game setup. `Wormhole` describes a pair of connected board positions. Result objects
-such as `MoveResult`, `HitResult`, `TeleportResult` and `TurnResult` describe waht happened during a turn.
-These objects group related values together and make method contracts clearer.
-
-### Registry Classes
-
-`RuleRegisty` and `DiceShakerFactoryRegistry` are supporting design classes.
-They map configuration values to the correct concrete rule or factory. This keeps selection logic in one place and
-avoids spreading configuration `switch` statements through the use cases or domain.
+### Value Objects
+`GameConfiguration`, `Wormhole`, `SavedGame` and the result record are used as value objects.
+They group related values together and make the contracts between classes clearer, especially for configuration, replay and turn results.
 
 ## 6. SOLID Principles
 
 ### Single Responsibility Principle
 
-Each main class has one main reason to change.
-`Game` coordinates the gameplay flow.
-`Board` manages board size, positions and wormholes.
-`Player` manages one player's path position and turn count.
-`ConsoleGameEventObserver` is responsible for console output.
-`JsonFileSavedGameRepository` is responsible for JSON file persistence.
-This separation keep domain logic, presentation and persistence in different classes.
+Classes are kept focused so they have one main reason to change.
+For example `Game` coordinates the gameplay flow, but it does not have to print console output or save files.
+Those responsibilities are handled by infrastructure classes.
 
 ### Open/Closed principle
 
-`Game` is open to new rule behaviour as it works with the `MovementRule`, `HitRule`, `TeleportRule` and `DiceShaker`
-abstractions.
-New movement, hit, teleport or dice behaviour can be added as concrete implementations without rewriting the main game
-loop.
+`Game` is open to new rule behaviour without changing it main loop. New movement, hit, teleport, dice or path behaviour can be added by creating another implementation of an existing interface such as `MovementRule`.
 
 ### Liskov Substitution Principle
 
@@ -237,16 +155,13 @@ The rest of the application should not need to know which implementation has bee
 
 ### Interface Segregation Principle
 
-`MovementRule`, `HitRule`, `TeleportRule`, `DiceShaker`, `GameEventPublisher` and `SavedGameRepository` each describe a
-narrow contract.
-Classes only depend on the operations they actually need, rather than one large interface covering unrelated behaviour.
+Concrete implementations are substitutable through their interfaces.
+For example, `StandardEndMovementRule` and `ExactEndBounceMovementRule` can both be used wherever a `MovementRule` is required.
 
 ### Dependency Inversion Principle
 
-The domain and use case classes depend on abstract interfaces, while the concrete implementations are supplied from the
-outside by String Dependency Injection container.
-For example, `Game` depends on `MovementRule`, `HitRule`, `TeleportRule`, `DiceShaker` and `GameEventPublisher`.
-The use case depends on `GameFactory` and `SavedGameRepository`, rather than directly creating infrastructure classes.
+Higher-level code depends on abstractions. `Game` depends on rule, dice and event interfaces, while the use cases 
+depend on `GameFactory` and `SavedGameRepository` ports. Spring Dependency Injection supplies the concrete infrastructure implementations from the outside.
 
 ## 7. Clean Architecture / Ports And Adapters
 
@@ -319,7 +234,7 @@ generates paths from the board size and starting corner. This supports required 
 other valid board sizes.
 The main weakness is that scenario setup is still hardcoded in the infrastructure layer. This is acceptable for
 demonstrating but future versions could load scenarios from user input or a configured file.
-I would also add more full-game combination tests. THe current tests covers rules and validation but more end-to-end
+I would also add more full-game combination tests. The current tests covers rules and validation but more end-to-end
 scenarios would give confidence all variations work together.
 
 ## 10. Running The Application

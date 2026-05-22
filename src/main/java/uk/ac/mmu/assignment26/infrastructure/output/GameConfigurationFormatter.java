@@ -53,11 +53,11 @@ public class GameConfigurationFormatter {
   }
 
   public String formatFixedDice(DiceType diceType) {
-    if (diceType == diceType.SINGLE) {
-      return "Fixed sequence using a single 6 sided die.";
+    if (diceType == DiceType.SINGLE) {
+      return "Fixed sequence using a single 6 sided die";
     }
 
-    return "Fixed sequence using two 6 sided dice.";
+    return "Fixed sequence using two 6 sided dice";
   }
 
   private String formatBoard(GameConfiguration configuration) {
