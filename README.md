@@ -142,7 +142,7 @@ Classes are kept focused so they have one main reason to change.
 For example `Game` coordinates the gameplay flow, but it does not have to print console output or save files.
 Those responsibilities are handled by infrastructure classes.
 
-### Open/Closed principle
+### Open/Closed Principle
 
 `Game` is open to new rule behaviour without changing its main loop. New movement, hit, teleport, dice or path behaviour can be added by creating another implementation of an existing interface such as `MovementRule`.
 

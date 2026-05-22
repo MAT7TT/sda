@@ -25,7 +25,7 @@ public interface PlayGame {
    *
    * @param configuration the game configuration to play
    * @param fixedDiceRolls the dice rolls to use
-   * @return; the saved game id and saved game data
+   * @return the saved game id and saved game data
    * @throws IllegalArgumentException if the configuration or fixed dice rolls break the use case contract
    */
   PlayGameResult play(GameConfiguration configuration, List<Integer> fixedDiceRolls);

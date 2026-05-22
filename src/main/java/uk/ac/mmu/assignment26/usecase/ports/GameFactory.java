@@ -12,7 +12,7 @@ import uk.ac.mmu.assignment26.domain.config.GameConfiguration;
  */
 public interface GameFactory {
   /**
-   * Creates a game form the supplied configuration.
+   * Creates a game from the supplied configuration.
    *
    * @param configuration the game configuration
    * @return the configured game

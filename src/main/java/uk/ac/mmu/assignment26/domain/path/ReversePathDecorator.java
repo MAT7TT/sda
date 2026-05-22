@@ -23,7 +23,7 @@ public class ReversePathDecorator extends PathDecorator {
   }
 
   /**
-   * Builds and reverses the wrapped.
+   * Builds and reverses the wrapped path.
    *
    * @param board the board to build the path for
    * @return the reversed path

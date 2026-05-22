@@ -1,7 +1,7 @@
 package uk.ac.mmu.assignment26.domain.dice;
 
 /**
- * Dice strategy for a two six-sided dice.
+ * Dice strategy for two six-sided dice.
  *
  * <p>The roll is calculated by rolling two single dice and adding the results together.
  */
@@ -12,7 +12,7 @@ public class RandomDoubleDiceShaker implements DiceShaker {
   /**
    * Rolls two six-sided die
    *
-   * @return a random value from one to twelve
+   * @return a random value from two to twelve
    */
   @Override
   public int shake() {

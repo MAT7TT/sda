@@ -19,7 +19,7 @@ public class WormholeTeleportRule implements TeleportRule {
   }
 
   /**
-   * Apples the wormhole teleporting to the supplied player.
+   * Applies the wormhole teleporting to the supplied player.
    *
    * @param board the board containing configured wormholes
    * @param player the player whose position is being checked

@@ -11,13 +11,20 @@ import uk.ac.mmu.assignment26.usecase.SavedGame;
  */
 public interface SavedGameRepository {
   /**
-   * Finds a saved game by id.
+   * Saves a completed game.
    *
-   * @param savedGame the saved game id
-   * @return the saved game if one exists
-   * @throws IllegalArgumentException if the id is not positive
+   * @param savedGame the saved game data
+   * @return the assigned game id
+   * @throws IllegalArgumentException if the saved game is null
    */
   int save(SavedGame savedGame);
 
+  /**
+   * Finds a saved game by id.
+   *
+   * @param id the saved game id
+   * @return the saved game if one exists
+   * @throws IllegalArgumentException if the id is not positive
+   */
   Optional<SavedGame> findById(int id);
 }

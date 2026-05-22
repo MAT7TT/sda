@@ -23,12 +23,16 @@ public class IgnoreTeleportRule implements TeleportRule {
    * @param board the board containing configured wormholes
    * @param player the player whose position is being checked
    * @return a result showing that no teleport occurred
-   * @throws IllegalArgumentException if the player is null
+   * @throws IllegalArgumentException if the player or board is null
    */
   @Override
   public TeleportResult apply(Board board, Player player) {
     if (player == null) {
       throw new IllegalArgumentException("Player must not be null.");
+    }
+
+    if (board == null) {
+      throw new IllegalArgumentException("Board must not be null.");
     }
 
     return TeleportResult.notTeleported(player.getCurrentPosition());
