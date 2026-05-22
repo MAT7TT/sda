@@ -13,15 +13,34 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Factory for creating the player layouts uesd by the assessment variations
+ *
+ * <p>The factory creates either the two-player Red/Blue setup or the
+ * four-player Red/Blue/Yellow/Green setup and validate that player homes, ends and names are usable</p>
+ */
 @Component
 public class PlayerFactory {
 
+  /**
+   * Create players for the two-player game.
+   * @param board the board the players will use
+   * @return Red and Blue players in turn order
+   * @throws IllegalArgumentException if the board or generated players are invalid
+   */
   public List<Player> createTwoPlayerGamePlayers(Board board) {
     validateBoard(board);
 
     return validatePlayers(List.of(createRed(board), createBlue(board)));
   }
 
+  /**
+   * Create players for the four-player game.
+   *
+   * @param board the board the players will use
+   * @return Red, Blue, Yellow and Green players in turn order
+   * @throws IllegalArgumentException if the board or generated players are invalid.
+   */
   public List<Player> createFourPlayerGamePlayers(Board board) {
     validateBoard(board);
 

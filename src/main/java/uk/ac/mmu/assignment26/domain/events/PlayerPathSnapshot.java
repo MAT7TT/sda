@@ -2,6 +2,17 @@ package uk.ac.mmu.assignment26.domain.events;
 
 import java.util.List;
 
+/**
+ * Immutable snapshot of a player's path at game start.
+ *
+ * <p> This prevents output code from depending on mutable player
+ * objects after the event has been published.</p>
+ *
+ * @param playerName the player name
+ * @param pathPositions the ordered path positions
+ * @param homePosition the player's home position
+ * @param endPosition the player's end position
+ */
 public record PlayerPathSnapshot(
     String playerName, List<Integer> pathPositions, int homePosition, int endPosition) {
   public PlayerPathSnapshot {
@@ -13,8 +24,6 @@ public record PlayerPathSnapshot(
       throw new IllegalArgumentException("Path positions must not be empty.");
     }
 
-    // Makes copy of this.pathPositions as snapshot may still be pointing at original list and may
-    // be modifiable.
     pathPositions = List.copyOf(pathPositions);
   }
 }

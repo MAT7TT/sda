@@ -13,14 +13,30 @@ import uk.ac.mmu.assignment26.domain.rules.result.MoveResult;
 import uk.ac.mmu.assignment26.domain.rules.result.TeleportResult;
 import uk.ac.mmu.assignment26.domain.rules.result.TurnResult;
 
+/**
+ * Observer that converts domain events into console output.
+ *
+ * <p>The domain publishes events describing what happened. This
+ * infrastructure observer decides how those events are displayed</p>
+ */
 @Component
 public class ConsoleGameEventObserver {
   private final GameOutputWriter outputWriter;
 
+  /**
+   * Creates a console game event observer.
+   *
+   * @param outputWriter write used to send lines to the console
+   */
   public ConsoleGameEventObserver(GameOutputWriter outputWriter) {
     this.outputWriter = outputWriter;
   }
 
+  /**
+   * Handles the event publishes when a game starts.
+   *
+   * @param event the game started event
+   */
   @EventListener
   public void onGameStarted(GameStartedEvent event) {
     outputWriter.writeLine("Game");
@@ -31,11 +47,21 @@ public class ConsoleGameEventObserver {
     }
   }
 
+  /**
+   * Handles the game state transition event.
+   *
+   * @param event the state changed event
+   */
   @EventListener
   public void onGameStateChanged(GameStateChangedEvent event) {
     outputWriter.writeLine("Game State: " + event.from() + " -> " + event.to());
   }
 
+  /**
+   * Handles a completed turn event.
+   *
+   * @param event the completed turn event
+   */
   @EventListener
   public void onTurnCompleted(TurnCompletedEvent event) {
     TurnResult result = event.result();
@@ -150,6 +176,11 @@ public class ConsoleGameEventObserver {
     return sb.toString();
   }
 
+  /**
+   * Handles the event published when a player wins.
+   *
+   * @param event the game won event
+   */
   @EventListener
   public void onGameWon(GameWonEvent event) {
     outputWriter.writeLine(event.playerName() + " wins in " + event.playerTurns() + " turns.");
@@ -157,6 +188,10 @@ public class ConsoleGameEventObserver {
     outputWriter.writeLine("Total turns: " + event.totalTurns() + ".");
   }
 
+  /**
+   * Handles an attempt to play after the game has ended.
+   * @param event
+   */
   @EventListener
   public void onGameOverAttempted(GameOverAttemptedEvent event) {
     outputWriter.writeLine("Game Over.");

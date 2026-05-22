@@ -3,6 +3,11 @@ package uk.ac.mmu.assignment26.domain.state;
 import uk.ac.mmu.assignment26.domain.Game;
 import uk.ac.mmu.assignment26.domain.events.GameStateChangedEvent;
 
+/**
+ * State used before a game has started.
+ *
+ * <p>Starting or playing a turn from this state moves the game into {@link InPlayState}.</p>
+ */
 public class ReadyState implements GameState {
   @Override
   public void start(Game game) {

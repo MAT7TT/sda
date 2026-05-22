@@ -8,10 +8,23 @@ import uk.ac.mmu.assignment26.usecase.ports.SavedGameRepository;
 
 import java.util.Optional;
 
+/**
+ * Use case for finding and replaying saved games
+ *
+ * <p>Replay uses the saved configuration and dice rolls to rebuild and execute
+ * the game again. It does not replay by printing stored console output.</p>
+ */
 public class ReplayGameUseCase implements ReplayGame {
   private final GameFactory gameFactory;
   private final SavedGameRepository savedGameRepository;
 
+  /**
+   * Creates the replay-game use case.
+   *
+   * @param gameFactory used to rebuild saved games
+   * @param savedGameRepository repository used to load saved games
+   * @throws IllegalArgumentException if a required port is null
+   */
   public ReplayGameUseCase(GameFactory gameFactory, SavedGameRepository savedGameRepository) {
     if (gameFactory == null) {
       throw new IllegalArgumentException("Game factory must not be null.");
@@ -25,6 +38,13 @@ public class ReplayGameUseCase implements ReplayGame {
     this.savedGameRepository = savedGameRepository;
   }
 
+  /**
+   * Finds a saved game by id
+   *
+   * @param gameId the saved game id
+   * @return the saved game if one exists
+   * @throws IllegalArgumentException if the id is not positive
+   */
   @Override
   public Optional<SavedGame> findSavedGame(int gameId) {
     if (gameId <= 0) {
@@ -34,6 +54,13 @@ public class ReplayGameUseCase implements ReplayGame {
     return savedGameRepository.findById(gameId);
   }
 
+  /**
+   * Replays a saved game.
+   *
+   * @param gameId the saved game id
+   * @return the result produced by replaying the game
+   * @throws IllegalArgumentException if the id is not positive or no saved game exists for the id
+   */
   public GameResult replay(int gameId) {
     SavedGame savedGame =
         findSavedGame(gameId)

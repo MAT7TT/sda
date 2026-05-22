@@ -15,6 +15,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Console driving adapter for the application.
+ *
+ * <p>This class is started by Spring Boot and calls the play and replay use case ports.
+ * It demonstrates the configured scenarios and then replays the saved games.</p>
+ */
 @Component
 public class ConsoleGameRunner implements CommandLineRunner, Ordered {
   private final PlayGame playGame;
@@ -22,6 +28,14 @@ public class ConsoleGameRunner implements CommandLineRunner, Ordered {
   private final GameScenarioProvider scenarioProvider;
   private final ConsoleScenarioPrinter scenarioPrinter;
 
+  /**
+   * Create the console game runner.
+   *
+   * @param playGame play-game input port
+   * @param replayGame replay-game input port
+   * @param scenarioProvider provider for demonstrating scenarios
+   * @param scenarioPrinter printer for scenario-level output
+   */
   public ConsoleGameRunner(
       PlayGame playGame,
       ReplayGame replayGame,
@@ -33,6 +47,11 @@ public class ConsoleGameRunner implements CommandLineRunner, Ordered {
     this.scenarioPrinter = scenarioPrinter;
   }
 
+  /**
+   * Runs all configured scenarios and replays the saved games.
+   *
+   * @param args command line arguments supplied by Spring Boot
+   */
   @Override
   public void run(String... args) {
     List<Integer> savedGameIds = new ArrayList<>();
@@ -79,6 +98,11 @@ public class ConsoleGameRunner implements CommandLineRunner, Ordered {
     scenarioPrinter.printBlankLine();
   }
 
+  /**
+   * Gives this runner higher precedence when Spring starts command line runners.
+   * 
+   * @return the runner order
+   */
   @Override
   public int getOrder() {
     return Ordered.HIGHEST_PRECEDENCE;

@@ -2,6 +2,22 @@ package uk.ac.mmu.assignment26.domain.config;
 
 import java.util.List;
 
+/**
+ * Value object describing one game configuration
+ *
+ * <p>The configuration is used by the use case and factory layer to build a complete game.
+ * It records the board size, player count, dice variation, rule variations and configured wormholes.</p>
+ *
+ * @param rows rows the number of board rows
+ * @param columns columns the number of board columns
+ * @param numberOfPlayers the number of players, limited to two or four
+ * @param diceType the dice variation
+ * @param endRuleType the end-position rule variation
+ * @param hitRuleType the hit rule variation
+ * @param teleportRuleType the teleport rule variation
+ * @param wormholes the configured wormholes
+ * @throws IllegalArgumentException if any configured value breaks the game setup contract
+ */
 public record GameConfiguration(
     int rows,
     int columns,

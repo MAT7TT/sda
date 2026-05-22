@@ -11,12 +11,26 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * JSON file adapter for the saved game repository port.
+ *
+ * <p>This adapter persists saved games to a JSON file using Jackson.
+ * It is a driven adapter in the ports-and-adapters architecture.</p>
+ */
 public class JsonFileSavedGameRepository implements SavedGameRepository {
   private final Path filePath;
   private final ObjectMapper objectMapper;
   private final Map<Integer, SavedGame> savedGames;
   private int nextId;
 
+  /**
+   * Creates a JSON file saved game repository.
+   *
+   * @param filePath the JSON file path
+   * @param objectMapper the Jackson object mapper
+   * @throws IllegalArgumentException if the file path or object mapper is null
+   * @throws IllegalStateException if existing saved games cannot be read
+   */
   public JsonFileSavedGameRepository(Path filePath, ObjectMapper objectMapper) {
     if (filePath == null) {
       throw new IllegalArgumentException("File path must not be null.");
@@ -34,6 +48,14 @@ public class JsonFileSavedGameRepository implements SavedGameRepository {
     this.nextId = savedGameStore.nextId();
   }
 
+  /**
+   * Saves a game to the JSON file.
+   *
+   * @param savedGame the saved game data
+   * @return the assigned id
+   * @throws IllegalArgumentException if the saved game is null
+   * @throws IllegalStateException if the file cannot be written
+   */
   @Override
   public int save(SavedGame savedGame) {
     if (savedGame == null) {
@@ -49,6 +71,13 @@ public class JsonFileSavedGameRepository implements SavedGameRepository {
     return id;
   }
 
+  /**
+   * Finds a saved game loaded from the JSON file.
+   *
+   * @param id the saved game id
+   * @return the saved game if it exists
+   * @throws IllegalArgumentException if the id is not positive
+   */
   @Override
   public Optional<SavedGame> findById(int id) {
     if (id <= 0) {
@@ -86,6 +115,13 @@ public class JsonFileSavedGameRepository implements SavedGameRepository {
     }
   }
 
+  /**
+   * Value object representing the JSON file contents.
+   *
+   * @param nextId the next id to assign
+   * @param savedGames saved games indexed by id
+   * @throws IllegalArgumentException if the next id or saved game map is invalid
+   */
   public record SavedGameStore(int nextId, Map<Integer, SavedGame> savedGames) {
     public SavedGameStore {
       if (nextId <= 0) {

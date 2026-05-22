@@ -6,6 +6,12 @@ import uk.ac.mmu.assignment26.domain.rules.result.HitResult;
 
 import java.util.List;
 
+/**
+ * Hit rule for the forfeit-on-hit variation.
+ *
+ * <p>If the current player lands on another player, the current player
+ * is moved back to the path index they had at the start of the turn.</p>
+ */
 public class ForfeitOnHitRule implements HitRule {
 
   @Override
@@ -13,6 +19,15 @@ public class ForfeitOnHitRule implements HitRule {
     return HitRuleType.FORFEIT_ON_HIT;
   }
 
+  /**
+   * Checks whether the current player has hit another player and moves them back if required.
+   *
+   * @param currentPlayer the player whose turn is being resolved
+   * @param startTurnPathIndex the player's path index before the turn started
+   * @param players all players in the game
+   * @return the hit result
+   * @throws IllegalArgumentException if the current player, start index or player list is invalid
+   */
   @Override
   public HitResult apply(Player currentPlayer, int startTurnPathIndex, List<Player> players) {
     validateApply(currentPlayer, startTurnPathIndex, players);

@@ -5,6 +5,9 @@ import uk.ac.mmu.assignment26.domain.dice.DiceShaker;
 import uk.ac.mmu.assignment26.domain.config.DiceType;
 import uk.ac.mmu.assignment26.domain.dice.RandomSingleDiceShaker;
 
+/**
+ * Factory for creating single-die shakers.
+ */
 @Component
 public class SingleDiceShakerFactory implements DiceShakerFactory {
   @Override

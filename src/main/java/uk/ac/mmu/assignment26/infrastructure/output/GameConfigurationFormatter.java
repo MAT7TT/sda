@@ -9,9 +9,21 @@ import uk.ac.mmu.assignment26.domain.config.TeleportRuleType;
 
 import java.util.stream.Collectors;
 
+/**
+ * Formats game configuration details for console output.
+ *
+ * <p>This keeps presentation strings in the infrastructure layer rather than
+ * in the domain model.</p>
+ */
 @Component
 public class GameConfigurationFormatter {
 
+  /**
+   * Formats the configured board, player count, rules and wormholes.
+   *
+   * @param configuration the game configuration
+   * @return a readable rule summary
+   */
   public String formatRules(GameConfiguration configuration) {
     return "Board: "
         + formatBoard(configuration)
@@ -27,6 +39,12 @@ public class GameConfigurationFormatter {
         + formatWormholes(configuration);
   }
 
+  /**
+   * Formats a description of the random dice configuration.
+   *
+   * @param diceType the dice type
+   * @return a readable dice description
+   */
   public String formatRandomDice(DiceType diceType) {
     if (diceType == DiceType.SINGLE) {
       return "Single random 6 sided die";

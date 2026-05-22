@@ -4,10 +4,24 @@ import uk.ac.mmu.assignment26.domain.config.DiceType;
 
 import java.util.List;
 
+/**
+ * Dice strategy that returns a fixed sequence of rolls.
+ *
+ * <p>This is used for deterministic demonstrations, automated tests and replay. Each roll is validated against the
+ * configured dice type when the shaker is created.</p>
+ */
 public class FixedDiceShaker implements DiceShaker {
   private final List<Integer> rolls;
   private int currentIndex;
 
+  /**
+   * Creates a fixed dice shaker.
+   *
+   * @param rolls the fixed dice rolls to return
+   * @param diceType the dice type used to validate the roll range
+   * @throws IllegalArgumentException if the dice type is null, the roll list is empty, or any roll is invalid
+   * for the dice type.
+   */
   public FixedDiceShaker(List<Integer> rolls, DiceType diceType) {
     if (diceType == null) {
       throw new IllegalArgumentException("Dice type must not be null.");
@@ -38,6 +52,12 @@ public class FixedDiceShaker implements DiceShaker {
     }
   }
 
+  /**
+   * Returns the next fixed dice roll.
+   *
+   * @return the next roll in the sequence
+   * @throws IllegalStateException if all fixed rolls have already been used
+   */
   @Override
   public int shake() {
     if (currentIndex >= rolls.size()) {

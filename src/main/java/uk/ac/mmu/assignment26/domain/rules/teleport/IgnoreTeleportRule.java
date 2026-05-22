@@ -5,6 +5,11 @@ import uk.ac.mmu.assignment26.domain.Player;
 import uk.ac.mmu.assignment26.domain.config.TeleportRuleType;
 import uk.ac.mmu.assignment26.domain.rules.result.TeleportResult;
 
+/**
+ * Teleport rule for ignoring wormholes
+ *
+ * <p>Wormholes may exist on the board, but this rule leaves the player on their current position.</p>
+ */
 public class IgnoreTeleportRule implements TeleportRule {
 
   @Override
@@ -12,6 +17,14 @@ public class IgnoreTeleportRule implements TeleportRule {
     return TeleportRuleType.IGNORE_WORMHOLES;
   }
 
+  /**
+   * Returns a not-teleported result for the supplied player.
+   *
+   * @param board the board containing configured wormholes
+   * @param player the player whose position is being checked
+   * @return a result showing that no teleport occurred
+   * @throws IllegalArgumentException if the player is null
+   */
   @Override
   public TeleportResult apply(Board board, Player player) {
     if (player == null) {

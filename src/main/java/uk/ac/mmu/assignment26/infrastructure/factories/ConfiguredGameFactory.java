@@ -15,6 +15,12 @@ import uk.ac.mmu.assignment26.usecase.ports.GameFactory;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Infrastructure adapter that creates configured domain games.
+ *
+ * <p>This class implements the {@link GameFactory} port. It assembles
+ * the board, players, dice, rules, wormholes and event publisher needed by the domain {@link Game}</p>
+ */
 @Component
 public class ConfiguredGameFactory implements GameFactory {
   private final BoardFactory boardFactory;
@@ -23,6 +29,15 @@ public class ConfiguredGameFactory implements GameFactory {
   private final DiceShakerFactoryRegistry diceShakerFactoryRegistry;
   private final GameEventPublisher eventPublisher;
 
+  /**
+   * Create a configured game factory.
+   *
+   * @param boardFactory factory for board creation
+   * @param playerFactory factory for player creation
+   * @param ruleRegistry registry for selected rule strategies
+   * @param diceShakerFactoryRegistry registry for dice creation
+   * @param eventPublisher publisher used by created games
+   */
   public ConfiguredGameFactory(
       BoardFactory boardFactory,
       PlayerFactory playerFactory,
@@ -36,6 +51,12 @@ public class ConfiguredGameFactory implements GameFactory {
     this.eventPublisher = eventPublisher;
   }
 
+  /**
+   * Create a game using the dice type from the configuration
+   *
+   * @param configuration the game configuration
+   * @return the configured game
+   */
   @Override
   public Game createGame(GameConfiguration configuration) {
     DiceShaker diceShaker = diceShakerFactoryRegistry.createDiceShaker(configuration.diceType());
@@ -43,6 +64,12 @@ public class ConfiguredGameFactory implements GameFactory {
     return buildGame(configuration, diceShaker);
   }
 
+  /**
+   * Crreate a game using fixed dice rolls
+   * @param configuration the game configuration
+   * @param fixedDiceRolls the dice rolls to use
+   * @return the configured game
+   */
   @Override
   public Game createGame(GameConfiguration configuration, List<Integer> fixedDiceRolls) {
     DiceShaker diceShaker =

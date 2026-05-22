@@ -7,17 +7,34 @@ import uk.ac.mmu.assignment26.usecase.SavedGame;
 
 import java.util.List;
 
+/**
+ * Prints scenario-level console output.
+ *
+ *<p>This class prints information before and after a game, while
+ * turn-by-turn output is handled by the event observer</p>
+ */
 @Component
 public class ConsoleScenarioPrinter {
   private final GameOutputWriter outputWriter;
   private final GameConfigurationFormatter configurationFormatter;
 
+  /**
+   * Creates the scenario printer.
+   *
+   * @param outputWriter writer used to send output to the console
+   * @param configurationFormatter formatter for game configuration text
+   */
   public ConsoleScenarioPrinter(
       GameOutputWriter outputWriter, GameConfigurationFormatter configurationFormatter) {
     this.outputWriter = outputWriter;
     this.configurationFormatter = configurationFormatter;
   }
 
+  /**
+   * Prints the title, rule summary and dice information for a scenario
+   *
+   * @param scenario the scenario being started
+   */
   public void printScenarioStart(GameScenario scenario) {
     outputWriter.writeLine(scenario.title());
     outputWriter.writeLine(configurationFormatter.formatRules(scenario.configuration()));
@@ -30,12 +47,24 @@ public class ConsoleScenarioPrinter {
     }
   }
 
+  /**
+   * Prints the saved-game summary after a game finishes.
+   *
+   * @param gameId the saved game id
+   * @param savedGame the saved game data
+   */
   public void printSavedGame(int gameId, SavedGame savedGame) {
     outputWriter.writeLine("Dice rolls: " + formatDiceRolls(savedGame.diceRolls()));
     outputWriter.writeLine("Game Id: " + gameId + " saved.");
     outputWriter.writeBlankLine();
   }
 
+  /**
+   * Prints the heading and setup for a replay.
+   *
+   * @param gameId the saved game id being replayed
+   * @param savedGame the saved game data
+   */
   public void printReplayStart(int gameId, SavedGame savedGame) {
     outputWriter.writeLine("Replay Game Id: " + gameId);
     outputWriter.writeLine(configurationFormatter.formatRules(savedGame.configuration()));
@@ -43,11 +72,19 @@ public class ConsoleScenarioPrinter {
         "Dice: Replay sequence of dice rolls " + formatDiceRolls(savedGame.diceRolls()));
   }
 
+  /**
+   * Prints a message when a saved game cannot be found.
+   *
+   * @param gameId the missing saved game id
+   */
   public void printNoSavedGameFound(int gameId) {
     outputWriter.writeLine("No saved game found for id " + gameId);
     outputWriter.writeBlankLine();
   }
 
+  /**
+   * Prints a blank line.
+   */
   public void printBlankLine() {
     outputWriter.writeBlankLine();
   }

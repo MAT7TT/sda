@@ -9,10 +9,24 @@ import uk.ac.mmu.assignment26.usecase.ports.SavedGameRepository;
 
 import java.util.List;
 
+/**
+ * Use case for playing and saving a configured game.
+ *
+ * <p>The use case coordinates application flow. It asks the game factory to create
+ * a domain game, runs the game to completion and saves the configuration and dice rolls
+ * through the repository port.</p>
+ */
 public class PlayGameUseCase implements PlayGame {
   private final GameFactory gameFactory;
   private final SavedGameRepository savedGameRepository;
 
+  /**
+   * Create the play-game use case.
+   *
+   * @param gameFactory factory use to create configured games
+   * @param savedGameRepository used to save completed games
+   * @throws IllegalArgumentException if a required port is null
+   */
   public PlayGameUseCase(GameFactory gameFactory, SavedGameRepository savedGameRepository) {
     if (gameFactory == null) {
       throw new IllegalArgumentException("Game factory must not be null.");
@@ -26,6 +40,13 @@ public class PlayGameUseCase implements PlayGame {
     this.savedGameRepository = savedGameRepository;
   }
 
+  /**
+   * Plays a game using the dice behaviour selected by the configuration.
+   *
+   * @param configuration the game configuration to play
+   * @return the saved game result
+   * @throws IllegalArgumentException if the configuration is null
+   */
   public PlayGameResult play(GameConfiguration configuration) {
     validateConfiguration(configuration);
 
@@ -35,6 +56,16 @@ public class PlayGameUseCase implements PlayGame {
     return saveGame(configuration, result.diceRolls());
   }
 
+  /**
+   * Plays a game using a fixed dice sequence.
+   *
+   * <p>This method is used for deterministic demonstration scenarios and for replaying known dice sequence.</p>
+   *
+   * @param configuration the game configuration to play
+   * @param fixedDiceRolls the dice rolls to use
+   * @return the saved game result
+   * @throws IllegalArgumentException if the configuration is null or the fixed dice sequence is empty.
+   */
   public PlayGameResult play(GameConfiguration configuration, List<Integer> fixedDiceRolls) {
     validateConfiguration(configuration);
     validateFixedDiceRolls(fixedDiceRolls);

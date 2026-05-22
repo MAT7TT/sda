@@ -6,6 +6,12 @@ import uk.ac.mmu.assignment26.domain.rules.result.HitResult;
 
 import java.util.List;
 
+/**
+ * Hit rule for the basic game behaviour.
+ *
+ * <p>Hits are detected for output, but the current player is not moved back.
+ * Multiple players may occupy the same board position.</p>
+ */
 public class IgnoreHitRule implements HitRule {
 
   @Override
@@ -13,6 +19,16 @@ public class IgnoreHitRule implements HitRule {
     return HitRuleType.IGNORE_HITS;
   }
 
+  /**
+   * Checks whether the current player has hit another player without changing
+   * the current player's position.
+   *
+   * @param currentPlayer the player whose turn is being resolved
+   * @param startTurnPathIndex the player's path index before the turn started
+   * @param players all players in the game
+   * @return the hit result
+   * @throws IllegalArgumentException if the current player or player list is invalid
+   */
   @Override
   public HitResult apply(Player currentPlayer, int startTurnPathIndex, List<Player> players) {
     validateApply(currentPlayer, players);

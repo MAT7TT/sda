@@ -12,6 +12,12 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Registry for configured rule strategies.
+ *
+ * <p>Spring supplies the concrete rule implementations, and this registry maps each rule type to
+ * the matching concrete strategy.</p>
+ */
 @Component
 public class RuleRegistry {
   private final Map<EndRuleType, MovementRule> movementRules = new EnumMap<>(EndRuleType.class);
@@ -21,6 +27,15 @@ public class RuleRegistry {
   private final Map<TeleportRuleType, TeleportRule> teleportRules =
       new EnumMap<>(TeleportRuleType.class);
 
+  /**
+   * Create a rule registry from the avaliable concrete strategies.
+   *
+   * @param movementRules movement rule strategies
+   * @param hitRules hit rule strategies
+   * @param teleportRules teleport rule strategies
+   * @throws IllegalArgumentException if a rule list is empty, contains null,
+   * or contains duplicate rule types
+   */
   public RuleRegistry(
       List<MovementRule> movementRules, List<HitRule> hitRules, List<TeleportRule> teleportRules) {
     validateRuleList(movementRules, "Movement");
@@ -82,6 +97,13 @@ public class RuleRegistry {
     }
   }
 
+  /**
+   * Returns the movement rule for the supplied type.
+   *
+   * @param type the configured end rule type
+   * @return the matching movement rule
+   * @throws IllegalArgumentException if the type is null or unregistered
+   */
   public MovementRule getMovementRule(EndRuleType type) {
     if (type == null) {
       throw new IllegalArgumentException("End rule type must not be null.");
@@ -96,6 +118,13 @@ public class RuleRegistry {
     return rule;
   }
 
+  /**
+   * Returns the hit rule for the supplied type.
+   *
+   * @param type the configured hit rule type
+   * @return the matching hit rule
+   * @throws IllegalArgumentException if the type is null or unregistered
+   */
   public HitRule getHitRule(HitRuleType type) {
     if (type == null) {
       throw new IllegalArgumentException("Hit rule type must not be null.");
@@ -110,6 +139,13 @@ public class RuleRegistry {
     return rule;
   }
 
+  /**
+   * Returns the teleport rule for the supplied type.
+   *
+   * @param type the configured teleport rule type
+   * @return the matching teleport rule
+   * @throws IllegalArgumentException if the type is null or unregistered
+   */
   public TeleportRule getTeleportRule(TeleportRuleType type) {
     if (type == null) {
       throw new IllegalArgumentException("Teleport rule type must not be null.");

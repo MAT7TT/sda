@@ -4,6 +4,12 @@ import uk.ac.mmu.assignment26.domain.Player;
 import uk.ac.mmu.assignment26.domain.config.EndRuleType;
 import uk.ac.mmu.assignment26.domain.rules.result.MoveResult;
 
+/**
+ * Movement rule for the exact-end variation
+ *
+ * <p>A player must land exactly on the end position to win. If the roll overshoots the end,
+ * the player bounces back along the same path.</p>
+ */
 public class ExactEndBounceMovementRule implements MovementRule {
 
   @Override
@@ -11,6 +17,14 @@ public class ExactEndBounceMovementRule implements MovementRule {
     return EndRuleType.EXACT_END_BOUNCE;
   }
 
+  /**
+   * Moves the player forward, bouncing back if the roll overshoots the end position.
+   *
+   * @param player the player to move
+   * @param roll the dice roll for the turn
+   * @return the movement result, including whether the end was overshot
+   * @throws IllegalArgumentException if the player is null or the roll is not positive
+   */
   @Override
   public MoveResult move(Player player, int roll) {
     validateMove(player, roll);
@@ -43,7 +57,7 @@ public class ExactEndBounceMovementRule implements MovementRule {
     }
   }
 
-  // Accomodates smaller boards or bigger dice rolls by allowing multiple bounces.
+  // Accommodates smaller boards or bigger dice rolls by allowing multiple bounces.
   private int calculateBouncedIndex(int targetIndex, int endIndex) {
     int pathCycleLength = endIndex * 2;
     int positionInCycle = targetIndex % pathCycleLength;

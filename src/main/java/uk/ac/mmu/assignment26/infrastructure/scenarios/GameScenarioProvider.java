@@ -10,9 +10,20 @@ import uk.ac.mmu.assignment26.domain.config.Wormhole;
 
 import java.util.List;
 
+/**
+ * Provides the demonstration scenarios used by the console runner.
+ *
+ * <p>The scenarios are designed to show the required variations and advanced
+ * features.</p>
+ */
 @Component
 public class GameScenarioProvider {
 
+  /**
+   * Returns the scenarios to run.
+   *
+   * @return the configured demonstration scenarios
+   */
   public List<GameScenario> getScenarios() {
     return List.of(
         basicRedWinsInTwoTurns(),

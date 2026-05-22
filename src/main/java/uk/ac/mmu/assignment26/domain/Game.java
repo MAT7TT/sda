@@ -19,6 +19,12 @@ import uk.ac.mmu.assignment26.domain.state.ReadyState;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Coordinates one game simulation.
+ *
+ * <p>The game is the domain context for the selected dice, movement, teleport and hit strategies.
+ * It owns the turn order, total turn count, winner detection, state transitions and domain event publication</p>
+ */
 public class Game {
   private final Board board;
   private final List<Player> players;
@@ -34,6 +40,18 @@ public class Game {
   private int totalTurns;
   private Player winner;
 
+  /**
+   * Create a game from its required domain collaborators.
+   *
+   * @param board the board being played on
+   * @param players the players in turn order
+   * @param diceShaker the dice strategy
+   * @param movementRule the movement rule strategy
+   * @param teleportRule the teleport rule strategy
+   * @param hitRule the hit rule strategy
+   * @param eventPublisher publisher for domain events
+   * @throws IllegalArgumentException if any required collaborator is null or the player list is empty
+   */
   public Game(
       Board board,
       List<Player> players,
@@ -90,6 +108,11 @@ public class Game {
     this.totalTurns = 0;
   }
 
+  /**
+   * Plays the game until a player wins.
+   *
+   * @return the completed game result
+   */
   public GameResult play() {
     publishEvent(
         new GameStartedEvent(board.getRows(), board.getColumns(), createPlayerSnapshots()));
@@ -104,18 +127,32 @@ public class Game {
         winner.getName(), winner.getTurnCount(), totalTurns, List.copyOf(diceRolls));
   }
 
+  /**
+   * Requests the current state to start the game.
+   */
   public void start() {
     state.start(this);
   }
 
+  /**
+   * Requests the current state to play one turn.
+   */
   public void playTurn() {
     state.playTurn(this);
   }
 
+  /**
+   * Requests the current state to finish the game.
+   */
   public void finish() {
     state.finish(this);
   }
 
+  /**
+   * Executes one turn while the game is in play.
+   *
+   * <p>The rule order is movement, teleport, hit, then winner detection.</p>
+   */
   public void executeTurn() {
     if (winner != null) {
       return;
@@ -189,6 +226,11 @@ public class Game {
     this.state = state;
   }
 
+  /**
+   * Publishes a domain event through the configured event publisher.
+   *
+   * @param event the event to publish
+   */
   public void publishEvent(Object event) {
     eventPublisher.publish(event);
   }

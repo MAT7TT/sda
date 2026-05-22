@@ -7,12 +7,26 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Represents one player piece in the game.
+ *
+ * <p>A player owns its name, generated path, current path index and turn count.
+ * The player protects the invariant that its current path index always refers to a valid position on its path.</p>
+ */
 public class Player {
   private final String name;
   private final List<Integer> path;
   private int pathIndex;
   private int turnCount;
 
+  /**
+   * Creates a player with a path generated from the supplied strategy.
+   *
+   * @param name the player name
+   * @param board the board the player moves on
+   * @param pathStrategy the strategy used to build the player's path
+   * @throws IllegalArgumentException if the name, board, strategy or generated path is invalid
+   */
   public Player(String name, Board board, PathStrategy pathStrategy) {
     if (name == null || name.isBlank()) {
       throw new IllegalArgumentException("Player name must not be blank.");
@@ -78,6 +92,13 @@ public class Player {
     return path.getLast();
   }
 
+  /**
+   * Finds teh path index for a board position on this player's path.
+   *
+   * @param position the board position to find
+   * @return the index of the position on the player's path
+   * @throws IllegalArgumentException if the position is not on the path
+   */
   public int findPathIndexOfPosition(int position) {
     int index = path.indexOf(position);
 
@@ -92,6 +113,12 @@ public class Player {
     return pathIndex;
   }
 
+  /**
+   * Moves the player to a path index
+   *
+   * @param pathIndex the new path index
+   * @throws IllegalArgumentException if the index is outside the path
+   */
   public void setPathIndex(int pathIndex) {
     if (pathIndex < 0 || pathIndex >= path.size()) {
       throw new IllegalArgumentException("Path index is outside the player's path.");
@@ -116,6 +143,11 @@ public class Player {
     return turnCount;
   }
 
+  /**
+   * Returns a defensive copy of the player's path position.
+   *
+   * @return the ordered path positions
+   */
   public List<Integer> getPathPositions() {
     return List.copyOf(path);
   }

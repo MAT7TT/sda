@@ -3,6 +3,12 @@ package uk.ac.mmu.assignment26.domain.state;
 import uk.ac.mmu.assignment26.domain.Game;
 import uk.ac.mmu.assignment26.domain.events.GameStateChangedEvent;
 
+/**
+ * State used while a game is being played.
+ *
+ * <p>Turn requests are delegated to the game context.
+ * Finishing the game moves the context into {@link GameOverState}</p>
+ */
 public class InPlayState implements GameState {
   @Override
   public void start(Game game) {
