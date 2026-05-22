@@ -59,7 +59,7 @@ public class ConsoleGameRunner implements CommandLineRunner, Ordered {
       savedGameIds.add(runScenario(scenario));
     }
 
-    replaySavedGames(savedGameIds);
+    replaySavedGame(savedGameIds.getFirst());
   }
 
   private int runScenario(GameScenario scenario) {
@@ -76,12 +76,6 @@ public class ConsoleGameRunner implements CommandLineRunner, Ordered {
     scenarioPrinter.printSavedGame(result.gameId(), result.savedGame());
 
     return result.gameId();
-  }
-
-  private void replaySavedGames(List<Integer> savedGameIds) {
-    for (int gameId : savedGameIds) {
-      replaySavedGame(gameId);
-    }
   }
 
   private void replaySavedGame(int gameId) {

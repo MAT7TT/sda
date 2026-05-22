@@ -25,21 +25,13 @@ public class GameScenarioProvider {
    */
   public List<GameScenario> getScenarios() {
     return List.of(
-        basicRedWinsInTwoTurns(),
-        basicBlueWinsInTwoTurns(),
-        basicHitsAreIgnored(),
-        basicBlueWinsByOvershootingEnd(),
-        gameOverIgnoresExtraDiceRolls(),
-        singleDieVariation(),
-        randomDoubleDiceVariation(),
-        randomSingleDieVariation(),
-        largeBoardFourPlayerVariation(),
-        exactEndBounceVariation(),
-        forfeitOnHitVariation(),
-        wormholesIgnoredVariation(),
-        teleportThroughWormholesVariation(),
-        smallBoardMultipleVariations(),
-        largeBoardMultipleVariations());
+            gameOverIgnoresExtraDiceRolls(),
+            singleDieVariation(),
+            randomDoubleDiceVariation(),
+            exactEndBounceVariation(),
+            forfeitOnHitVariation(),
+            teleportThroughWormholesVariation(),
+            largeBoardFourPlayerVariation());
   }
 
   private GameScenario basicRedWinsInTwoTurns() {
