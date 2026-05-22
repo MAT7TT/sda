@@ -8,7 +8,7 @@ import uk.ac.mmu.assignment26.domain.Board;
 public class BoardFactory {
 
   /**
-   * Create a board with the supplied dimesions.
+   * Create a board with the supplied dimensions.
    *
    * @param rows the number of rows
    * @param columns the number of columns

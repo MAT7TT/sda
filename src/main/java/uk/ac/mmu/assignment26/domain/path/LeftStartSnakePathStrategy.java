@@ -7,7 +7,7 @@ import uk.ac.mmu.assignment26.domain.Board;
 public class LeftStartSnakePathStrategy implements PathStrategy {
 
   /**
-   * Builds the lower-left start boustrophedon path
+   * Builds the lower-left start boustrophedon path.
    *
    * @param board the board to build the path for
    * @return the ordered path positions

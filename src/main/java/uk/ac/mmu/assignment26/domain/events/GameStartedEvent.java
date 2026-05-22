@@ -7,7 +7,7 @@ import java.util.List;
  *
  * @param rows the number of board rows
  * @param columns the number of board columns
- * @param players snapshots of the players and their paths.
+ * @param players snapshots of the players and their paths
  */
 public record GameStartedEvent(int rows, int columns, List<PlayerPathSnapshot> players) {
   public GameStartedEvent {

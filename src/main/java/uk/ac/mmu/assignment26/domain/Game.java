@@ -22,7 +22,7 @@ import uk.ac.mmu.assignment26.domain.state.ReadyState;
  * Coordinates one game simulation.
  *
  * <p>The game is the domain context for the selected dice, movement, teleport and hit strategies.
- * It owns the turn order, total turn count, winner detection, state transitions and domain event publication</p>
+ * It owns the turn order, total turn count, winner detection, state transitions and domain event publication.</p>
  */
 public class Game {
   private final Board board;

@@ -19,7 +19,7 @@ public class FixedDiceShaker implements DiceShaker {
    * @param rolls the fixed dice rolls to return
    * @param diceType the dice type used to validate the roll range
    * @throws IllegalArgumentException if the dice type is null, the roll list is empty, or any roll is invalid
-   * for the dice type.
+   * for the dice type
    */
   public FixedDiceShaker(List<Integer> rolls, DiceType diceType) {
     if (diceType == null) {

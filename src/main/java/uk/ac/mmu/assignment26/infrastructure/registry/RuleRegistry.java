@@ -27,7 +27,7 @@ public class RuleRegistry {
       new EnumMap<>(TeleportRuleType.class);
 
   /**
-   * Create a rule registry from the avaliable concrete strategies.
+   * Create a rule registry from the available concrete strategies.
    *
    * @param movementRules movement rule strategies
    * @param hitRules hit rule strategies

@@ -12,7 +12,7 @@ import uk.ac.mmu.assignment26.domain.config.Wormhole;
 /**
  * Provides the demonstration scenarios used by the console runner.
  *
- * <p>The scenarios are designed to show the required variations and advanced features.
+ * <p>The scenarios are designed to show the required variations and advanced features.</p>
  */
 @Component
 public class GameScenarioProvider {

@@ -3,7 +3,7 @@ package uk.ac.mmu.assignment26.domain.state;
 import uk.ac.mmu.assignment26.domain.Game;
 
 /**
- * State interface for the game state machine
+ * State interface for the game state machine.
  *
  * <p>Concrete states define how the game responds to lifecycle operations while it is ready, in
  * play or game over.

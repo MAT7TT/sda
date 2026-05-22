@@ -17,7 +17,7 @@ import uk.ac.mmu.assignment26.domain.rules.result.TurnResult;
  * Observer that converts domain events into console output.
  *
  * <p>The domain publishes events describing what happened. This
- * infrastructure observer decides how those events are displayed</p>
+ * infrastructure observer decides how those events are displayed.</p>
  */
 @Component
 public class ConsoleGameEventObserver {

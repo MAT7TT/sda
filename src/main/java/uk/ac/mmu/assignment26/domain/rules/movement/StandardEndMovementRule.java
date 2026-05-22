@@ -7,7 +7,7 @@ import uk.ac.mmu.assignment26.domain.rules.result.MoveResult;
 /**
  * Movement rule for the basic end-position behaviour.
  *
- * <p>A player wins by landing on or overshooting the end position. If the roll would move beyond
+ * <p>A player wins by landing on or overshooting the end position. If the roll would move the player beyond
  * the end, the player is placed on the end position.
  */
 public class StandardEndMovementRule implements MovementRule {

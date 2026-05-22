@@ -9,7 +9,7 @@ import uk.ac.mmu.assignment26.domain.Board;
  * Decorator that reverses the path created by another path strategy.
  *
  * <p>This is used for players whose path is the reverse of an existing generated path, avoiding
- * duplicated path-building logic</p>
+ * duplicated path-building logic.</p>
  */
 public class ReversePathDecorator extends PathDecorator {
   /**
@@ -23,9 +23,10 @@ public class ReversePathDecorator extends PathDecorator {
   }
 
   /**
-   * Builds and reverses the wrapped
+   * Builds and reverses the wrapped.
+   *
    * @param board the board to build the path for
-   * @returnk the reversed path
+   * @return the reversed path
    */
   @Override
   public List<Integer> buildPath(Board board) {

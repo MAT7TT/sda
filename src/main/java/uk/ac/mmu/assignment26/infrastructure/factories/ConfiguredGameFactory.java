@@ -18,7 +18,7 @@ import uk.ac.mmu.assignment26.usecase.ports.GameFactory;
  * Infrastructure adapter that creates configured domain games.
  *
  * <p>This class implements the {@link GameFactory} port. It assembles
- * the board, players, dice, rules, wormholes and event publisher needed by the domain {@link Game}</p>
+ * the board, players, dice, rules, wormholes and event publisher needed by the domain {@link Game}.</p>
  */
 @Component
 public class ConfiguredGameFactory implements GameFactory {
@@ -51,7 +51,7 @@ public class ConfiguredGameFactory implements GameFactory {
   }
 
   /**
-   * Create a game using the dice type from the configuration
+   * Create a game using the dice type from the configuration.
    *
    * @param configuration the game configuration
    * @return the configured game
@@ -64,7 +64,8 @@ public class ConfiguredGameFactory implements GameFactory {
   }
 
   /**
-   * Create a game using fixed dice rolls
+   * Create a game using fixed dice rolls.
+   *
    * @param configuration the game configuration
    * @param fixedDiceRolls the dice rolls to use
    * @return the configured game

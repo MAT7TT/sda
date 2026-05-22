@@ -4,7 +4,7 @@ import java.util.List;
 import uk.ac.mmu.assignment26.domain.Board;
 
 /**
- * Strategy interface for building player paths
+ * Strategy interface for building player paths.
  *
  * <p>Concrete path strategies create a boustrophedon route from a particular starting side or
  * corner of the board.

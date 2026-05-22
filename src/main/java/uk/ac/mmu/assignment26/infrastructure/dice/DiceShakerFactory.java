@@ -8,7 +8,7 @@ import java.util.List;
 /** Factory interface for creating random dice shakers. */
 public interface DiceShakerFactory {
   /**
-   * Returns the dice type created by this factory
+   * Returns the dice type created by this factory.
    *
    * @return the dice type
    */

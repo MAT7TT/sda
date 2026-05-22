@@ -8,10 +8,10 @@ import uk.ac.mmu.assignment26.usecase.ports.ReplayGame;
 import uk.ac.mmu.assignment26.usecase.ports.SavedGameRepository;
 
 /**
- * Use case for finding and replaying saved games
+ * Use case for finding and replaying saved games.
  *
  * <p>Replay uses the saved configuration and dice rolls to rebuild and execute the game again. It
- * does not replay by printing stored console output.
+ * does not replay by printing stored console output.</p>
  */
 public class ReplayGameUseCase implements ReplayGame {
   private final GameFactory gameFactory;
@@ -38,7 +38,7 @@ public class ReplayGameUseCase implements ReplayGame {
   }
 
   /**
-   * Finds a saved game by id
+   * Finds a saved game by id.
    *
    * @param gameId the saved game id
    * @return the saved game if one exists

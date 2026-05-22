@@ -6,7 +6,7 @@ import uk.ac.mmu.assignment26.domain.config.TeleportRuleType;
 import uk.ac.mmu.assignment26.domain.rules.result.TeleportResult;
 
 /**
- * Teleport rule for ignoring wormholes
+ * Teleport rule for ignoring wormholes.
  *
  * <p>Wormholes may exist on the board, but this rule leaves the player on their current position.
  */

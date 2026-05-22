@@ -19,7 +19,7 @@ public record TeleportResult(boolean teleported, int from, int to) {
   }
 
   /**
-   * Creates a result for a successful teleport
+   * Creates a result for a successful teleport.
    *
    * @param from the wormhole entry position
    * @param to the wormhole exit position

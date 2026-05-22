@@ -113,7 +113,7 @@ public class Player {
   }
 
   /**
-   * Moves the player to a path index
+   * Moves the player to a path index.
    *
    * @param pathIndex the new path index
    * @throws IllegalArgumentException if the index is outside the path

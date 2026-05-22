@@ -49,7 +49,7 @@ A successful game is driven from the infrastructure layer into the use case laye
 1. `ConsoleGameRunner` selects a demonstration scenario.
 2. `PlayGameUseCase` asks `ConfiguredGameFactory` to create a `Game`.
 3. `Game` starts in `ReadyState` and moves into `InPlayState`.
-4. Each turn rolls dice, applies movement, teleport and hit rules, the publishes a turn event.
+4. Each turn rolls dice, applies movement, teleport and hit rules, then publishes a turn event.
 5. When a player reaches their end position, the game publishes a win event and moves to `GameOverState`.
 6. `PlayGameUseCase` saves a `SavedGame` containing the configuration and dice rolls.
 7. `ReplayGameUseCase` can rebuild the game and replay it using the saved dice sequence.
@@ -108,30 +108,30 @@ A key design choice is that the player paths are generated rather than written o
 
 ### Strategy Pattern
 
-Strategy is used for `MovementRule`, `HitRule`, `TeleportRule`, `DiceShaker` and `PathStrategy`
+Strategy is used for `MovementRule`, `HitRule`, `TeleportRule`, `DiceShaker` and `PathStrategy`.
 `Game` depends on these interfaces rather than concrete classes, so the same game loop can run different rule combinations by handling variation with polymorphism instead of large conditional statements.
 
 ### State Pattern
-State is used through `GameState`, `ReadyState`, `InPlayState` and `GameOverState` making the game lifecycle explicit. Extra play attempts after then winner has been found are handled by `GameOverState` rather than having game-over checks throughout the code.
+State is used through `GameState`, `ReadyState`, `InPlayState` and `GameOverState` making the game lifecycle explicit. Extra play attempts after the winner has been found are handled by `GameOverState` rather than having game-over checks throughout the code.
 
 ### Factory Pattern
 Factories are used by `ConfiguredGameFactory`, `PlayerFactory`, `BoardFactory` and the dice factories.
-They keep object construction seperate from use case logic meaning the use case can ask for a configured game without directly creating boards, player, rules or dice.
+They keep object construction separate from use case logic meaning the use case can ask for a configured game without directly creating boards, players, rules or dice.
 
 ### Repository Pattern
 `SavedGameRepository` is the repository abstraction for save/replay.
-`InMemorySavedGameRepository` and `JsonFileSavedRepository` are alternative adapters. The use cases can save and load games without knowing which storage mechanism is active.
+`InMemorySavedGameRepository` and `JsonFileSavedGameRepository` are alternative adapters. The use cases can save and load games without knowing which storage mechanism is active.
 
 ### Observer Pattern
 Observer is used through `GameEventPublisher` and `ConsoleGameEventObserver`.
-The domain publishes events describing what happened. The infrastructure layer observers those events and prints them to the console, keeping output seperate from game logic.
+The domain publishes events describing what happened. The infrastructure layer observes those events and prints them to the console, keeping output separate from game logic.
 
-### Decorator Pattern.
+### Decorator Pattern
 `ReversePathDecorator` wraps a `PathStrategy` and reverses its generated path.
-This avoids duplicating the path-building algorithm when a player needs to follow an existing root in the opposite direction.
+This avoids duplicating the path-building algorithm when a player needs to follow an existing route in the opposite direction.
 
 ### Value Objects
-`GameConfiguration`, `Wormhole`, `SavedGame` and the result record are used as value objects.
+`GameConfiguration`, `Wormhole`, `SavedGame` and the result records are used as value objects.
 They group related values together and make the contracts between classes clearer, especially for configuration, replay and turn results.
 
 ## 6. SOLID Principles
@@ -144,19 +144,19 @@ Those responsibilities are handled by infrastructure classes.
 
 ### Open/Closed principle
 
-`Game` is open to new rule behaviour without changing it main loop. New movement, hit, teleport, dice or path behaviour can be added by creating another implementation of an existing interface such as `MovementRule`.
+`Game` is open to new rule behaviour without changing its main loop. New movement, hit, teleport, dice or path behaviour can be added by creating another implementation of an existing interface such as `MovementRule`.
 
 ### Liskov Substitution Principle
 
 Concrete implementations can be used through their abstract interfaces.
-For example, `StandardEndMovement` and `ExactEndBounceMovementRule` can both be used wherever a `MovementRule` is
+For example, `StandardEndMovementRule` and `ExactEndBounceMovementRule` can both be used wherever a `MovementRule` is
 required.
 The rest of the application should not need to know which implementation has been given.
 
 ### Interface Segregation Principle
 
-Concrete implementations are substitutable through their interfaces.
-For example, `StandardEndMovementRule` and `ExactEndBounceMovementRule` can both be used wherever a `MovementRule` is required.
+Interfaces are focused contracts rather than one large general interface. `MovementRule`, `HitRule`, `TeleportRule`, `DiceShaker`, `GameFactory`, and `SavedGameRepository` each describe one role.
+This means classes only depend on the operations they actually need.
 
 ### Dependency Inversion Principle
 
@@ -211,15 +211,15 @@ those ports.
 `ConsoleGameRunner` is a driving adapter. It starts the application from the console side and calls the play and replay
 use case ports.
 `InMemorySavedGameRepository` and `JsonFileSavedGameRepository` are driven adapters. They are called by the use cases
-through the`SavedGameRepository` port.
+through the `SavedGameRepository` port.
 The JSON file adapter can be swapped with the in-memory adapter using Spring profiles. This demonstrates that the use
-case logic depends on the repository abstraction rather than on a specific storage mechanism
+case logic depends on the repository abstraction rather than on a specific storage mechanism.
 
 ## 8. Contracts, Validation and Exceptions
 
 A contract is what a class expects from callers and what callers can expect in return. Validation is used to protect
 important preconditions and class invariants.
-`IllegalArgurmentException` is used when a caller provides invalid input, such as an invalid board size, invalid dice
+`IllegalArgumentException` is used when a caller provides invalid input, such as an invalid board size, invalid dice
 roll, invalid rule type or invalid wormhole.
 `IllegalStateException` is used when the object is valid, but the operation is not valid in its current state. For
 example, `FixedDiceShaker` throws this when no fixed dice rolls are left.
@@ -227,14 +227,14 @@ These checks are used where invalid input would break a class contract, corrupt 
 
 ## 9. Evaluation
 
-The strongest part of the design is how variation is seperated from the main game flow. `Game` coordinates play, while
-movement, hit, teleport, dice and path behaviour are handled by seperate abstractions
+The strongest part of the design is how variation is separated from the main game flow. `Game` coordinates play, while
+movement, hit, teleport, dice and path behaviour are handled by separate abstractions.
 The most successful design choice is the path generation. Instead of hardcoding the example player paths, the project
 generates paths from the board size and starting corner. This supports required board sizes and keeps the design open to
 other valid board sizes.
 The main weakness is that scenario setup is still hardcoded in the infrastructure layer. This is acceptable for
 demonstrating but future versions could load scenarios from user input or a configured file.
-I would also add more full-game combination tests. The current tests covers rules and validation but more end-to-end
+I would also add more full-game combination tests. The current tests cover rules and validation but more end-to-end
 scenarios would give confidence all variations work together.
 
 ## 10. Running The Application

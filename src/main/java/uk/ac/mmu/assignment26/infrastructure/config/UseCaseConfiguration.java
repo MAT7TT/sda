@@ -18,7 +18,7 @@ import uk.ac.mmu.assignment26.usecase.ports.SavedGameRepository;
 public class UseCaseConfiguration {
 
   /**
-   * Create the play-game input port
+   * Create the play-game input port.
    *
    * @param gameFactory game factory port
    * @param savedGameRepository saved game repository port

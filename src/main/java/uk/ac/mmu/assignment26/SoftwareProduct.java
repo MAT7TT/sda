@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class SoftwareProduct {
 
   /**
-   * Starts the Spring Boot applcation
+   * Starts the Spring Boot application.
    *
    * @param args command line arguments
    */

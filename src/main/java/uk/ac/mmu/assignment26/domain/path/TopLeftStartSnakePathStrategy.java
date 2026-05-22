@@ -7,7 +7,7 @@ import uk.ac.mmu.assignment26.domain.Board;
  * Path strategy for players starting from the top-left corner.
  *
  * <p>The strategy chooses the correct base path for odd or even row counts, then reverses it so the
- * player starts at the top-left corner
+ * player starts at the top-left corner.
  */
 public class TopLeftStartSnakePathStrategy implements PathStrategy {
   /**

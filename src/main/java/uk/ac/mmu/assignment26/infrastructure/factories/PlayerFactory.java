@@ -13,7 +13,7 @@ import uk.ac.mmu.assignment26.domain.path.TopLeftStartSnakePathStrategy;
 import uk.ac.mmu.assignment26.domain.path.TopRightStartSnakePathStrategy;
 
 /**
- * Factory for creating the player layouts uesd by the assessment variations
+ * Factory for creating the player layouts used by the assessment variations
  *
  * <p>The factory creates either the two-player Red/Blue setup or the
  * four-player Red/Blue/Yellow/Green setup and validate that player homes, ends and names are usable</p>

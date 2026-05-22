@@ -8,7 +8,7 @@ import uk.ac.mmu.assignment26.usecase.SavedGame;
  * Input port for replaying saved games.
  *
  * <p>This port represents the application use case for finding and replaying games that were
- * previously saved.
+ * previously saved.</p>
  */
 public interface ReplayGame {
   /**

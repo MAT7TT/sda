@@ -10,7 +10,7 @@ public class RandomDoubleDiceShaker implements DiceShaker {
   private final DiceShaker secondDie = new RandomSingleDiceShaker();
 
   /**
-   * Rolls two six-sided die.
+   * Rolls two six-sided die
    *
    * @return a random value from one to twelve
    */

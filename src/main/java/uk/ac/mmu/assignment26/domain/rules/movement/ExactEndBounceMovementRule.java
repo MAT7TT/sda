@@ -5,7 +5,7 @@ import uk.ac.mmu.assignment26.domain.config.EndRuleType;
 import uk.ac.mmu.assignment26.domain.rules.result.MoveResult;
 
 /**
- * Movement rule for the exact-end variation
+ * Movement rule for the exact-end variation.
  *
  * <p>A player must land exactly on the end position to win. If the roll overshoots the end, the
  * player bounces back along the same path.

@@ -13,6 +13,7 @@ import uk.ac.mmu.assignment26.usecase.PlayGameResult;
 public interface PlayGame {
   /**
    * Plays a game using the game configuration.
+   *
    * @param configuration the game configuration to play
    * @return the saved game id and saved game data
    * @throws IllegalArgumentException if the configuration is null or breaks the use case contract
@@ -25,8 +26,7 @@ public interface PlayGame {
    * @param configuration the game configuration to play
    * @param fixedDiceRolls the dice rolls to use
    * @return; the saved game id and saved game data
-   * @throws IllegalArgumentException if the configuration or fixed dice rolls break
-   * the use case contract
+   * @throws IllegalArgumentException if the configuration or fixed dice rolls break the use case contract
    */
   PlayGameResult play(GameConfiguration configuration, List<Integer> fixedDiceRolls);
 }
