@@ -18,7 +18,7 @@ import uk.ac.mmu.assignment26.usecase.ports.ReplayGame;
  * Console driving adapter for the application.
  *
  * <p>This class is started by Spring Boot and calls the play and replay use case ports. It
- * demonstrates the configured scenarios and then replays the saved games.
+ * demonstrates the configured scenarios and then replays one saved game.
  */
 @Component
 public class ConsoleGameRunner implements CommandLineRunner, Ordered {
@@ -47,7 +47,7 @@ public class ConsoleGameRunner implements CommandLineRunner, Ordered {
   }
 
   /**
-   * Runs all configured scenarios and replays the saved games.
+   * Runs all configured scenarios and replays one saved game.
    *
    * @param args command line arguments supplied by Spring Boot
    */

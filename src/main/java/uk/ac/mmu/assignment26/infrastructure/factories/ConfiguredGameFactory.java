@@ -64,7 +64,7 @@ public class ConfiguredGameFactory implements GameFactory {
   }
 
   /**
-   * Crreate a game using fixed dice rolls
+   * Create a game using fixed dice rolls
    * @param configuration the game configuration
    * @param fixedDiceRolls the dice rolls to use
    * @return the configured game

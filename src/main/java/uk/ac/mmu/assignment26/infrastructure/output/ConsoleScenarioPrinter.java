@@ -40,7 +40,9 @@ public class ConsoleScenarioPrinter {
 
     if (scenario.usesFixedDice()) {
       outputWriter.writeLine(
-          "Fixed sequence of dice rolls " + formatDiceRolls(scenario.fixedDiceRolls()));
+          configurationFormatter.formatFixedDice(scenario.configuration().diceType())
+              + " "
+              + formatDiceRolls(scenario.fixedDiceRolls()));
     } else {
       printRandomDiceSummary(scenario.configuration().diceType());
     }
@@ -68,7 +70,10 @@ public class ConsoleScenarioPrinter {
     outputWriter.writeLine("Replay Game Id: " + gameId);
     outputWriter.writeLine(configurationFormatter.formatRules(savedGame.configuration()));
     outputWriter.writeLine(
-        "Dice: Replay sequence of dice rolls " + formatDiceRolls(savedGame.diceRolls()));
+        "Dice: Replay "
+                + configurationFormatter.formatFixedDice(savedGame.configuration().diceType())
+                + " "
+                + formatDiceRolls(savedGame.diceRolls()));
   }
 
   /**

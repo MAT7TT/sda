@@ -52,6 +52,14 @@ public class GameConfigurationFormatter {
     return "Two random 6 sided dice";
   }
 
+  public String formatFixedDice(DiceType diceType) {
+    if (diceType == diceType.SINGLE) {
+      return "Fixed sequence using a single 6 sided die.";
+    }
+
+    return "Fixed sequence using two 6 sided dice.";
+  }
+
   private String formatBoard(GameConfiguration configuration) {
     if (configuration.rows() == 5 && configuration.columns() == 5) {
       return "Small";
