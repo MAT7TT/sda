@@ -1,11 +1,10 @@
 package uk.ac.mmu.assignment26.infrastructure.output;
 
+import java.util.List;
 import org.springframework.stereotype.Component;
 import uk.ac.mmu.assignment26.domain.config.DiceType;
 import uk.ac.mmu.assignment26.infrastructure.scenarios.GameScenario;
 import uk.ac.mmu.assignment26.usecase.SavedGame;
-
-import java.util.List;
 
 /**
  * Prints scenario-level console output.

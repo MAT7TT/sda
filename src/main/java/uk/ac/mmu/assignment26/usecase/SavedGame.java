@@ -1,8 +1,7 @@
 package uk.ac.mmu.assignment26.usecase;
 
-import uk.ac.mmu.assignment26.domain.config.GameConfiguration;
-
 import java.util.List;
+import uk.ac.mmu.assignment26.domain.config.GameConfiguration;
 
 /**
  * Value object containing the data required to replay a completed game.

@@ -1,5 +1,8 @@
 package uk.ac.mmu.assignment26.infrastructure.driving;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.Ordered;
 import org.springframework.stereotype.Component;
@@ -11,15 +14,11 @@ import uk.ac.mmu.assignment26.usecase.SavedGame;
 import uk.ac.mmu.assignment26.usecase.ports.PlayGame;
 import uk.ac.mmu.assignment26.usecase.ports.ReplayGame;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
 /**
  * Console driving adapter for the application.
  *
- * <p>This class is started by Spring Boot and calls the play and replay use case ports.
- * It demonstrates the configured scenarios and then replays the saved games.</p>
+ * <p>This class is started by Spring Boot and calls the play and replay use case ports. It
+ * demonstrates the configured scenarios and then replays the saved games.
  */
 @Component
 public class ConsoleGameRunner implements CommandLineRunner, Ordered {
@@ -100,7 +99,7 @@ public class ConsoleGameRunner implements CommandLineRunner, Ordered {
 
   /**
    * Gives this runner higher precedence when Spring starts command line runners.
-   * 
+   *
    * @return the runner order
    */
   @Override

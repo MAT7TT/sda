@@ -1,14 +1,13 @@
 package uk.ac.mmu.assignment26.infrastructure.registry;
 
-import org.springframework.stereotype.Component;
-import uk.ac.mmu.assignment26.domain.dice.DiceShaker;
-import uk.ac.mmu.assignment26.domain.dice.FixedDiceShaker;
-import uk.ac.mmu.assignment26.infrastructure.dice.DiceShakerFactory;
-import uk.ac.mmu.assignment26.domain.config.DiceType;
-
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
+import org.springframework.stereotype.Component;
+import uk.ac.mmu.assignment26.domain.config.DiceType;
+import uk.ac.mmu.assignment26.domain.dice.DiceShaker;
+import uk.ac.mmu.assignment26.domain.dice.FixedDiceShaker;
+import uk.ac.mmu.assignment26.infrastructure.dice.DiceShakerFactory;
 
 /**
  * Registry for dice shaker factories.

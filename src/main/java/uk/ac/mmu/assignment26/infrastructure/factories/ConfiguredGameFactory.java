@@ -1,19 +1,18 @@
 package uk.ac.mmu.assignment26.infrastructure.factories;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.stereotype.Component;
 import uk.ac.mmu.assignment26.domain.Board;
-import uk.ac.mmu.assignment26.domain.dice.DiceShaker;
 import uk.ac.mmu.assignment26.domain.Game;
-import uk.ac.mmu.assignment26.domain.events.GameEventPublisher;
 import uk.ac.mmu.assignment26.domain.Player;
 import uk.ac.mmu.assignment26.domain.config.GameConfiguration;
 import uk.ac.mmu.assignment26.domain.config.Wormhole;
+import uk.ac.mmu.assignment26.domain.dice.DiceShaker;
+import uk.ac.mmu.assignment26.domain.events.GameEventPublisher;
 import uk.ac.mmu.assignment26.infrastructure.registry.DiceShakerFactoryRegistry;
 import uk.ac.mmu.assignment26.infrastructure.registry.RuleRegistry;
 import uk.ac.mmu.assignment26.usecase.ports.GameFactory;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Infrastructure adapter that creates configured domain games.

@@ -1,13 +1,12 @@
 package uk.ac.mmu.assignment26.infrastructure.output;
 
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 import uk.ac.mmu.assignment26.domain.config.DiceType;
 import uk.ac.mmu.assignment26.domain.config.EndRuleType;
 import uk.ac.mmu.assignment26.domain.config.GameConfiguration;
 import uk.ac.mmu.assignment26.domain.config.HitRuleType;
 import uk.ac.mmu.assignment26.domain.config.TeleportRuleType;
-
-import java.util.stream.Collectors;
 
 /**
  * Formats game configuration details for console output.

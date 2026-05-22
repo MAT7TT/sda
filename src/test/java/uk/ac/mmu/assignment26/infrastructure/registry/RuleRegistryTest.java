@@ -1,5 +1,9 @@
 package uk.ac.mmu.assignment26.infrastructure.registry;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import java.util.Arrays;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import uk.ac.mmu.assignment26.domain.rules.hit.ForfeitOnHitRule;
 import uk.ac.mmu.assignment26.domain.rules.hit.IgnoreHitRule;
@@ -7,11 +11,6 @@ import uk.ac.mmu.assignment26.domain.rules.movement.ExactEndBounceMovementRule;
 import uk.ac.mmu.assignment26.domain.rules.movement.StandardEndMovementRule;
 import uk.ac.mmu.assignment26.domain.rules.teleport.IgnoreTeleportRule;
 import uk.ac.mmu.assignment26.domain.rules.teleport.WormholeTeleportRule;
-
-import java.util.Arrays;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class RuleRegistryTest {
 

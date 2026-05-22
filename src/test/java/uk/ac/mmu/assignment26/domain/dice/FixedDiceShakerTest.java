@@ -1,14 +1,13 @@
 package uk.ac.mmu.assignment26.domain.dice;
 
-import org.junit.jupiter.api.Test;
-import uk.ac.mmu.assignment26.domain.config.DiceType;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import org.junit.jupiter.api.Test;
+import uk.ac.mmu.assignment26.domain.config.DiceType;
 
 class FixedDiceShakerTest {
 

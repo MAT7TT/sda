@@ -5,8 +5,8 @@ import java.util.List;
 /**
  * Immutable snapshot of a player's path at game start.
  *
- * <p> This prevents output code from depending on mutable player
- * objects after the event has been published.</p>
+ * <p>This prevents output code from depending on mutable player objects after the event has been
+ * published.
  *
  * @param playerName the player name
  * @param pathPositions the ordered path positions

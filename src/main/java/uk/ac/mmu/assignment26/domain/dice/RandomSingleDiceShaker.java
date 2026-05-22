@@ -5,7 +5,7 @@ import java.util.Random;
 /**
  * Dice strategy for a single six-sided die.
  *
- * <p>Each call returns a random value between one and sizx.</p>
+ * <p>Each call returns a random value between one and six.
  */
 public class RandomSingleDiceShaker implements DiceShaker {
   private final Random random = new Random();

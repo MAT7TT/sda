@@ -5,7 +5,8 @@ package uk.ac.mmu.assignment26.domain.config;
  *
  * @param firstPosition one endpoint of the wormhole
  * @param secondPosition the other endpoint of the wormhole
- * @throws IllegalArgumentException if either position is not positive or both endpoints are the same
+ * @throws IllegalArgumentException if either position is not positive or both endpoints are the
+ *     same
  */
 public record Wormhole(int firstPosition, int secondPosition) {
   public Wormhole {

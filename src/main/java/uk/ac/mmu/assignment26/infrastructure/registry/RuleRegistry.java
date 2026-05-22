@@ -1,5 +1,8 @@
 package uk.ac.mmu.assignment26.infrastructure.registry;
 
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
 import org.springframework.stereotype.Component;
 import uk.ac.mmu.assignment26.domain.config.EndRuleType;
 import uk.ac.mmu.assignment26.domain.config.HitRuleType;
@@ -7,10 +10,6 @@ import uk.ac.mmu.assignment26.domain.config.TeleportRuleType;
 import uk.ac.mmu.assignment26.domain.rules.hit.HitRule;
 import uk.ac.mmu.assignment26.domain.rules.movement.MovementRule;
 import uk.ac.mmu.assignment26.domain.rules.teleport.TeleportRule;
-
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Registry for configured rule strategies.

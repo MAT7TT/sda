@@ -3,8 +3,8 @@ package uk.ac.mmu.assignment26.infrastructure.output;
 /**
  * Output abstraction for writing game text.
  *
- * <p>This keeps console writing behind an interface so output formatting classes do
- * not depend directly on {@code System.out}.</p>
+ * <p>This keeps console writing behind an interface so output formatting classes do not depend
+ * directly on {@code System.out}.
  */
 public interface GameOutputWriter {
   /**
@@ -14,8 +14,6 @@ public interface GameOutputWriter {
    */
   void writeLine(String message);
 
-  /**
-   * Writes a blank line.
-   */
+  /** Writes a blank line. */
   void writeBlankLine();
 }

@@ -1,16 +1,15 @@
 package uk.ac.mmu.assignment26.domain.rules.hit;
 
+import java.util.List;
 import uk.ac.mmu.assignment26.domain.Player;
 import uk.ac.mmu.assignment26.domain.config.HitRuleType;
 import uk.ac.mmu.assignment26.domain.rules.result.HitResult;
 
-import java.util.List;
-
 /**
  * Hit rule for the forfeit-on-hit variation.
  *
- * <p>If the current player lands on another player, the current player
- * is moved back to the path index they had at the start of the turn.</p>
+ * <p>If the current player lands on another player, the current player is moved back to the path
+ * index they had at the start of the turn.
  */
 public class ForfeitOnHitRule implements HitRule {
 

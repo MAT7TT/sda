@@ -3,8 +3,8 @@ package uk.ac.mmu.assignment26.domain.dice;
 /**
  * Strategy interface for dice rolling
  *
- * <p>The game depends on this abstraction so that random dice and fixed dice
- * can be used interchangeably.</p>
+ * <p>The game depends on this abstraction so that random dice and fixed dice can be used
+ * interchangeably.
  */
 public interface DiceShaker {
   /**

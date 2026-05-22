@@ -7,8 +7,8 @@ import uk.ac.mmu.assignment26.domain.events.GameEventPublisher;
 /**
  * Spring adapter for publishing domain events.
  *
- * <p>The domain depends on {@link GameEventPublisher}. This adapter
- * forwards domain events to Spring's application event system.</p>
+ * <p>The domain depends on {@link GameEventPublisher}. This adapter forwards domain events to
+ * Spring's application event system.
  */
 @Component
 public class ApplicationGameEventPublisher implements GameEventPublisher {

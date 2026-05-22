@@ -1,5 +1,8 @@
 package uk.ac.mmu.assignment26.infrastructure.factories;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import org.springframework.stereotype.Component;
 import uk.ac.mmu.assignment26.domain.Board;
 import uk.ac.mmu.assignment26.domain.Player;
@@ -8,10 +11,6 @@ import uk.ac.mmu.assignment26.domain.path.PathStrategy;
 import uk.ac.mmu.assignment26.domain.path.RightStartSnakePathStrategy;
 import uk.ac.mmu.assignment26.domain.path.TopLeftStartSnakePathStrategy;
 import uk.ac.mmu.assignment26.domain.path.TopRightStartSnakePathStrategy;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 /**
  * Factory for creating the player layouts uesd by the assessment variations

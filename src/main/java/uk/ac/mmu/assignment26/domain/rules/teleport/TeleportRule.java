@@ -8,7 +8,7 @@ import uk.ac.mmu.assignment26.domain.rules.result.TeleportResult;
 /**
  * Strategy interface for teleport rules.
  *
- * <p>A teleport rule decides whether a player should move when they land on a wormhole</p>
+ * <p>A teleport rule decides whether a player should move when they land on a wormhole
  */
 public interface TeleportRule {
 

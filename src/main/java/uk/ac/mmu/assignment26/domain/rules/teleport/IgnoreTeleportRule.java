@@ -8,7 +8,7 @@ import uk.ac.mmu.assignment26.domain.rules.result.TeleportResult;
 /**
  * Teleport rule for ignoring wormholes
  *
- * <p>Wormholes may exist on the board, but this rule leaves the player on their current position.</p>
+ * <p>Wormholes may exist on the board, but this rule leaves the player on their current position.
  */
 public class IgnoreTeleportRule implements TeleportRule {
 

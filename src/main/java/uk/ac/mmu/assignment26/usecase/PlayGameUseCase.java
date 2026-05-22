@@ -1,13 +1,12 @@
 package uk.ac.mmu.assignment26.usecase;
 
+import java.util.List;
 import uk.ac.mmu.assignment26.domain.Game;
 import uk.ac.mmu.assignment26.domain.GameResult;
 import uk.ac.mmu.assignment26.domain.config.GameConfiguration;
 import uk.ac.mmu.assignment26.usecase.ports.GameFactory;
 import uk.ac.mmu.assignment26.usecase.ports.PlayGame;
 import uk.ac.mmu.assignment26.usecase.ports.SavedGameRepository;
-
-import java.util.List;
 
 /**
  * Use case for playing and saving a configured game.

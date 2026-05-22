@@ -15,8 +15,8 @@ import uk.ac.mmu.assignment26.domain.rules.teleport.WormholeTeleportRule;
 /**
  * Spring configuration for rule strategy beans.
  *
- * <p>The concrete rule implementations are registered with the
- * Dependency Injection container and later selected by the rule registry.</p>
+ * <p>The concrete rule implementations are registered with the Dependency Injection container and
+ * later selected by the rule registry.
  */
 @Configuration
 public class RuleConfiguration {

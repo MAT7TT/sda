@@ -1,8 +1,7 @@
 package uk.ac.mmu.assignment26.infrastructure.scenarios;
 
-import uk.ac.mmu.assignment26.domain.config.GameConfiguration;
-
 import java.util.List;
+import uk.ac.mmu.assignment26.domain.config.GameConfiguration;
 
 /**
  * Describes one demonstration scenario for the console runner.

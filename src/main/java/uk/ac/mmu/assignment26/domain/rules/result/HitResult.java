@@ -21,6 +21,7 @@ public record HitResult(boolean hit, String hitPlayerName, int hitPosition, int 
 
   /**
    * Creates a result for a turn where no hit occurred.
+   *
    * @param position the player's position
    * @return a no-hit result
    */

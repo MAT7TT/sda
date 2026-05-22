@@ -1,14 +1,13 @@
 package uk.ac.mmu.assignment26.domain.path;
 
-import uk.ac.mmu.assignment26.domain.Board;
-
 import java.util.List;
+import uk.ac.mmu.assignment26.domain.Board;
 
 /**
  * Path strategy for players starting from the top-right corner.
  *
- * <p>The strategy chooses the correct base path for odd or even row counts, then reverses it
- * so the player starts at the top-right corner.</p>
+ * <p>The strategy chooses the correct base path for odd or even row counts, then reverses it so the
+ * player starts at the top-right corner.
  */
 public class TopRightStartSnakePathStrategy implements PathStrategy {
   /**

@@ -1,10 +1,9 @@
 package uk.ac.mmu.assignment26.domain.rules.hit;
 
+import java.util.List;
 import uk.ac.mmu.assignment26.domain.Player;
 import uk.ac.mmu.assignment26.domain.config.HitRuleType;
 import uk.ac.mmu.assignment26.domain.rules.result.HitResult;
-
-import java.util.List;
 
 /**
  * Strategy interface for hit rules.

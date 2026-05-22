@@ -3,8 +3,8 @@ package uk.ac.mmu.assignment26.domain.config;
 /**
  * Configuration values for the dice variation.
  *
- * <p>Each dice type defines the valid range of a complete roll. A
- * single die accepts one to six, while two dice accept two to twelve.</p>
+ * <p>Each dice type defines the valid range of a complete roll. A single die accepts one to six,
+ * while two dice accept two to twelve.
  */
 public enum DiceType {
   /** A single six-sided die */

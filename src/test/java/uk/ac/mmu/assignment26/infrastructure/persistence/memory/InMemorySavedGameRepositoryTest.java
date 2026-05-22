@@ -1,5 +1,10 @@
 package uk.ac.mmu.assignment26.infrastructure.persistence.memory;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import uk.ac.mmu.assignment26.domain.config.DiceType;
 import uk.ac.mmu.assignment26.domain.config.EndRuleType;
@@ -7,12 +12,6 @@ import uk.ac.mmu.assignment26.domain.config.GameConfiguration;
 import uk.ac.mmu.assignment26.domain.config.HitRuleType;
 import uk.ac.mmu.assignment26.domain.config.TeleportRuleType;
 import uk.ac.mmu.assignment26.usecase.SavedGame;
-
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class InMemorySavedGameRepositoryTest {
 

@@ -1,8 +1,7 @@
 package uk.ac.mmu.assignment26.domain.dice;
 
-import uk.ac.mmu.assignment26.domain.config.DiceType;
-
 import java.util.List;
+import uk.ac.mmu.assignment26.domain.config.DiceType;
 
 /**
  * Dice strategy that returns a fixed sequence of rolls.

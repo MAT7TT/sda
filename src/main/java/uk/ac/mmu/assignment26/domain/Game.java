@@ -1,23 +1,22 @@
 package uk.ac.mmu.assignment26.domain;
 
+import java.util.ArrayList;
+import java.util.List;
 import uk.ac.mmu.assignment26.domain.dice.DiceShaker;
 import uk.ac.mmu.assignment26.domain.events.GameEventPublisher;
 import uk.ac.mmu.assignment26.domain.events.GameStartedEvent;
+import uk.ac.mmu.assignment26.domain.events.GameWonEvent;
 import uk.ac.mmu.assignment26.domain.events.PlayerPathSnapshot;
 import uk.ac.mmu.assignment26.domain.events.TurnCompletedEvent;
-import uk.ac.mmu.assignment26.domain.events.GameWonEvent;
 import uk.ac.mmu.assignment26.domain.rules.hit.HitRule;
 import uk.ac.mmu.assignment26.domain.rules.movement.MovementRule;
-import uk.ac.mmu.assignment26.domain.rules.teleport.TeleportRule;
 import uk.ac.mmu.assignment26.domain.rules.result.HitResult;
 import uk.ac.mmu.assignment26.domain.rules.result.MoveResult;
 import uk.ac.mmu.assignment26.domain.rules.result.TeleportResult;
 import uk.ac.mmu.assignment26.domain.rules.result.TurnResult;
+import uk.ac.mmu.assignment26.domain.rules.teleport.TeleportRule;
 import uk.ac.mmu.assignment26.domain.state.GameState;
 import uk.ac.mmu.assignment26.domain.state.ReadyState;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Coordinates one game simulation.
@@ -218,6 +217,15 @@ public class Game {
     currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
   }
 
+  /**
+   * Changes the current game state.
+   *
+   * <p>This method is used by the State pattern implementations to move the game
+   * context between Ready, InPlay and GameOver.</p>
+   *
+   * @param state the new game state
+   * @throws IllegalArgumentException if the state is null
+   */
   public void setState(GameState state) {
     if (state == null) {
       throw new IllegalArgumentException("Game state must not be null.");

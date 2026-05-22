@@ -1,17 +1,16 @@
 package uk.ac.mmu.assignment26.infrastructure.registry;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import java.util.Arrays;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import uk.ac.mmu.assignment26.domain.config.DiceType;
 import uk.ac.mmu.assignment26.domain.dice.DiceShaker;
 import uk.ac.mmu.assignment26.infrastructure.dice.DiceShakerFactory;
 import uk.ac.mmu.assignment26.infrastructure.dice.DoubleDiceShakerFactory;
 import uk.ac.mmu.assignment26.infrastructure.dice.SingleDiceShakerFactory;
-
-import java.util.Arrays;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class DiceShakerFactoryRegistryTest {
 

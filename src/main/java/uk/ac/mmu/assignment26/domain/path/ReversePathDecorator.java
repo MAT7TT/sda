@@ -1,10 +1,9 @@
 package uk.ac.mmu.assignment26.domain.path;
 
-import uk.ac.mmu.assignment26.domain.Board;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import uk.ac.mmu.assignment26.domain.Board;
 
 /**
  * Decorator that reverses the path created by another path strategy.

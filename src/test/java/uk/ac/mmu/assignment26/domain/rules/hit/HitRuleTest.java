@@ -1,16 +1,15 @@
 package uk.ac.mmu.assignment26.domain.rules.hit;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import java.util.Arrays;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import uk.ac.mmu.assignment26.domain.Board;
 import uk.ac.mmu.assignment26.domain.Player;
 import uk.ac.mmu.assignment26.domain.path.LeftStartSnakePathStrategy;
 import uk.ac.mmu.assignment26.domain.path.RightStartSnakePathStrategy;
-
-import java.util.Arrays;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class HitRuleTest {
 

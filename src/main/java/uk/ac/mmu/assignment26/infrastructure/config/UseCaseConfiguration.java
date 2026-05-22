@@ -12,7 +12,7 @@ import uk.ac.mmu.assignment26.usecase.ports.SavedGameRepository;
 /**
  * Spring configuration for use case beans.
  *
- * <p>The Spring Dependency injection container supplies the required ports to each use case.</p>
+ * <p>The Spring Dependency injection container supplies the required ports to each use case.
  */
 @Configuration
 public class UseCaseConfiguration {

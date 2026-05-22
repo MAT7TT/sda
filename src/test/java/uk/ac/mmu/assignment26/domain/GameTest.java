@@ -1,5 +1,9 @@
 package uk.ac.mmu.assignment26.domain;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import java.util.Arrays;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import uk.ac.mmu.assignment26.domain.dice.DiceShaker;
 import uk.ac.mmu.assignment26.domain.events.GameEventPublisher;
@@ -11,11 +15,6 @@ import uk.ac.mmu.assignment26.domain.rules.movement.MovementRule;
 import uk.ac.mmu.assignment26.domain.rules.movement.StandardEndMovementRule;
 import uk.ac.mmu.assignment26.domain.rules.teleport.IgnoreTeleportRule;
 import uk.ac.mmu.assignment26.domain.rules.teleport.TeleportRule;
-
-import java.util.Arrays;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class GameTest {
 

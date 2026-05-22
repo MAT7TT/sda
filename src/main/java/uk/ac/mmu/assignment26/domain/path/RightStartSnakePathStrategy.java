@@ -1,8 +1,7 @@
 package uk.ac.mmu.assignment26.domain.path;
 
-import uk.ac.mmu.assignment26.domain.Board;
-
 import java.util.List;
+import uk.ac.mmu.assignment26.domain.Board;
 
 /**
  * Path strategy for players starting from the lower-right side of the board.

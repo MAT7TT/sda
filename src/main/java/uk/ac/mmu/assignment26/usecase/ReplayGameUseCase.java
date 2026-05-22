@@ -1,18 +1,17 @@
 package uk.ac.mmu.assignment26.usecase;
 
+import java.util.Optional;
 import uk.ac.mmu.assignment26.domain.Game;
 import uk.ac.mmu.assignment26.domain.GameResult;
 import uk.ac.mmu.assignment26.usecase.ports.GameFactory;
 import uk.ac.mmu.assignment26.usecase.ports.ReplayGame;
 import uk.ac.mmu.assignment26.usecase.ports.SavedGameRepository;
 
-import java.util.Optional;
-
 /**
  * Use case for finding and replaying saved games
  *
- * <p>Replay uses the saved configuration and dice rolls to rebuild and execute
- * the game again. It does not replay by printing stored console output.</p>
+ * <p>Replay uses the saved configuration and dice rolls to rebuild and execute the game again. It
+ * does not replay by printing stored console output.
  */
 public class ReplayGameUseCase implements ReplayGame {
   private final GameFactory gameFactory;

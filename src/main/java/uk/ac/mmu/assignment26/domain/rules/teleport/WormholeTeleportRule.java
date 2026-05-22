@@ -8,7 +8,8 @@ import uk.ac.mmu.assignment26.domain.rules.result.TeleportResult;
 /**
  * Teleport rule for active wormholes.
  *
- * <p>If the player land on a wormhole endpoint, the player is moved to the other endpoint of the same wormhole.</p>
+ * <p>If the player lands on a wormhole endpoint, the player is moved to the other endpoint of the
+ * same wormhole.
  */
 public class WormholeTeleportRule implements TeleportRule {
 

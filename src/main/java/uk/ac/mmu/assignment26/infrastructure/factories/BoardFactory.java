@@ -3,9 +3,7 @@ package uk.ac.mmu.assignment26.infrastructure.factories;
 import org.springframework.stereotype.Component;
 import uk.ac.mmu.assignment26.domain.Board;
 
-/**
- * Factory for creating board instances.
- */
+/** Factory for creating board instances. */
 @Component
 public class BoardFactory {
 

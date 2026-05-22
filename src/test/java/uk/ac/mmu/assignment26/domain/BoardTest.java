@@ -1,11 +1,10 @@
 package uk.ac.mmu.assignment26.domain;
 
-import org.junit.jupiter.api.Test;
-import uk.ac.mmu.assignment26.domain.config.Wormhole;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import org.junit.jupiter.api.Test;
+import uk.ac.mmu.assignment26.domain.config.Wormhole;
 
 class BoardTest {
 

@@ -5,8 +5,8 @@ import java.util.List;
 /**
  * Value object describing one game configuration
  *
- * <p>The configuration is used by the use case and factory layer to build a complete game.
- * It records the board size, player count, dice variation, rule variations and configured wormholes.</p>
+ * <p>The configuration is used by the use case and factory layer to build a complete game. It
+ * records the board size, player count, dice variation, rule variations and configured wormholes.
  *
  * @param rows rows the number of board rows
  * @param columns columns the number of board columns

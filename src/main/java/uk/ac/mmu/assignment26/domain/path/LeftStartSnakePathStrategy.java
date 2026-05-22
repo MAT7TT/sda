@@ -1,12 +1,9 @@
 package uk.ac.mmu.assignment26.domain.path;
 
+import java.util.List;
 import uk.ac.mmu.assignment26.domain.Board;
 
-import java.util.List;
-
-/**
- * Path strategy for players starting from the lower-left side of the board.
- */
+/** Path strategy for players starting from the lower-left side of the board. */
 public class LeftStartSnakePathStrategy implements PathStrategy {
 
   /**

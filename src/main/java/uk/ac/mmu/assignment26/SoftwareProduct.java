@@ -3,9 +3,7 @@ package uk.ac.mmu.assignment26;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-/**
- * Spring Boot entry point for the software product.
- */
+/** Spring Boot entry point for the software product. */
 @SpringBootApplication
 public class SoftwareProduct {
 

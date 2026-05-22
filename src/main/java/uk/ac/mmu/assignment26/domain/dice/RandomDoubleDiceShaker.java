@@ -3,7 +3,7 @@ package uk.ac.mmu.assignment26.domain.dice;
 /**
  * Dice strategy for a two six-sided dice.
  *
- * <p>The roll ;is calculated by rolling two single dice and adding the results together.</p>
+ * <p>The roll is calculated by rolling two single dice and adding the results together.
  */
 public class RandomDoubleDiceShaker implements DiceShaker {
   private final DiceShaker firstDie = new RandomSingleDiceShaker();

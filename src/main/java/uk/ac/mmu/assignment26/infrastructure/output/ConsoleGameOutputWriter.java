@@ -3,9 +3,7 @@ package uk.ac.mmu.assignment26.infrastructure.output;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
-/**
- * Console implementation of the game output writer.
- */
+/** Console implementation of the game output writer. */
 @Component
 @Primary
 public class ConsoleGameOutputWriter implements GameOutputWriter {
@@ -20,9 +18,7 @@ public class ConsoleGameOutputWriter implements GameOutputWriter {
     System.out.println(message);
   }
 
-  /**
-   * Writes a blank line to standard output.
-   */
+  /** Writes a blank line to standard output. */
   @Override
   public void writeBlankLine() {
     System.out.println();

@@ -1,14 +1,14 @@
 package uk.ac.mmu.assignment26.usecase.ports;
 
+import java.util.Optional;
 import uk.ac.mmu.assignment26.domain.GameResult;
 import uk.ac.mmu.assignment26.usecase.SavedGame;
-
-import java.util.Optional;
 
 /**
  * Input port for replaying saved games.
  *
- * <p>This port represents the application use case for finding and replaying games that were previously saved.</p>
+ * <p>This port represents the application use case for finding and replaying games that were
+ * previously saved.
  */
 public interface ReplayGame {
   /**

@@ -1,5 +1,10 @@
 package uk.ac.mmu.assignment26.usecase;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import uk.ac.mmu.assignment26.domain.Board;
 import uk.ac.mmu.assignment26.domain.Game;
@@ -17,12 +22,6 @@ import uk.ac.mmu.assignment26.domain.rules.movement.StandardEndMovementRule;
 import uk.ac.mmu.assignment26.domain.rules.teleport.IgnoreTeleportRule;
 import uk.ac.mmu.assignment26.usecase.ports.GameFactory;
 import uk.ac.mmu.assignment26.usecase.ports.SavedGameRepository;
-
-import java.util.List;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class PlayGameUseCaseTest {
 

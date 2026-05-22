@@ -1,9 +1,8 @@
 package uk.ac.mmu.assignment26.usecase.ports;
 
+import java.util.List;
 import uk.ac.mmu.assignment26.domain.Game;
 import uk.ac.mmu.assignment26.domain.config.GameConfiguration;
-
-import java.util.List;
 
 /**
  * Output port for creating configured domain games.

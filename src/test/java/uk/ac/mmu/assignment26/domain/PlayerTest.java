@@ -1,13 +1,12 @@
 package uk.ac.mmu.assignment26.domain;
 
-import org.junit.jupiter.api.Test;
-import uk.ac.mmu.assignment26.domain.path.LeftStartSnakePathStrategy;
-import uk.ac.mmu.assignment26.domain.path.PathStrategy;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.Arrays;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import org.junit.jupiter.api.Test;
+import uk.ac.mmu.assignment26.domain.path.LeftStartSnakePathStrategy;
+import uk.ac.mmu.assignment26.domain.path.PathStrategy;
 
 class PlayerTest {
 

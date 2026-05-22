@@ -5,9 +5,7 @@ import uk.ac.mmu.assignment26.domain.dice.DiceShaker;
 
 import java.util.List;
 
-/**
- * Factory interface for creating random dice shakers.
- */
+/** Factory interface for creating random dice shakers. */
 public interface DiceShakerFactory {
   /**
    * Returns the dice type created by this factory

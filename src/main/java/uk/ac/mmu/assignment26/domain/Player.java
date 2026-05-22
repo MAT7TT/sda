@@ -1,11 +1,10 @@
 package uk.ac.mmu.assignment26.domain;
 
-import uk.ac.mmu.assignment26.domain.path.PathStrategy;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import uk.ac.mmu.assignment26.domain.path.PathStrategy;
 
 /**
  * Represents one player piece in the game.
@@ -93,7 +92,7 @@ public class Player {
   }
 
   /**
-   * Finds teh path index for a board position on this player's path.
+   * Finds the path index for a board position on this player's path.
    *
    * @param position the board position to find
    * @return the index of the position on the player's path
@@ -144,7 +143,7 @@ public class Player {
   }
 
   /**
-   * Returns a defensive copy of the player's path position.
+   * Returns a defensive copy of the player's path positions.
    *
    * @return the ordered path positions
    */

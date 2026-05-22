@@ -1,5 +1,6 @@
 package uk.ac.mmu.assignment26.infrastructure.scenarios;
 
+import java.util.List;
 import org.springframework.stereotype.Component;
 import uk.ac.mmu.assignment26.domain.config.DiceType;
 import uk.ac.mmu.assignment26.domain.config.EndRuleType;
@@ -7,8 +8,6 @@ import uk.ac.mmu.assignment26.domain.config.GameConfiguration;
 import uk.ac.mmu.assignment26.domain.config.HitRuleType;
 import uk.ac.mmu.assignment26.domain.config.TeleportRuleType;
 import uk.ac.mmu.assignment26.domain.config.Wormhole;
-
-import java.util.List;
 
 /**
  * Provides the demonstration scenarios used by the console runner.
